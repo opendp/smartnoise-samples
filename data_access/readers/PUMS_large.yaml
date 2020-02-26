@@ -1,0 +1,26 @@
+Collection:
+  PUMS:
+    PUMS_large:
+      PersonID:
+        type: int
+        private_id: true
+      state:
+        type: int
+      puma:
+        type: string
+      sex:
+        type: string
+      age:
+        type: int
+      educ:
+        type: int
+      income:
+        type: int
+      latino:
+        type: boolean
+      black:
+        type: boolean
+      asian:
+        type: boolean
+      married:
+        type: boolean
