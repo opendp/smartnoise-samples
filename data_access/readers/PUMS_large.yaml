@@ -11,11 +11,15 @@ Collection:
       sex:
         type: string
       age:
+        lower: 0
+        upper: 100
         type: int
       educ:
-        type: int
+        type: string
       income:
-        type: int
+        lower: 0
+        upper: 500000
+        type: float
       latino:
         type: boolean
       black:
