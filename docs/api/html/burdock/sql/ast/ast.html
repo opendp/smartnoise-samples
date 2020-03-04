@@ -1,0 +1,1863 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.5" />
+<title>burdock.sql.ast.ast API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>burdock.sql.ast.ast</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from .tokens import *
+from .expression import *
+
+from burdock.reader.sql.base import NameCompare
+
+&#34;&#34;&#34;
+    AST for parsed Python Query Batch.  Allows validation, normalization, 
+    rewriting, and serialization.  Grammar is a strict subset of SQL-92.
+    Lexer and parser token names borrowed from SparkSQL Grammar.
+&#34;&#34;&#34;
+
+class Batch(Sql):
+    &#34;&#34;&#34;A batch of queries&#34;&#34;&#34;
+    def __init__(self, queries : List[&#39;Query&#39;]) -&gt; None:
+        self.queries = queries
+    def children(self):
+        return self.queries
+
+class Query(SqlRel):
+    &#34;&#34;&#34;A single query&#34;&#34;&#34;
+    def __init__(self, select, source, where, agg, having, order, limit) -&gt; None:
+        self.select = select
+        self.source = source
+        self.where = where
+        self.agg = agg
+        self.having = having
+        self.order = order
+        self.limit = limit
+
+        self.max_ids = 1
+        self.sample_max_ids = True
+        self.row_privacy = False
+
+        # m_symbols includes all columns in the output, including anonymous columns,
+        #   equivalent to the result of SELECT * on this name scope.
+        # m_sym_dict includes only columns with explicit or inferred aliases,
+        #   which includes only columns that analyst can SELECT by name.
+
+        self.m_sym_dict = None
+        self.m_symbols = None
+
+    def load_symbols(self, metadata):
+        symbols = []
+        relations = self.source.relations
+        for r in relations:
+            r.load_symbols(metadata)
+        if not all([r.has_symbols() for r in relations]):
+            return  # unable to load symbols
+        for ne in self.select.namedExpressions:
+            if type(ne.expression) is not AllColumns:
+                name = ne.column_name()
+                m_symbol = ne.expression.symbol(relations)
+                symbols.append((name, m_symbol))
+                ne.m_symbol = m_symbol
+            else:
+                syms = ne.expression.all_symbols(relations)
+                for sym in syms:
+                    name, symbol = sym
+                    symbols.append((name, symbol))
+        self.m_symbols = symbols
+        self.m_sym_dict = {}
+
+        tables = []
+        for name, symbol in self.m_symbols:
+            for table in symbol.find_nodes(TableColumn):
+                tables.append(table)
+            if name == &#34;???&#34;:
+                continue
+            if name in self.m_sym_dict:
+                raise ValueError(&#34;SELECT has duplicate column names: &#34; + name)
+            self.m_sym_dict[name] = symbol
+
+        if len(tables) &gt; 0:
+            self.max_ids = max(tc.max_ids for tc in tables)
+            self.sample_max_ids = any(tc.sample_max_ids for tc in tables)
+            self.row_privacy = any(tc.row_privacy for tc in tables)
+    &#34;&#34;&#34;
+        returns the expression for an output column in the SELECT statement.
+        Query objects do not have aliases, so caller must strip alias first.
+    &#34;&#34;&#34;
+    def symbol(self, expression):
+        if not self.has_symbols():
+            raise ValueError(&#34;Attempted to get symbol from query with no symbols loaded.&#34;)
+        if type(expression) is not Column:
+            raise ValueError(&#34;Can only request output columns from a query: &#34; + str(type(expression)) )
+        return self[expression.name]
+    def numeric_symbols(self):
+        return [s for s in self.all_symbols() if s[1].type() in [&#34;int&#34;, &#34;float&#34;]]
+    def keycount_symbols(self):
+        return [s for s in self.all_symbols() if s[1].is_key_count ]
+    def children(self) -&gt; List[Any]:
+        return [self.select, self.source, self.where, self.agg, self.having, self.order, self.limit]
+    def evaluate(self, bindings):
+        return [(ne.name, ne.expression.evaluate(bindings)) for ne in self.select.namedExpressions]
+
+class Select(Sql):
+    &#34;&#34;&#34;Result Columns&#34;&#34;&#34;
+    def __init__(self, quantifier, namedExpressions):
+        self.quantifier = quantifier
+        self.namedExpressions = Seq(namedExpressions)
+    def functions(self):
+        return [c for c in self.namedExpressions if type(c.expression) is AggFunction]
+    def aggregates(self):
+        return [f for f in self.functions() if f.is_aggregate()]
+    def children(self):
+        return [Token(&#34;SELECT&#34;), self.quantifier, self.namedExpressions]
+
+class From(Sql):
+    &#34;&#34;&#34;From&#34;&#34;&#34;
+    def __init__(self, relations):
+        self.relations = Seq(relations)
+    def children(self):
+        return [Token(&#34;FROM&#34;), self.relations]
+
+class Where(Sql):
+    &#34;&#34;&#34;Predicates.&#34;&#34;&#34;
+    def __init__(self, condition):
+        self.condition = condition
+    def children(self):
+        return [Token(&#34;WHERE&#34;), self.condition]
+
+class Aggregate(Sql):
+    &#34;&#34;&#34;Group By&#34;&#34;&#34;
+    def __init__(self, groupingExpressions):
+        self.groupingExpressions = Seq(groupingExpressions)
+    def groupedColumns(self):
+        return [ge.expression for ge in self.groupingExpressions if type(ge.expression) == Column]
+    def children(self):
+        return [Token(&#34;GROUP&#34;), Token(&#34;BY&#34;), self.groupingExpressions]
+
+class Having(Sql):
+    &#34;&#34;&#34;Having clause&#34;&#34;&#34;
+    def __init__(self, condition):
+        self.condition = condition
+    def children(self):
+        return [Token(&#34;HAVING&#34;), self.condition]
+
+class Order(Sql):
+    &#34;&#34;&#34;Order By&#34;&#34;&#34;
+    def __init__(self, sortItems):
+        self.sortItems = Seq(sortItems)
+    def children(self):
+        return [Token(&#34;ORDER&#34;), Token(&#34;BY&#34;), self.sortItems]
+    def symbol(self, relations):
+        return Order(self.sortItems.symbol(relations))
+
+class Limit(Sql):
+    &#34;&#34;&#34;Limit&#34;&#34;&#34;
+    def __init__(self, n):
+        self.n = n
+    def children(self):
+        return  [Token(&#34;LIMIT&#34;), Literal(self.n, str(self.n))]
+    def symbol(self, relations):
+        return self
+
+class Top(Sql):
+    &#34;&#34;&#34;Top&#34;&#34;&#34;
+    def __init__(self, n):
+        self.n = n
+    def children(self):
+        return  [Token(&#34;TOP&#34;), Literal(self.n, str(self.n))]
+    def symbol(self, relations):
+        return self
+
+&#34;&#34;&#34;
+    RELATIONS
+&#34;&#34;&#34;
+
+class Relation(SqlRel):
+    &#34;&#34;&#34;A relation such as table, join, or subquery&#34;&#34;&#34;
+    def __init__(self, primary, joins):
+        self.primary = primary
+        self.joins = joins if joins is not None else []
+    def load_symbols(self, metadata):
+        relations = [self.primary] + [j for j in self.joins]
+        for r in relations:
+            r.load_symbols(metadata)
+        # check the join keys
+        if len(self.joins) &gt; 0:
+            primary_symbols = [name.lower() for name, symbol in self.primary.all_symbols(AllColumns())]
+            for j in self.joins:
+                join_symbols = [name.lower() for name, symbol in j.right.all_symbols(AllColumns())]
+                if type(j.criteria) is UsingJoinCriteria:
+                    for i in j.criteria.identifiers:
+                        if not i.name.lower() in primary_symbols:
+                            raise ValueError(&#34;Join clause uses a join column that doesn&#39;t exist in the primary relation: &#34; + str(i))
+                        if not i.name.lower() in join_symbols:
+                            raise ValueError(&#34;Join clause uses a join column that doesn&#39;t exist in the joined relation: &#34; + str(i))
+    def symbol(self, expression):
+        if type(expression) is not Column:
+            raise ValueError(&#34;Tables can only have column symbols: &#34; + str(type(expression)) )
+        alias, colname = self.split_alias(expression.name)
+        alias = alias if alias != &#34;&#34; else None
+        syms_a = self.all_symbols(AllColumns(alias))
+        syms_b = [s for s in syms_a if s is not None ]
+        syms_c = [symbol for name, symbol in syms_b if (type(symbol) is TableColumn and symbol.compare.identifier_match(colname, name)) or name.lower() == colname.lower() ]
+        if len(syms_c) == 1:
+            return syms_c[0]
+        elif len(syms_c) &gt; 1:
+            raise ValueError(&#34;Too many relations matched column, ambiguous: &#34; + str(expression))
+        else:
+            raise ValueError(&#34;Symbol could not be found in any relations: &#34; + str(expression))
+    def all_symbols(self, expression=None):
+        if expression is None:
+            expression = AllColumns()
+        if type(expression) is not AllColumns:
+            raise ValueError(&#34;Can only request all columns with * : &#34; + str(type(expression)) )
+        syms = self.primary.all_symbols(expression) if self.primary.alias_match(str(expression)) else []
+        for j in self.joins:
+            if not j.alias_match(str(expression)):
+                continue
+            drop_cols = []
+            alias, name = self.split_alias(str(expression))
+            # if alias.* specified, don&#39;t drop join column
+            if type(j.criteria) is UsingJoinCriteria and alias == &#34;&#34;:
+                drop_cols = [str(i).lower() for i in j.criteria.identifiers]
+            syms = syms + [(name, symbol) for name, symbol in j.all_symbols(expression) if name.lower() not in drop_cols]
+        if len(syms) == 0:
+            raise ValueError(&#34;Symbol could not be found in any relations: &#34; + str(expression))
+        return syms
+    def children(self):
+        return [self.primary] + self.joins
+
+class Table(SqlRel):
+    &#34;&#34;&#34;A fully qualified table name with optional alias&#34;&#34;&#34;
+    def __init__(self, name, alias):
+        self.name = name
+        self.alias = alias
+        self.m_symbols = None
+        self.m_sym_dict = None
+    def symbol(self, expression):
+        if type(expression) is not Column:
+            raise ValueError(&#34;Tables can only have column symbols: &#34; + str(type(expression)) )
+        if not self.alias_match(expression.name):
+            raise ValueError(&#34;Attempt to look up symbol with different alias.  Use alias_match() first.&#34; + expression.name + &#34; -- &#34; + str(self.name))
+        alias, name = self.split_alias(expression.name)
+        if self.m_symbols is None:
+            raise ValueError(&#34;Please load symbols with metadata first: &#34; + str(self))
+        else:
+            if name in self:
+                return self[name]
+            else:
+                return None
+    def load_symbols(self, metadata):
+        self.m_sym_dict = None
+        if metadata is None:
+            return
+        else:
+            table = metadata[str(self.name)]
+            if table is None:
+                raise ValueError(&#34;No metadata available for &#34; + str(self.name))
+            tc = table.m_columns
+            self.m_symbols = [(name, TableColumn(
+                tablename=self.name,
+                colname=name,
+                valtype=tc[name].typename(),
+                is_key=tc[name].is_key,
+                minval=tc[name].minval if tc[name].typename() in [&#34;int&#34;, &#34;float&#34;] else None,
+                maxval=tc[name].maxval if tc[name].typename() in [&#34;int&#34;, &#34;float&#34;] else None,
+                max_ids=table.max_ids,
+                sample_max_ids=table.sample_max_ids,
+                row_privacy=table.row_privacy,
+                compare=metadata.compare)
+                ) for name in tc.keys()]
+    def escaped(self):
+        # is any part of this identifier escaped?
+        parts = str(self).split(&#34;.&#34;)
+        return any([p.startswith(&#39;&#34;&#39;) or p.startswith(&#39;[&#39;) for p in parts])
+    def children(self):
+        return [self.name] + ([Token(&#34;AS&#34;), self.alias] if self.alias is not None else [])
+
+class AliasedSubquery(SqlRel):
+    &#34;&#34;&#34;A subquery with optional alias&#34;&#34;&#34;
+    def __init__(self, query, alias):
+        self.query = query
+        self.alias = alias
+    def symbol(self, expression):
+        alias, name = self.split_alias(expression.name)
+        return self.query.symbol(Column(name))
+    def all_symbols(self, expression):
+        if type(expression) is not AllColumns:
+            raise ValueError(&#34;Need to pass in a * or alias.* to get all columns&#34;)
+        if not self.alias_match(str(expression)):
+            raise ValueError(&#34;Requesting all coluns with mismatched alias&#34;)
+        return self.query.all_symbols(AllColumns())
+    def children(self):
+        return [Token(&#34;(&#34;), self.query, Token(&#34;)&#34;)] + ([Token(&#34;AS&#34;), self.alias] if self.alias is not None else [])
+
+class AliasedRelation(SqlRel):
+    &#34;&#34;&#34;A subrelation (table, join, or subquery) with optional alias&#34;&#34;&#34;
+    def __init__(self, relation, alias):
+        self.relation = relation
+        self.alias = alias
+    def symbol(self, expression):
+        alias, name = self.split_alias(expression.name)
+        return self.relation.symbol(Column(name))
+    def all_symbols(self, expression):
+        if type(expression) is not AllColumns:
+            raise ValueError(&#34;Need to pass in a * or alias.* to get all columns&#34;)
+        if not self.alias_match(str(expression)):
+            raise ValueError(&#34;Requesting all coluns with mismatched alias&#34;)
+        return self.relation.all_symbols(AllColumns())
+    def children(self):
+        return [Token(&#34;(&#34;), self.relation, Token(&#34;)&#34;)] + ([Token(&#34;AS&#34;), self.alias] if self.alias is not None else [])
+
+class Join(SqlRel):
+    &#34;&#34;&#34;A join expression attached to a primary relation&#34;&#34;&#34;
+    def __init__(self, joinType, right, criteria):
+        self.joinType = joinType
+        self.right = right
+        self.criteria = criteria
+    def symbol(self, expression):
+        return self.right.symbol(expression)
+    def all_symbols(self, expression):
+        return self.right.all_symbols(expression)
+    def children(self):
+        return [self.joinType, Token(&#34;JOIN&#34;), self.right, self.criteria]
+
+
+#
+#    METADATA
+#
+class TableColumn(SqlExpr):
+    &#34;&#34;&#34; A column attached to a fully qualified table &#34;&#34;&#34;
+    def __init__(self, tablename, colname, valtype=&#34;unknown&#34;, is_key=False, minval=None, maxval=None, max_ids=1, sample_max_ids=True, row_privacy=False, compare=None):
+        self.tablename = tablename
+        self.colname = colname
+        self.valtype = valtype
+        self.is_key = is_key
+        self.minval = minval
+        self.maxval = maxval
+        self.max_ids = max_ids
+        self.sample_max_ids = sample_max_ids
+        self.row_privacy = row_privacy
+        self.unbounded = minval is None or maxval is None
+        compare = NameCompare([]) if compare is None else compare
+        self.compare = compare
+    def __str__(self):
+        return self.tablename + &#34;.&#34; + self.colname
+    def __eq__(self, other):
+        return self.tablename == other.tablename and self.colname == other.colname
+    def __hash__(self):
+        return hash((self.tablename, self.colname))
+    def type(self):
+        return self.valtype
+    def sensitivity(self):
+        if self.valtype in [&#34;int&#34;, &#34;float&#34;]:
+            if self.minval is not None and self.maxval is not None:
+                return max(abs(self.maxval), abs(self.minval))
+        elif self.valtype == &#34;boolean&#34;:
+            return 1
+        else:
+            return None
+    def evaluate(self, bindings):
+        if str(self).lower() in bindings:
+            return bindings[str(self).lower()]
+        else:
+            return None
+    @property
+    def is_key_count(self):
+        return self.is_key</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="burdock.sql.ast.ast.Aggregate"><code class="flex name class">
+<span>class <span class="ident">Aggregate</span></span>
+<span>(</span><span>groupingExpressions)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Group By</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Aggregate(Sql):
+    &#34;&#34;&#34;Group By&#34;&#34;&#34;
+    def __init__(self, groupingExpressions):
+        self.groupingExpressions = Seq(groupingExpressions)
+    def groupedColumns(self):
+        return [ge.expression for ge in self.groupingExpressions if type(ge.expression) == Column]
+    def children(self):
+        return [Token(&#34;GROUP&#34;), Token(&#34;BY&#34;), self.groupingExpressions]</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="burdock.sql.ast.tokens.Sql" href="tokens.html#burdock.sql.ast.tokens.Sql">Sql</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.sql.ast.ast.Aggregate.children"><code class="name flex">
+<span>def <span class="ident">children</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def children(self):
+    return [Token(&#34;GROUP&#34;), Token(&#34;BY&#34;), self.groupingExpressions]</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.ast.ast.Aggregate.groupedColumns"><code class="name flex">
+<span>def <span class="ident">groupedColumns</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def groupedColumns(self):
+    return [ge.expression for ge in self.groupingExpressions if type(ge.expression) == Column]</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.sql.ast.ast.AliasedRelation"><code class="flex name class">
+<span>class <span class="ident">AliasedRelation</span></span>
+<span>(</span><span>relation, alias)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>A subrelation (table, join, or subquery) with optional alias</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class AliasedRelation(SqlRel):
+    &#34;&#34;&#34;A subrelation (table, join, or subquery) with optional alias&#34;&#34;&#34;
+    def __init__(self, relation, alias):
+        self.relation = relation
+        self.alias = alias
+    def symbol(self, expression):
+        alias, name = self.split_alias(expression.name)
+        return self.relation.symbol(Column(name))
+    def all_symbols(self, expression):
+        if type(expression) is not AllColumns:
+            raise ValueError(&#34;Need to pass in a * or alias.* to get all columns&#34;)
+        if not self.alias_match(str(expression)):
+            raise ValueError(&#34;Requesting all coluns with mismatched alias&#34;)
+        return self.relation.all_symbols(AllColumns())
+    def children(self):
+        return [Token(&#34;(&#34;), self.relation, Token(&#34;)&#34;)] + ([Token(&#34;AS&#34;), self.alias] if self.alias is not None else [])</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="burdock.sql.ast.tokens.SqlRel" href="tokens.html#burdock.sql.ast.tokens.SqlRel">SqlRel</a></li>
+<li><a title="burdock.sql.ast.tokens.Sql" href="tokens.html#burdock.sql.ast.tokens.Sql">Sql</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.sql.ast.ast.AliasedRelation.all_symbols"><code class="name flex">
+<span>def <span class="ident">all_symbols</span></span>(<span>self, expression)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def all_symbols(self, expression):
+    if type(expression) is not AllColumns:
+        raise ValueError(&#34;Need to pass in a * or alias.* to get all columns&#34;)
+    if not self.alias_match(str(expression)):
+        raise ValueError(&#34;Requesting all coluns with mismatched alias&#34;)
+    return self.relation.all_symbols(AllColumns())</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.ast.ast.AliasedRelation.children"><code class="name flex">
+<span>def <span class="ident">children</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def children(self):
+    return [Token(&#34;(&#34;), self.relation, Token(&#34;)&#34;)] + ([Token(&#34;AS&#34;), self.alias] if self.alias is not None else [])</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.ast.ast.AliasedRelation.symbol"><code class="name flex">
+<span>def <span class="ident">symbol</span></span>(<span>self, expression)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def symbol(self, expression):
+    alias, name = self.split_alias(expression.name)
+    return self.relation.symbol(Column(name))</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.sql.ast.ast.AliasedSubquery"><code class="flex name class">
+<span>class <span class="ident">AliasedSubquery</span></span>
+<span>(</span><span>query, alias)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>A subquery with optional alias</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class AliasedSubquery(SqlRel):
+    &#34;&#34;&#34;A subquery with optional alias&#34;&#34;&#34;
+    def __init__(self, query, alias):
+        self.query = query
+        self.alias = alias
+    def symbol(self, expression):
+        alias, name = self.split_alias(expression.name)
+        return self.query.symbol(Column(name))
+    def all_symbols(self, expression):
+        if type(expression) is not AllColumns:
+            raise ValueError(&#34;Need to pass in a * or alias.* to get all columns&#34;)
+        if not self.alias_match(str(expression)):
+            raise ValueError(&#34;Requesting all coluns with mismatched alias&#34;)
+        return self.query.all_symbols(AllColumns())
+    def children(self):
+        return [Token(&#34;(&#34;), self.query, Token(&#34;)&#34;)] + ([Token(&#34;AS&#34;), self.alias] if self.alias is not None else [])</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="burdock.sql.ast.tokens.SqlRel" href="tokens.html#burdock.sql.ast.tokens.SqlRel">SqlRel</a></li>
+<li><a title="burdock.sql.ast.tokens.Sql" href="tokens.html#burdock.sql.ast.tokens.Sql">Sql</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.sql.ast.ast.AliasedSubquery.all_symbols"><code class="name flex">
+<span>def <span class="ident">all_symbols</span></span>(<span>self, expression)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def all_symbols(self, expression):
+    if type(expression) is not AllColumns:
+        raise ValueError(&#34;Need to pass in a * or alias.* to get all columns&#34;)
+    if not self.alias_match(str(expression)):
+        raise ValueError(&#34;Requesting all coluns with mismatched alias&#34;)
+    return self.query.all_symbols(AllColumns())</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.ast.ast.AliasedSubquery.children"><code class="name flex">
+<span>def <span class="ident">children</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def children(self):
+    return [Token(&#34;(&#34;), self.query, Token(&#34;)&#34;)] + ([Token(&#34;AS&#34;), self.alias] if self.alias is not None else [])</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.ast.ast.AliasedSubquery.symbol"><code class="name flex">
+<span>def <span class="ident">symbol</span></span>(<span>self, expression)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def symbol(self, expression):
+    alias, name = self.split_alias(expression.name)
+    return self.query.symbol(Column(name))</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.sql.ast.ast.Batch"><code class="flex name class">
+<span>class <span class="ident">Batch</span></span>
+<span>(</span><span>queries)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>A batch of queries</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Batch(Sql):
+    &#34;&#34;&#34;A batch of queries&#34;&#34;&#34;
+    def __init__(self, queries : List[&#39;Query&#39;]) -&gt; None:
+        self.queries = queries
+    def children(self):
+        return self.queries</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="burdock.sql.ast.tokens.Sql" href="tokens.html#burdock.sql.ast.tokens.Sql">Sql</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.sql.ast.ast.Batch.children"><code class="name flex">
+<span>def <span class="ident">children</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def children(self):
+    return self.queries</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.sql.ast.ast.From"><code class="flex name class">
+<span>class <span class="ident">From</span></span>
+<span>(</span><span>relations)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>From</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class From(Sql):
+    &#34;&#34;&#34;From&#34;&#34;&#34;
+    def __init__(self, relations):
+        self.relations = Seq(relations)
+    def children(self):
+        return [Token(&#34;FROM&#34;), self.relations]</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="burdock.sql.ast.tokens.Sql" href="tokens.html#burdock.sql.ast.tokens.Sql">Sql</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.sql.ast.ast.From.children"><code class="name flex">
+<span>def <span class="ident">children</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def children(self):
+    return [Token(&#34;FROM&#34;), self.relations]</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.sql.ast.ast.Having"><code class="flex name class">
+<span>class <span class="ident">Having</span></span>
+<span>(</span><span>condition)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Having clause</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Having(Sql):
+    &#34;&#34;&#34;Having clause&#34;&#34;&#34;
+    def __init__(self, condition):
+        self.condition = condition
+    def children(self):
+        return [Token(&#34;HAVING&#34;), self.condition]</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="burdock.sql.ast.tokens.Sql" href="tokens.html#burdock.sql.ast.tokens.Sql">Sql</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.sql.ast.ast.Having.children"><code class="name flex">
+<span>def <span class="ident">children</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def children(self):
+    return [Token(&#34;HAVING&#34;), self.condition]</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.sql.ast.ast.Join"><code class="flex name class">
+<span>class <span class="ident">Join</span></span>
+<span>(</span><span>joinType, right, criteria)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>A join expression attached to a primary relation</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Join(SqlRel):
+    &#34;&#34;&#34;A join expression attached to a primary relation&#34;&#34;&#34;
+    def __init__(self, joinType, right, criteria):
+        self.joinType = joinType
+        self.right = right
+        self.criteria = criteria
+    def symbol(self, expression):
+        return self.right.symbol(expression)
+    def all_symbols(self, expression):
+        return self.right.all_symbols(expression)
+    def children(self):
+        return [self.joinType, Token(&#34;JOIN&#34;), self.right, self.criteria]</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="burdock.sql.ast.tokens.SqlRel" href="tokens.html#burdock.sql.ast.tokens.SqlRel">SqlRel</a></li>
+<li><a title="burdock.sql.ast.tokens.Sql" href="tokens.html#burdock.sql.ast.tokens.Sql">Sql</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.sql.ast.ast.Join.all_symbols"><code class="name flex">
+<span>def <span class="ident">all_symbols</span></span>(<span>self, expression)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def all_symbols(self, expression):
+    return self.right.all_symbols(expression)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.ast.ast.Join.children"><code class="name flex">
+<span>def <span class="ident">children</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def children(self):
+    return [self.joinType, Token(&#34;JOIN&#34;), self.right, self.criteria]</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.ast.ast.Join.symbol"><code class="name flex">
+<span>def <span class="ident">symbol</span></span>(<span>self, expression)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def symbol(self, expression):
+    return self.right.symbol(expression)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.sql.ast.ast.Limit"><code class="flex name class">
+<span>class <span class="ident">Limit</span></span>
+<span>(</span><span>n)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Limit</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Limit(Sql):
+    &#34;&#34;&#34;Limit&#34;&#34;&#34;
+    def __init__(self, n):
+        self.n = n
+    def children(self):
+        return  [Token(&#34;LIMIT&#34;), Literal(self.n, str(self.n))]
+    def symbol(self, relations):
+        return self</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="burdock.sql.ast.tokens.Sql" href="tokens.html#burdock.sql.ast.tokens.Sql">Sql</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.sql.ast.ast.Limit.children"><code class="name flex">
+<span>def <span class="ident">children</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def children(self):
+    return  [Token(&#34;LIMIT&#34;), Literal(self.n, str(self.n))]</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.ast.ast.Limit.symbol"><code class="name flex">
+<span>def <span class="ident">symbol</span></span>(<span>self, relations)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def symbol(self, relations):
+    return self</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.sql.ast.ast.Order"><code class="flex name class">
+<span>class <span class="ident">Order</span></span>
+<span>(</span><span>sortItems)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Order By</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Order(Sql):
+    &#34;&#34;&#34;Order By&#34;&#34;&#34;
+    def __init__(self, sortItems):
+        self.sortItems = Seq(sortItems)
+    def children(self):
+        return [Token(&#34;ORDER&#34;), Token(&#34;BY&#34;), self.sortItems]
+    def symbol(self, relations):
+        return Order(self.sortItems.symbol(relations))</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="burdock.sql.ast.tokens.Sql" href="tokens.html#burdock.sql.ast.tokens.Sql">Sql</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.sql.ast.ast.Order.children"><code class="name flex">
+<span>def <span class="ident">children</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def children(self):
+    return [Token(&#34;ORDER&#34;), Token(&#34;BY&#34;), self.sortItems]</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.ast.ast.Order.symbol"><code class="name flex">
+<span>def <span class="ident">symbol</span></span>(<span>self, relations)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def symbol(self, relations):
+    return Order(self.sortItems.symbol(relations))</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.sql.ast.ast.Query"><code class="flex name class">
+<span>class <span class="ident">Query</span></span>
+<span>(</span><span>select, source, where, agg, having, order, limit)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>A single query</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Query(SqlRel):
+    &#34;&#34;&#34;A single query&#34;&#34;&#34;
+    def __init__(self, select, source, where, agg, having, order, limit) -&gt; None:
+        self.select = select
+        self.source = source
+        self.where = where
+        self.agg = agg
+        self.having = having
+        self.order = order
+        self.limit = limit
+
+        self.max_ids = 1
+        self.sample_max_ids = True
+        self.row_privacy = False
+
+        # m_symbols includes all columns in the output, including anonymous columns,
+        #   equivalent to the result of SELECT * on this name scope.
+        # m_sym_dict includes only columns with explicit or inferred aliases,
+        #   which includes only columns that analyst can SELECT by name.
+
+        self.m_sym_dict = None
+        self.m_symbols = None
+
+    def load_symbols(self, metadata):
+        symbols = []
+        relations = self.source.relations
+        for r in relations:
+            r.load_symbols(metadata)
+        if not all([r.has_symbols() for r in relations]):
+            return  # unable to load symbols
+        for ne in self.select.namedExpressions:
+            if type(ne.expression) is not AllColumns:
+                name = ne.column_name()
+                m_symbol = ne.expression.symbol(relations)
+                symbols.append((name, m_symbol))
+                ne.m_symbol = m_symbol
+            else:
+                syms = ne.expression.all_symbols(relations)
+                for sym in syms:
+                    name, symbol = sym
+                    symbols.append((name, symbol))
+        self.m_symbols = symbols
+        self.m_sym_dict = {}
+
+        tables = []
+        for name, symbol in self.m_symbols:
+            for table in symbol.find_nodes(TableColumn):
+                tables.append(table)
+            if name == &#34;???&#34;:
+                continue
+            if name in self.m_sym_dict:
+                raise ValueError(&#34;SELECT has duplicate column names: &#34; + name)
+            self.m_sym_dict[name] = symbol
+
+        if len(tables) &gt; 0:
+            self.max_ids = max(tc.max_ids for tc in tables)
+            self.sample_max_ids = any(tc.sample_max_ids for tc in tables)
+            self.row_privacy = any(tc.row_privacy for tc in tables)
+    &#34;&#34;&#34;
+        returns the expression for an output column in the SELECT statement.
+        Query objects do not have aliases, so caller must strip alias first.
+    &#34;&#34;&#34;
+    def symbol(self, expression):
+        if not self.has_symbols():
+            raise ValueError(&#34;Attempted to get symbol from query with no symbols loaded.&#34;)
+        if type(expression) is not Column:
+            raise ValueError(&#34;Can only request output columns from a query: &#34; + str(type(expression)) )
+        return self[expression.name]
+    def numeric_symbols(self):
+        return [s for s in self.all_symbols() if s[1].type() in [&#34;int&#34;, &#34;float&#34;]]
+    def keycount_symbols(self):
+        return [s for s in self.all_symbols() if s[1].is_key_count ]
+    def children(self) -&gt; List[Any]:
+        return [self.select, self.source, self.where, self.agg, self.having, self.order, self.limit]
+    def evaluate(self, bindings):
+        return [(ne.name, ne.expression.evaluate(bindings)) for ne in self.select.namedExpressions]</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="burdock.sql.ast.tokens.SqlRel" href="tokens.html#burdock.sql.ast.tokens.SqlRel">SqlRel</a></li>
+<li><a title="burdock.sql.ast.tokens.Sql" href="tokens.html#burdock.sql.ast.tokens.Sql">Sql</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.sql.ast.ast.Query.children"><code class="name flex">
+<span>def <span class="ident">children</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def children(self) -&gt; List[Any]:
+    return [self.select, self.source, self.where, self.agg, self.having, self.order, self.limit]</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.ast.ast.Query.evaluate"><code class="name flex">
+<span>def <span class="ident">evaluate</span></span>(<span>self, bindings)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def evaluate(self, bindings):
+    return [(ne.name, ne.expression.evaluate(bindings)) for ne in self.select.namedExpressions]</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.ast.ast.Query.keycount_symbols"><code class="name flex">
+<span>def <span class="ident">keycount_symbols</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def keycount_symbols(self):
+    return [s for s in self.all_symbols() if s[1].is_key_count ]</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.ast.ast.Query.load_symbols"><code class="name flex">
+<span>def <span class="ident">load_symbols</span></span>(<span>self, metadata)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load_symbols(self, metadata):
+    symbols = []
+    relations = self.source.relations
+    for r in relations:
+        r.load_symbols(metadata)
+    if not all([r.has_symbols() for r in relations]):
+        return  # unable to load symbols
+    for ne in self.select.namedExpressions:
+        if type(ne.expression) is not AllColumns:
+            name = ne.column_name()
+            m_symbol = ne.expression.symbol(relations)
+            symbols.append((name, m_symbol))
+            ne.m_symbol = m_symbol
+        else:
+            syms = ne.expression.all_symbols(relations)
+            for sym in syms:
+                name, symbol = sym
+                symbols.append((name, symbol))
+    self.m_symbols = symbols
+    self.m_sym_dict = {}
+
+    tables = []
+    for name, symbol in self.m_symbols:
+        for table in symbol.find_nodes(TableColumn):
+            tables.append(table)
+        if name == &#34;???&#34;:
+            continue
+        if name in self.m_sym_dict:
+            raise ValueError(&#34;SELECT has duplicate column names: &#34; + name)
+        self.m_sym_dict[name] = symbol
+
+    if len(tables) &gt; 0:
+        self.max_ids = max(tc.max_ids for tc in tables)
+        self.sample_max_ids = any(tc.sample_max_ids for tc in tables)
+        self.row_privacy = any(tc.row_privacy for tc in tables)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.ast.ast.Query.numeric_symbols"><code class="name flex">
+<span>def <span class="ident">numeric_symbols</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def numeric_symbols(self):
+    return [s for s in self.all_symbols() if s[1].type() in [&#34;int&#34;, &#34;float&#34;]]</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.ast.ast.Query.symbol"><code class="name flex">
+<span>def <span class="ident">symbol</span></span>(<span>self, expression)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def symbol(self, expression):
+    if not self.has_symbols():
+        raise ValueError(&#34;Attempted to get symbol from query with no symbols loaded.&#34;)
+    if type(expression) is not Column:
+        raise ValueError(&#34;Can only request output columns from a query: &#34; + str(type(expression)) )
+    return self[expression.name]</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.sql.ast.ast.Relation"><code class="flex name class">
+<span>class <span class="ident">Relation</span></span>
+<span>(</span><span>primary, joins)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>A relation such as table, join, or subquery</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Relation(SqlRel):
+    &#34;&#34;&#34;A relation such as table, join, or subquery&#34;&#34;&#34;
+    def __init__(self, primary, joins):
+        self.primary = primary
+        self.joins = joins if joins is not None else []
+    def load_symbols(self, metadata):
+        relations = [self.primary] + [j for j in self.joins]
+        for r in relations:
+            r.load_symbols(metadata)
+        # check the join keys
+        if len(self.joins) &gt; 0:
+            primary_symbols = [name.lower() for name, symbol in self.primary.all_symbols(AllColumns())]
+            for j in self.joins:
+                join_symbols = [name.lower() for name, symbol in j.right.all_symbols(AllColumns())]
+                if type(j.criteria) is UsingJoinCriteria:
+                    for i in j.criteria.identifiers:
+                        if not i.name.lower() in primary_symbols:
+                            raise ValueError(&#34;Join clause uses a join column that doesn&#39;t exist in the primary relation: &#34; + str(i))
+                        if not i.name.lower() in join_symbols:
+                            raise ValueError(&#34;Join clause uses a join column that doesn&#39;t exist in the joined relation: &#34; + str(i))
+    def symbol(self, expression):
+        if type(expression) is not Column:
+            raise ValueError(&#34;Tables can only have column symbols: &#34; + str(type(expression)) )
+        alias, colname = self.split_alias(expression.name)
+        alias = alias if alias != &#34;&#34; else None
+        syms_a = self.all_symbols(AllColumns(alias))
+        syms_b = [s for s in syms_a if s is not None ]
+        syms_c = [symbol for name, symbol in syms_b if (type(symbol) is TableColumn and symbol.compare.identifier_match(colname, name)) or name.lower() == colname.lower() ]
+        if len(syms_c) == 1:
+            return syms_c[0]
+        elif len(syms_c) &gt; 1:
+            raise ValueError(&#34;Too many relations matched column, ambiguous: &#34; + str(expression))
+        else:
+            raise ValueError(&#34;Symbol could not be found in any relations: &#34; + str(expression))
+    def all_symbols(self, expression=None):
+        if expression is None:
+            expression = AllColumns()
+        if type(expression) is not AllColumns:
+            raise ValueError(&#34;Can only request all columns with * : &#34; + str(type(expression)) )
+        syms = self.primary.all_symbols(expression) if self.primary.alias_match(str(expression)) else []
+        for j in self.joins:
+            if not j.alias_match(str(expression)):
+                continue
+            drop_cols = []
+            alias, name = self.split_alias(str(expression))
+            # if alias.* specified, don&#39;t drop join column
+            if type(j.criteria) is UsingJoinCriteria and alias == &#34;&#34;:
+                drop_cols = [str(i).lower() for i in j.criteria.identifiers]
+            syms = syms + [(name, symbol) for name, symbol in j.all_symbols(expression) if name.lower() not in drop_cols]
+        if len(syms) == 0:
+            raise ValueError(&#34;Symbol could not be found in any relations: &#34; + str(expression))
+        return syms
+    def children(self):
+        return [self.primary] + self.joins</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="burdock.sql.ast.tokens.SqlRel" href="tokens.html#burdock.sql.ast.tokens.SqlRel">SqlRel</a></li>
+<li><a title="burdock.sql.ast.tokens.Sql" href="tokens.html#burdock.sql.ast.tokens.Sql">Sql</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.sql.ast.ast.Relation.all_symbols"><code class="name flex">
+<span>def <span class="ident">all_symbols</span></span>(<span>self, expression=None)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def all_symbols(self, expression=None):
+    if expression is None:
+        expression = AllColumns()
+    if type(expression) is not AllColumns:
+        raise ValueError(&#34;Can only request all columns with * : &#34; + str(type(expression)) )
+    syms = self.primary.all_symbols(expression) if self.primary.alias_match(str(expression)) else []
+    for j in self.joins:
+        if not j.alias_match(str(expression)):
+            continue
+        drop_cols = []
+        alias, name = self.split_alias(str(expression))
+        # if alias.* specified, don&#39;t drop join column
+        if type(j.criteria) is UsingJoinCriteria and alias == &#34;&#34;:
+            drop_cols = [str(i).lower() for i in j.criteria.identifiers]
+        syms = syms + [(name, symbol) for name, symbol in j.all_symbols(expression) if name.lower() not in drop_cols]
+    if len(syms) == 0:
+        raise ValueError(&#34;Symbol could not be found in any relations: &#34; + str(expression))
+    return syms</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.ast.ast.Relation.children"><code class="name flex">
+<span>def <span class="ident">children</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def children(self):
+    return [self.primary] + self.joins</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.ast.ast.Relation.load_symbols"><code class="name flex">
+<span>def <span class="ident">load_symbols</span></span>(<span>self, metadata)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load_symbols(self, metadata):
+    relations = [self.primary] + [j for j in self.joins]
+    for r in relations:
+        r.load_symbols(metadata)
+    # check the join keys
+    if len(self.joins) &gt; 0:
+        primary_symbols = [name.lower() for name, symbol in self.primary.all_symbols(AllColumns())]
+        for j in self.joins:
+            join_symbols = [name.lower() for name, symbol in j.right.all_symbols(AllColumns())]
+            if type(j.criteria) is UsingJoinCriteria:
+                for i in j.criteria.identifiers:
+                    if not i.name.lower() in primary_symbols:
+                        raise ValueError(&#34;Join clause uses a join column that doesn&#39;t exist in the primary relation: &#34; + str(i))
+                    if not i.name.lower() in join_symbols:
+                        raise ValueError(&#34;Join clause uses a join column that doesn&#39;t exist in the joined relation: &#34; + str(i))</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.ast.ast.Relation.symbol"><code class="name flex">
+<span>def <span class="ident">symbol</span></span>(<span>self, expression)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def symbol(self, expression):
+    if type(expression) is not Column:
+        raise ValueError(&#34;Tables can only have column symbols: &#34; + str(type(expression)) )
+    alias, colname = self.split_alias(expression.name)
+    alias = alias if alias != &#34;&#34; else None
+    syms_a = self.all_symbols(AllColumns(alias))
+    syms_b = [s for s in syms_a if s is not None ]
+    syms_c = [symbol for name, symbol in syms_b if (type(symbol) is TableColumn and symbol.compare.identifier_match(colname, name)) or name.lower() == colname.lower() ]
+    if len(syms_c) == 1:
+        return syms_c[0]
+    elif len(syms_c) &gt; 1:
+        raise ValueError(&#34;Too many relations matched column, ambiguous: &#34; + str(expression))
+    else:
+        raise ValueError(&#34;Symbol could not be found in any relations: &#34; + str(expression))</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.sql.ast.ast.Select"><code class="flex name class">
+<span>class <span class="ident">Select</span></span>
+<span>(</span><span>quantifier, namedExpressions)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Result Columns</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Select(Sql):
+    &#34;&#34;&#34;Result Columns&#34;&#34;&#34;
+    def __init__(self, quantifier, namedExpressions):
+        self.quantifier = quantifier
+        self.namedExpressions = Seq(namedExpressions)
+    def functions(self):
+        return [c for c in self.namedExpressions if type(c.expression) is AggFunction]
+    def aggregates(self):
+        return [f for f in self.functions() if f.is_aggregate()]
+    def children(self):
+        return [Token(&#34;SELECT&#34;), self.quantifier, self.namedExpressions]</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="burdock.sql.ast.tokens.Sql" href="tokens.html#burdock.sql.ast.tokens.Sql">Sql</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.sql.ast.ast.Select.aggregates"><code class="name flex">
+<span>def <span class="ident">aggregates</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def aggregates(self):
+    return [f for f in self.functions() if f.is_aggregate()]</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.ast.ast.Select.children"><code class="name flex">
+<span>def <span class="ident">children</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def children(self):
+    return [Token(&#34;SELECT&#34;), self.quantifier, self.namedExpressions]</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.ast.ast.Select.functions"><code class="name flex">
+<span>def <span class="ident">functions</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def functions(self):
+    return [c for c in self.namedExpressions if type(c.expression) is AggFunction]</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.sql.ast.ast.Table"><code class="flex name class">
+<span>class <span class="ident">Table</span></span>
+<span>(</span><span>name, alias)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>A fully qualified table name with optional alias</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Table(SqlRel):
+    &#34;&#34;&#34;A fully qualified table name with optional alias&#34;&#34;&#34;
+    def __init__(self, name, alias):
+        self.name = name
+        self.alias = alias
+        self.m_symbols = None
+        self.m_sym_dict = None
+    def symbol(self, expression):
+        if type(expression) is not Column:
+            raise ValueError(&#34;Tables can only have column symbols: &#34; + str(type(expression)) )
+        if not self.alias_match(expression.name):
+            raise ValueError(&#34;Attempt to look up symbol with different alias.  Use alias_match() first.&#34; + expression.name + &#34; -- &#34; + str(self.name))
+        alias, name = self.split_alias(expression.name)
+        if self.m_symbols is None:
+            raise ValueError(&#34;Please load symbols with metadata first: &#34; + str(self))
+        else:
+            if name in self:
+                return self[name]
+            else:
+                return None
+    def load_symbols(self, metadata):
+        self.m_sym_dict = None
+        if metadata is None:
+            return
+        else:
+            table = metadata[str(self.name)]
+            if table is None:
+                raise ValueError(&#34;No metadata available for &#34; + str(self.name))
+            tc = table.m_columns
+            self.m_symbols = [(name, TableColumn(
+                tablename=self.name,
+                colname=name,
+                valtype=tc[name].typename(),
+                is_key=tc[name].is_key,
+                minval=tc[name].minval if tc[name].typename() in [&#34;int&#34;, &#34;float&#34;] else None,
+                maxval=tc[name].maxval if tc[name].typename() in [&#34;int&#34;, &#34;float&#34;] else None,
+                max_ids=table.max_ids,
+                sample_max_ids=table.sample_max_ids,
+                row_privacy=table.row_privacy,
+                compare=metadata.compare)
+                ) for name in tc.keys()]
+    def escaped(self):
+        # is any part of this identifier escaped?
+        parts = str(self).split(&#34;.&#34;)
+        return any([p.startswith(&#39;&#34;&#39;) or p.startswith(&#39;[&#39;) for p in parts])
+    def children(self):
+        return [self.name] + ([Token(&#34;AS&#34;), self.alias] if self.alias is not None else [])</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="burdock.sql.ast.tokens.SqlRel" href="tokens.html#burdock.sql.ast.tokens.SqlRel">SqlRel</a></li>
+<li><a title="burdock.sql.ast.tokens.Sql" href="tokens.html#burdock.sql.ast.tokens.Sql">Sql</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.sql.ast.ast.Table.children"><code class="name flex">
+<span>def <span class="ident">children</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def children(self):
+    return [self.name] + ([Token(&#34;AS&#34;), self.alias] if self.alias is not None else [])</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.ast.ast.Table.escaped"><code class="name flex">
+<span>def <span class="ident">escaped</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def escaped(self):
+    # is any part of this identifier escaped?
+    parts = str(self).split(&#34;.&#34;)
+    return any([p.startswith(&#39;&#34;&#39;) or p.startswith(&#39;[&#39;) for p in parts])</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.ast.ast.Table.load_symbols"><code class="name flex">
+<span>def <span class="ident">load_symbols</span></span>(<span>self, metadata)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load_symbols(self, metadata):
+    self.m_sym_dict = None
+    if metadata is None:
+        return
+    else:
+        table = metadata[str(self.name)]
+        if table is None:
+            raise ValueError(&#34;No metadata available for &#34; + str(self.name))
+        tc = table.m_columns
+        self.m_symbols = [(name, TableColumn(
+            tablename=self.name,
+            colname=name,
+            valtype=tc[name].typename(),
+            is_key=tc[name].is_key,
+            minval=tc[name].minval if tc[name].typename() in [&#34;int&#34;, &#34;float&#34;] else None,
+            maxval=tc[name].maxval if tc[name].typename() in [&#34;int&#34;, &#34;float&#34;] else None,
+            max_ids=table.max_ids,
+            sample_max_ids=table.sample_max_ids,
+            row_privacy=table.row_privacy,
+            compare=metadata.compare)
+            ) for name in tc.keys()]</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.ast.ast.Table.symbol"><code class="name flex">
+<span>def <span class="ident">symbol</span></span>(<span>self, expression)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def symbol(self, expression):
+    if type(expression) is not Column:
+        raise ValueError(&#34;Tables can only have column symbols: &#34; + str(type(expression)) )
+    if not self.alias_match(expression.name):
+        raise ValueError(&#34;Attempt to look up symbol with different alias.  Use alias_match() first.&#34; + expression.name + &#34; -- &#34; + str(self.name))
+    alias, name = self.split_alias(expression.name)
+    if self.m_symbols is None:
+        raise ValueError(&#34;Please load symbols with metadata first: &#34; + str(self))
+    else:
+        if name in self:
+            return self[name]
+        else:
+            return None</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.sql.ast.ast.TableColumn"><code class="flex name class">
+<span>class <span class="ident">TableColumn</span></span>
+<span>(</span><span>tablename, colname, valtype='unknown', is_key=False, minval=None, maxval=None, max_ids=1, sample_max_ids=True, row_privacy=False, compare=None)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>A column attached to a fully qualified table</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class TableColumn(SqlExpr):
+    &#34;&#34;&#34; A column attached to a fully qualified table &#34;&#34;&#34;
+    def __init__(self, tablename, colname, valtype=&#34;unknown&#34;, is_key=False, minval=None, maxval=None, max_ids=1, sample_max_ids=True, row_privacy=False, compare=None):
+        self.tablename = tablename
+        self.colname = colname
+        self.valtype = valtype
+        self.is_key = is_key
+        self.minval = minval
+        self.maxval = maxval
+        self.max_ids = max_ids
+        self.sample_max_ids = sample_max_ids
+        self.row_privacy = row_privacy
+        self.unbounded = minval is None or maxval is None
+        compare = NameCompare([]) if compare is None else compare
+        self.compare = compare
+    def __str__(self):
+        return self.tablename + &#34;.&#34; + self.colname
+    def __eq__(self, other):
+        return self.tablename == other.tablename and self.colname == other.colname
+    def __hash__(self):
+        return hash((self.tablename, self.colname))
+    def type(self):
+        return self.valtype
+    def sensitivity(self):
+        if self.valtype in [&#34;int&#34;, &#34;float&#34;]:
+            if self.minval is not None and self.maxval is not None:
+                return max(abs(self.maxval), abs(self.minval))
+        elif self.valtype == &#34;boolean&#34;:
+            return 1
+        else:
+            return None
+    def evaluate(self, bindings):
+        if str(self).lower() in bindings:
+            return bindings[str(self).lower()]
+        else:
+            return None
+    @property
+    def is_key_count(self):
+        return self.is_key</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="burdock.sql.ast.tokens.SqlExpr" href="tokens.html#burdock.sql.ast.tokens.SqlExpr">SqlExpr</a></li>
+<li><a title="burdock.sql.ast.tokens.Sql" href="tokens.html#burdock.sql.ast.tokens.Sql">Sql</a></li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="burdock.sql.ast.ast.TableColumn.is_key_count"><code class="name">var <span class="ident">is_key_count</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def is_key_count(self):
+    return self.is_key</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.sql.ast.ast.TableColumn.evaluate"><code class="name flex">
+<span>def <span class="ident">evaluate</span></span>(<span>self, bindings)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def evaluate(self, bindings):
+    if str(self).lower() in bindings:
+        return bindings[str(self).lower()]
+    else:
+        return None</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.ast.ast.TableColumn.sensitivity"><code class="name flex">
+<span>def <span class="ident">sensitivity</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def sensitivity(self):
+    if self.valtype in [&#34;int&#34;, &#34;float&#34;]:
+        if self.minval is not None and self.maxval is not None:
+            return max(abs(self.maxval), abs(self.minval))
+    elif self.valtype == &#34;boolean&#34;:
+        return 1
+    else:
+        return None</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.ast.ast.TableColumn.type"><code class="name flex">
+<span>def <span class="ident">type</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def type(self):
+    return self.valtype</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.sql.ast.ast.Top"><code class="flex name class">
+<span>class <span class="ident">Top</span></span>
+<span>(</span><span>n)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Top</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Top(Sql):
+    &#34;&#34;&#34;Top&#34;&#34;&#34;
+    def __init__(self, n):
+        self.n = n
+    def children(self):
+        return  [Token(&#34;TOP&#34;), Literal(self.n, str(self.n))]
+    def symbol(self, relations):
+        return self</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="burdock.sql.ast.tokens.Sql" href="tokens.html#burdock.sql.ast.tokens.Sql">Sql</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.sql.ast.ast.Top.children"><code class="name flex">
+<span>def <span class="ident">children</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def children(self):
+    return  [Token(&#34;TOP&#34;), Literal(self.n, str(self.n))]</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.ast.ast.Top.symbol"><code class="name flex">
+<span>def <span class="ident">symbol</span></span>(<span>self, relations)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def symbol(self, relations):
+    return self</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.sql.ast.ast.Where"><code class="flex name class">
+<span>class <span class="ident">Where</span></span>
+<span>(</span><span>condition)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Predicates.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Where(Sql):
+    &#34;&#34;&#34;Predicates.&#34;&#34;&#34;
+    def __init__(self, condition):
+        self.condition = condition
+    def children(self):
+        return [Token(&#34;WHERE&#34;), self.condition]</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="burdock.sql.ast.tokens.Sql" href="tokens.html#burdock.sql.ast.tokens.Sql">Sql</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.sql.ast.ast.Where.children"><code class="name flex">
+<span>def <span class="ident">children</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def children(self):
+    return [Token(&#34;WHERE&#34;), self.condition]</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="burdock.sql.ast" href="index.html">burdock.sql.ast</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="burdock.sql.ast.ast.Aggregate" href="#burdock.sql.ast.ast.Aggregate">Aggregate</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.sql.ast.ast.Aggregate.children" href="#burdock.sql.ast.ast.Aggregate.children">children</a></code></li>
+<li><code><a title="burdock.sql.ast.ast.Aggregate.groupedColumns" href="#burdock.sql.ast.ast.Aggregate.groupedColumns">groupedColumns</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.sql.ast.ast.AliasedRelation" href="#burdock.sql.ast.ast.AliasedRelation">AliasedRelation</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.sql.ast.ast.AliasedRelation.all_symbols" href="#burdock.sql.ast.ast.AliasedRelation.all_symbols">all_symbols</a></code></li>
+<li><code><a title="burdock.sql.ast.ast.AliasedRelation.children" href="#burdock.sql.ast.ast.AliasedRelation.children">children</a></code></li>
+<li><code><a title="burdock.sql.ast.ast.AliasedRelation.symbol" href="#burdock.sql.ast.ast.AliasedRelation.symbol">symbol</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.sql.ast.ast.AliasedSubquery" href="#burdock.sql.ast.ast.AliasedSubquery">AliasedSubquery</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.sql.ast.ast.AliasedSubquery.all_symbols" href="#burdock.sql.ast.ast.AliasedSubquery.all_symbols">all_symbols</a></code></li>
+<li><code><a title="burdock.sql.ast.ast.AliasedSubquery.children" href="#burdock.sql.ast.ast.AliasedSubquery.children">children</a></code></li>
+<li><code><a title="burdock.sql.ast.ast.AliasedSubquery.symbol" href="#burdock.sql.ast.ast.AliasedSubquery.symbol">symbol</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.sql.ast.ast.Batch" href="#burdock.sql.ast.ast.Batch">Batch</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.sql.ast.ast.Batch.children" href="#burdock.sql.ast.ast.Batch.children">children</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.sql.ast.ast.From" href="#burdock.sql.ast.ast.From">From</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.sql.ast.ast.From.children" href="#burdock.sql.ast.ast.From.children">children</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.sql.ast.ast.Having" href="#burdock.sql.ast.ast.Having">Having</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.sql.ast.ast.Having.children" href="#burdock.sql.ast.ast.Having.children">children</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.sql.ast.ast.Join" href="#burdock.sql.ast.ast.Join">Join</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.sql.ast.ast.Join.all_symbols" href="#burdock.sql.ast.ast.Join.all_symbols">all_symbols</a></code></li>
+<li><code><a title="burdock.sql.ast.ast.Join.children" href="#burdock.sql.ast.ast.Join.children">children</a></code></li>
+<li><code><a title="burdock.sql.ast.ast.Join.symbol" href="#burdock.sql.ast.ast.Join.symbol">symbol</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.sql.ast.ast.Limit" href="#burdock.sql.ast.ast.Limit">Limit</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.sql.ast.ast.Limit.children" href="#burdock.sql.ast.ast.Limit.children">children</a></code></li>
+<li><code><a title="burdock.sql.ast.ast.Limit.symbol" href="#burdock.sql.ast.ast.Limit.symbol">symbol</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.sql.ast.ast.Order" href="#burdock.sql.ast.ast.Order">Order</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.sql.ast.ast.Order.children" href="#burdock.sql.ast.ast.Order.children">children</a></code></li>
+<li><code><a title="burdock.sql.ast.ast.Order.symbol" href="#burdock.sql.ast.ast.Order.symbol">symbol</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.sql.ast.ast.Query" href="#burdock.sql.ast.ast.Query">Query</a></code></h4>
+<ul class="two-column">
+<li><code><a title="burdock.sql.ast.ast.Query.children" href="#burdock.sql.ast.ast.Query.children">children</a></code></li>
+<li><code><a title="burdock.sql.ast.ast.Query.evaluate" href="#burdock.sql.ast.ast.Query.evaluate">evaluate</a></code></li>
+<li><code><a title="burdock.sql.ast.ast.Query.keycount_symbols" href="#burdock.sql.ast.ast.Query.keycount_symbols">keycount_symbols</a></code></li>
+<li><code><a title="burdock.sql.ast.ast.Query.load_symbols" href="#burdock.sql.ast.ast.Query.load_symbols">load_symbols</a></code></li>
+<li><code><a title="burdock.sql.ast.ast.Query.numeric_symbols" href="#burdock.sql.ast.ast.Query.numeric_symbols">numeric_symbols</a></code></li>
+<li><code><a title="burdock.sql.ast.ast.Query.symbol" href="#burdock.sql.ast.ast.Query.symbol">symbol</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.sql.ast.ast.Relation" href="#burdock.sql.ast.ast.Relation">Relation</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.sql.ast.ast.Relation.all_symbols" href="#burdock.sql.ast.ast.Relation.all_symbols">all_symbols</a></code></li>
+<li><code><a title="burdock.sql.ast.ast.Relation.children" href="#burdock.sql.ast.ast.Relation.children">children</a></code></li>
+<li><code><a title="burdock.sql.ast.ast.Relation.load_symbols" href="#burdock.sql.ast.ast.Relation.load_symbols">load_symbols</a></code></li>
+<li><code><a title="burdock.sql.ast.ast.Relation.symbol" href="#burdock.sql.ast.ast.Relation.symbol">symbol</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.sql.ast.ast.Select" href="#burdock.sql.ast.ast.Select">Select</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.sql.ast.ast.Select.aggregates" href="#burdock.sql.ast.ast.Select.aggregates">aggregates</a></code></li>
+<li><code><a title="burdock.sql.ast.ast.Select.children" href="#burdock.sql.ast.ast.Select.children">children</a></code></li>
+<li><code><a title="burdock.sql.ast.ast.Select.functions" href="#burdock.sql.ast.ast.Select.functions">functions</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.sql.ast.ast.Table" href="#burdock.sql.ast.ast.Table">Table</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.sql.ast.ast.Table.children" href="#burdock.sql.ast.ast.Table.children">children</a></code></li>
+<li><code><a title="burdock.sql.ast.ast.Table.escaped" href="#burdock.sql.ast.ast.Table.escaped">escaped</a></code></li>
+<li><code><a title="burdock.sql.ast.ast.Table.load_symbols" href="#burdock.sql.ast.ast.Table.load_symbols">load_symbols</a></code></li>
+<li><code><a title="burdock.sql.ast.ast.Table.symbol" href="#burdock.sql.ast.ast.Table.symbol">symbol</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.sql.ast.ast.TableColumn" href="#burdock.sql.ast.ast.TableColumn">TableColumn</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.sql.ast.ast.TableColumn.evaluate" href="#burdock.sql.ast.ast.TableColumn.evaluate">evaluate</a></code></li>
+<li><code><a title="burdock.sql.ast.ast.TableColumn.is_key_count" href="#burdock.sql.ast.ast.TableColumn.is_key_count">is_key_count</a></code></li>
+<li><code><a title="burdock.sql.ast.ast.TableColumn.sensitivity" href="#burdock.sql.ast.ast.TableColumn.sensitivity">sensitivity</a></code></li>
+<li><code><a title="burdock.sql.ast.ast.TableColumn.type" href="#burdock.sql.ast.ast.TableColumn.type">type</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.sql.ast.ast.Top" href="#burdock.sql.ast.ast.Top">Top</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.sql.ast.ast.Top.children" href="#burdock.sql.ast.ast.Top.children">children</a></code></li>
+<li><code><a title="burdock.sql.ast.ast.Top.symbol" href="#burdock.sql.ast.ast.Top.symbol">symbol</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.sql.ast.ast.Where" href="#burdock.sql.ast.ast.Where">Where</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.sql.ast.ast.Where.children" href="#burdock.sql.ast.ast.Where.children">children</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.5</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

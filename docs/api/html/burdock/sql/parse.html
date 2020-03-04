@@ -1,0 +1,2136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.5" />
+<title>burdock.sql.parse API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>burdock.sql.parse</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from antlr4 import * #type: ignore
+
+from .parser.SqlSmallLexer import SqlSmallLexer #type: ignore
+from .parser.SqlSmallParser import SqlSmallParser #type: ignore
+from .parser.SqlSmallVisitor import SqlSmallVisitor #type: ignore
+from .parser.SqlSmallErrorListener import SyntaxErrorListener #type: ignore
+
+from .ast.tokens import *
+from .ast.ast import *
+
+
+class QueryParser:
+    def __init__(self, metadata = None):
+        self.metadata = metadata
+
+    def start_parser(self, stream):
+        lexer = SqlSmallLexer(stream)
+        stream = CommonTokenStream(lexer)
+        parser = SqlSmallParser(stream)
+        parser._interp.predictionMode = PredictionMode.LL_EXACT_AMBIG_DETECTION
+        lexer._listeners = [SyntaxErrorListener(), DiagnosticErrorListener()]
+        parser._listeners = [SyntaxErrorListener(), DiagnosticErrorListener()]
+        return parser
+
+    def queries(self, query_string, metadata = None):
+        if metadata is None and self.metadata is not None:
+            metadata = self.metadata
+        istream = InputStream(query_string)
+        parser = self.start_parser(istream)
+        bv = BatchVisitor()
+        queries = [q for q in bv.visit(parser.batch()).queries]
+        if metadata is not None:
+            for q in queries:
+                q.load_symbols(metadata)
+        return queries
+
+    def query(self, query_string, metadata = None):
+        queries = self.queries(query_string, metadata)
+        if len(queries) &gt; 1:
+            raise ValueError(&#34;Attempt to parse query resulted in a batch with more than one&#34;)
+        q = queries[0]
+        if metadata is not None:
+            q.load_symbols(metadata)
+        return q
+
+    def parse_only(self, query_string):
+        if (query_string.strip().upper().startswith(&#34;SELECT&#34;) or query_string.strip().startswith(&#34;--&#34;)):
+            istream = InputStream(query_string)
+        else:
+            istream = FileStream(query_string)
+        parser = self.start_parser(istream)
+        SqlSmallVisitor().visit(parser.batch())
+        return None
+
+    def parse_named_expressions(self, expression_string):
+        istream = InputStream(expression_string)
+        parser = self.start_parser(istream)
+        nev = NamedExpressionVisitor()
+        return nev.visitNamedExpressionSeq(parser.namedExpressionSeq())
+
+    def parse_expression(self, expression_string):
+        istream = InputStream(expression_string)
+        parser = self.start_parser(istream)
+        ev = ExpressionVisitor()
+        return ev.visit(parser.expression())
+
+
+class BatchVisitor(SqlSmallVisitor):
+    def visitBatch(self, ctx):
+        qv = QueryVisitor()
+        queries = [q for q in [qv.visit(c) for c in ctx.children] if q is not None]
+        return Batch(queries)
+
+class QueryVisitor(SqlSmallVisitor):
+    def visitQuery(self, ctx):
+
+        # SELECT and FROM are required
+        select = SelectVisitor().visit(ctx.selectClause())
+        source = FromVisitor().visit(ctx.fromClause())
+
+        wc = ctx.whereClause()
+        where = WhereVisitor().visit(wc) if wc is not None else None
+
+        hc = ctx.havingClause()
+        having = HavingVisitor().visit(hc) if hc is not None else None
+
+        ac = ctx.aggregationClause()
+        agg = AggregateVisitor().visit(ac) if ac is not None else None
+
+        oc = ctx.orderClause()
+        order = OrderVisitor().visit(oc) if oc is not None else None
+
+        limit = None
+        if hasattr(ctx, &#39;limitClause&#39;):
+            lc = ctx.limitClause()
+            limit = LimitVisitor().visit(lc) if lc is not None else None
+
+        return Query(select, source, where, agg, having, order, limit)
+
+class SelectVisitor(SqlSmallVisitor):
+    def visitSelectClause(self, ctx):
+        nev = NamedExpressionVisitor()
+        namedExpressions = nev.visit(ctx.namedExpressionSeq())
+
+        sq = ctx.setQuantifier()
+        tc = sq.topClause() if sq is not None else None
+        if tc is None:
+            quantifier = None if sq is None else Token(sq.getText())
+        else:
+            quantifier = LimitVisitor().visit(tc)
+
+        return Select(quantifier, [ne for ne in namedExpressions if ne is not None])
+
+class FromVisitor(SqlSmallVisitor):
+    def visitFromClause(self, ctx):
+        rv = RelationVisitor()
+        relations = [rv.visit(rel) for rel in ctx.relation()]
+        return From(relations)
+
+class AggregateVisitor(SqlSmallVisitor):
+    def visitAggregationClause(self, ctx):
+        groups = ctx.groupingExpressions
+        ev = ExpressionVisitor()
+        cols = [GroupingExpression(ev.visit(g)) for g in groups]
+        return Aggregate(cols)
+
+class WhereVisitor(SqlSmallVisitor):
+    def visitWhereClause(self, ctx):
+        bev = BooleanExpressionVisitor()
+        return Where(bev.visit(ctx.booleanExpression()))
+
+class HavingVisitor(SqlSmallVisitor):
+    def visitHavingClause(self, ctx):
+        bev = BooleanExpressionVisitor()
+        return Having(bev.visit(ctx.booleanExpression()))
+
+
+class NamedExpressionVisitor(SqlSmallVisitor):
+    def visitNamedExpressionSeq(self, ctx):
+        return [self.visit(ne) for ne in ctx.namedExpression()]
+
+    def visitNamedExpression(self, ctx):
+        expression = ExpressionVisitor().visit(ctx.expression())
+        name = Identifier(ctx.name.getText()) if ctx.name is not None else None
+        return NamedExpression(name, expression)
+
+class OrderVisitor(SqlSmallVisitor):
+    def visitOrderClause(self, ctx):
+        sortItems = [self.visit(si) for si in ctx.sortItem()]
+        return Order(sortItems)
+    def visitSortItem(self, ctx):
+        ev = ExpressionVisitor()
+        expr = ev.visit(ctx.expression())
+        if ctx.DESC() is not None:
+            o = Token(&#34;DESC&#34;)
+        elif ctx.ASC() is not None:
+            o = Token(&#34;ASC&#34;)
+        else:
+            o = None
+        return SortItem(expr, o)
+
+class LimitVisitor(SqlSmallVisitor):
+    def visitLimitClause(self, ctx):
+        return Limit(int(ctx.n.getText()))
+    def visitTopClause(self, ctx):
+        return Top(int(ctx.n.getText()))
+
+class RelationVisitor(SqlSmallVisitor):
+    def visitRelation(self, ctx):
+        primary = self.visit(ctx.relationPrimary())
+        jr = ctx.joinRelation()
+        joins = [self.visit(j) for j in jr] if jr is not None else None
+        return Relation(primary, joins)
+
+    def visitTable(self, ctx):
+        alias = Identifier(ctx.alias.getText()) if ctx.alias is not None else None
+        return Table(Identifier(ctx.qualifiedTableName().getText()), alias)
+
+    def visitAliasedQuery(self, ctx):
+        alias = Identifier(ctx.alias.getText()) if ctx.alias is not None else None
+        qv = QueryVisitor()
+        return AliasedSubquery(qv.visitQuery(ctx.subquery()), alias)
+
+    def visitAliasedRelation(self, ctx):
+        alias = Identifier(ctx.alias.getText()) if ctx.alias is not None else None
+        relation = self.visit(ctx.relation())
+        return AliasedRelation(relation, alias)
+
+    def visitJoinRelation(self, ctx):
+        joinType = Token(allText(ctx.joinType()))
+        right = RelationVisitor().visit(ctx.right)
+        crit = ctx.joinCriteria()
+        if type(crit) is SqlSmallParser.BooleanJoinContext:
+            bev = BooleanExpressionVisitor()
+            criteria = BooleanJoinCriteria(bev.visit(crit.booleanExpression()))
+        elif type(crit) is SqlSmallParser.UsingJoinContext:
+            ids = crit.identifier()
+            criteria = UsingJoinCriteria([Column(i.getText()) for i in ids])
+        else:
+            criteria = None
+        return Join(joinType, right, criteria)
+
+class ExpressionVisitor(SqlSmallVisitor):
+    def visitColumnName(self, ctx):
+        return Column(ctx.name.getText())
+    def visitCaseExpr(self, ctx):
+        return CaseExpressionVisitor().visit(ctx)
+    def visitAllExpr(self, ctx):
+        ident = ctx.allExpression().identifier()
+        return AllColumns(ident.getText() if ident is not None else None)
+    def visitMultiply(self, ctx):
+        return ArithmeticExpression(self.visit(ctx.left), Op(&#39;*&#39;), self.visit(ctx.right))
+    def visitDivide(self, ctx):
+        return ArithmeticExpression(self.visit(ctx.left), Op(&#39;/&#39;), self.visit(ctx.right))
+    def visitModulo(self, ctx):
+        return ArithmeticExpression(self.visit(ctx.left), Op(&#39;%&#39;), self.visit(ctx.right))
+    def visitAdd(self, ctx):
+        return ArithmeticExpression(self.visit(ctx.left), Op(&#39;+&#39;), self.visit(ctx.right))
+    def visitSubtract(self, ctx):
+        return ArithmeticExpression(self.visit(ctx.left), Op(&#39;-&#39;), self.visit(ctx.right))
+
+    def visitDecimalLiteral(self, ctx):
+        return Literal(float(allText(ctx)))
+    def visitIntegerLiteral(self, ctx):
+        return Literal(int(allText(ctx)))
+    def visitStringLiteral(self, ctx):
+        return Literal(str(allText(ctx)))
+    def visitTrueLiteral(self, ctx):
+        return Literal(True)
+    def visitFalseLiteral(self, ctx):
+        return Literal(False)
+    def visitNullLiteral(self, ctx):
+        return Literal(None)
+
+    def visitAggFunc(self, ctx):
+        fname = FuncName(ctx.function.getText().upper())
+        qt = ctx.setQuantifier()
+        quantifier = Token(qt.getText().upper()) if qt is not None else None
+        return AggFunction(fname, quantifier, self.visit(ctx.expression()))
+
+    def visitSubqueryExpr(self, ctx):
+        esq = ctx.expressionSubquery()
+        sq = esq.subquery()
+        qv = QueryVisitor()
+        q = qv.visitQuery(sq)
+        return AliasedSubquery(q, None)
+
+    def visitNestedExpr(self, ctx):
+        return NestedExpression(self.visit(ctx.expression()))
+
+    def visitIifFunc(self, ctx):
+        test = BooleanExpressionVisitor().visit(ctx.test)
+        yes = ExpressionVisitor().visit(ctx.yes)
+        no = ExpressionVisitor().visit(ctx.no)
+        return IIFFunction(test, yes, no)
+
+    def visitRoundFunction(self, ctx):
+        expression = ExpressionVisitor().visit(ctx.expression())
+        digits = ExpressionVisitor().visit(ctx.digits)
+        return RoundFunction(expression, digits)
+
+    def visitMathFunc(self, ctx):
+        fname = FuncName(ctx.function.getText().upper())
+        return MathFunction(fname,  self.visit(ctx.expression()))
+
+    def visitChooseFunc(self, ctx):
+        expression = ExpressionVisitor().visit(ctx.index)
+        choices = Seq([ExpressionVisitor().visit(e) for e in ctx.literal()])
+        return ChooseFunction(expression, choices)
+
+    def visitPowerFunction(self, ctx):
+        return PowerFunction(ExpressionVisitor().visit(ctx.expression()), ExpressionVisitor().visit(ctx.number()))
+
+    def visitBareFunction(self, ctx):
+        return BareFunction(FuncName(ctx.function.getText().upper()))
+
+    def visitRankingFunction(self, ctx):
+        fname = FuncName(ctx.function.getText().upper())
+        over = self.visit(ctx.overClause())
+        return RankingFunction(fname, over)
+
+    def visitOverClause(self, ctx):
+        partition = ExpressionVisitor().visit(ctx.expression()) if ctx.expression() is not None else None
+        oc = ctx.orderClause()
+        order = OrderVisitor().visit(oc) if oc is not None else None
+        return OverClause(partition, order)
+
+class CaseExpressionVisitor(SqlSmallVisitor):
+    def visitCaseExpression(self, ctx):
+        wxp = ctx.whenExpression()
+        whenExpressions = [self.visit(we) for we in wxp] if wxp is not None else None
+        expression = ExpressionVisitor().visit(ctx.baseCaseExpr) if ctx.baseCaseExpr is not None else None
+        else_expr = ExpressionVisitor().visit(ctx.elseExpr) if ctx.elseExpr is not None else None
+
+        return CaseExpression(expression, whenExpressions, else_expr)
+
+    def visitWhenExpression(self, ctx):
+        booleanExpression = BooleanExpressionVisitor().visit(ctx.baseBoolExpr) if ctx.baseBoolExpr is not None else None
+        expression = ExpressionVisitor().visit(ctx.baseWhenExpr) if ctx.baseWhenExpr is not None else None
+
+        retExpr = booleanExpression if booleanExpression is not None else (expression if expression is not None else None)
+
+        thenExpression = ExpressionVisitor().visit(ctx.thenExpr) if ctx.thenExpr is not None else None
+
+        return WhenExpression(retExpr , thenExpression)
+
+
+class BooleanExpressionVisitor(SqlSmallVisitor):
+    def visitLogicalNot(self, ctx):
+        return LogicalNot(self.visit(ctx.booleanExpression()))
+
+    def visitComparison(self, ctx):
+        ev = ExpressionVisitor()
+        return BooleanCompare(ev.visit(ctx.left), Op(ctx.op.getText()), ev.visit(ctx.right))
+
+    def visitConjunction(self, ctx):
+        return BooleanCompare(self.visit(ctx.left), Op(&#39;AND&#39;), self.visit(ctx.right))
+
+    def visitDisjunction(self, ctx):
+        return BooleanCompare(self.visit(ctx.left), Op(&#39;OR&#39;), self.visit(ctx.right))
+
+    def visitNestedBoolean(self, ctx):
+        return NestedBoolean(self.visit(ctx.booleanExpression()))
+
+    def visitPredicated(self, ctx):
+        expression = ExpressionVisitor().visit(ctx.expression())
+        predicate = self.visit(ctx.predicate())
+        return PredicatedExpression(expression, predicate)
+
+    def visitInCondition(self, ctx):
+        is_not = (ctx.NOT() is not None)
+        expressions = Seq([ExpressionVisitor().visit(e) for e in ctx.expression()])
+        return InCondition(expressions, is_not)
+
+    def visitIsCondition(self, ctx):
+        is_not = (ctx.NOT() is not None)
+        if ctx.TRUE() is not None:
+            value = Literal(True)
+        elif ctx.FALSE() is not None:
+            value = Literal(False)
+        elif ctx.NULL() is not None:
+            value = Literal(None)
+        else:
+            raise ValueError(&#34;Unknown condition in IS clause: &#34; + allText(ctx))
+        return IsCondition(value, is_not)
+
+    def visitBetweenCondition(self, ctx):
+        is_not = (ctx.NOT() is not None)
+        lower = ExpressionVisitor().visit(ctx.lower)
+        upper = ExpressionVisitor().visit(ctx.upper)
+        return BetweenCondition(lower, upper, is_not)
+
+
+def allText(ctx):
+    &#34;&#34;&#34;
+        This method is used to grab text with whitespace
+        for a terminal node of the AST that hasn&#39;t been
+        strongly-typed yet.  Should not be used for lexer
+        tokens, and should be replaced over time.
+    &#34;&#34;&#34;
+    a = ctx.start.start
+    b = ctx.stop.stop
+    inp = ctx.start.getInputStream()
+    return inp.getText(a, b)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="burdock.sql.parse.allText"><code class="name flex">
+<span>def <span class="ident">allText</span></span>(<span>ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>This method is used to grab text with whitespace
+for a terminal node of the AST that hasn't been
+strongly-typed yet.
+Should not be used for lexer
+tokens, and should be replaced over time.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def allText(ctx):
+    &#34;&#34;&#34;
+        This method is used to grab text with whitespace
+        for a terminal node of the AST that hasn&#39;t been
+        strongly-typed yet.  Should not be used for lexer
+        tokens, and should be replaced over time.
+    &#34;&#34;&#34;
+    a = ctx.start.start
+    b = ctx.stop.stop
+    inp = ctx.start.getInputStream()
+    return inp.getText(a, b)</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="burdock.sql.parse.AggregateVisitor"><code class="flex name class">
+<span>class <span class="ident">AggregateVisitor</span></span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class AggregateVisitor(SqlSmallVisitor):
+    def visitAggregationClause(self, ctx):
+        groups = ctx.groupingExpressions
+        ev = ExpressionVisitor()
+        cols = [GroupingExpression(ev.visit(g)) for g in groups]
+        return Aggregate(cols)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor" href="parser/SqlSmallVisitor.html#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor">SqlSmallVisitor</a></li>
+<li>antlr4.tree.Tree.ParseTreeVisitor</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.sql.parse.AggregateVisitor.visitAggregationClause"><code class="name flex">
+<span>def <span class="ident">visitAggregationClause</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitAggregationClause(self, ctx):
+    groups = ctx.groupingExpressions
+    ev = ExpressionVisitor()
+    cols = [GroupingExpression(ev.visit(g)) for g in groups]
+    return Aggregate(cols)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.sql.parse.BatchVisitor"><code class="flex name class">
+<span>class <span class="ident">BatchVisitor</span></span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class BatchVisitor(SqlSmallVisitor):
+    def visitBatch(self, ctx):
+        qv = QueryVisitor()
+        queries = [q for q in [qv.visit(c) for c in ctx.children] if q is not None]
+        return Batch(queries)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor" href="parser/SqlSmallVisitor.html#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor">SqlSmallVisitor</a></li>
+<li>antlr4.tree.Tree.ParseTreeVisitor</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.sql.parse.BatchVisitor.visitBatch"><code class="name flex">
+<span>def <span class="ident">visitBatch</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitBatch(self, ctx):
+    qv = QueryVisitor()
+    queries = [q for q in [qv.visit(c) for c in ctx.children] if q is not None]
+    return Batch(queries)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.sql.parse.BooleanExpressionVisitor"><code class="flex name class">
+<span>class <span class="ident">BooleanExpressionVisitor</span></span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class BooleanExpressionVisitor(SqlSmallVisitor):
+    def visitLogicalNot(self, ctx):
+        return LogicalNot(self.visit(ctx.booleanExpression()))
+
+    def visitComparison(self, ctx):
+        ev = ExpressionVisitor()
+        return BooleanCompare(ev.visit(ctx.left), Op(ctx.op.getText()), ev.visit(ctx.right))
+
+    def visitConjunction(self, ctx):
+        return BooleanCompare(self.visit(ctx.left), Op(&#39;AND&#39;), self.visit(ctx.right))
+
+    def visitDisjunction(self, ctx):
+        return BooleanCompare(self.visit(ctx.left), Op(&#39;OR&#39;), self.visit(ctx.right))
+
+    def visitNestedBoolean(self, ctx):
+        return NestedBoolean(self.visit(ctx.booleanExpression()))
+
+    def visitPredicated(self, ctx):
+        expression = ExpressionVisitor().visit(ctx.expression())
+        predicate = self.visit(ctx.predicate())
+        return PredicatedExpression(expression, predicate)
+
+    def visitInCondition(self, ctx):
+        is_not = (ctx.NOT() is not None)
+        expressions = Seq([ExpressionVisitor().visit(e) for e in ctx.expression()])
+        return InCondition(expressions, is_not)
+
+    def visitIsCondition(self, ctx):
+        is_not = (ctx.NOT() is not None)
+        if ctx.TRUE() is not None:
+            value = Literal(True)
+        elif ctx.FALSE() is not None:
+            value = Literal(False)
+        elif ctx.NULL() is not None:
+            value = Literal(None)
+        else:
+            raise ValueError(&#34;Unknown condition in IS clause: &#34; + allText(ctx))
+        return IsCondition(value, is_not)
+
+    def visitBetweenCondition(self, ctx):
+        is_not = (ctx.NOT() is not None)
+        lower = ExpressionVisitor().visit(ctx.lower)
+        upper = ExpressionVisitor().visit(ctx.upper)
+        return BetweenCondition(lower, upper, is_not)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor" href="parser/SqlSmallVisitor.html#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor">SqlSmallVisitor</a></li>
+<li>antlr4.tree.Tree.ParseTreeVisitor</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.sql.parse.BooleanExpressionVisitor.visitBetweenCondition"><code class="name flex">
+<span>def <span class="ident">visitBetweenCondition</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitBetweenCondition(self, ctx):
+    is_not = (ctx.NOT() is not None)
+    lower = ExpressionVisitor().visit(ctx.lower)
+    upper = ExpressionVisitor().visit(ctx.upper)
+    return BetweenCondition(lower, upper, is_not)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parse.BooleanExpressionVisitor.visitComparison"><code class="name flex">
+<span>def <span class="ident">visitComparison</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitComparison(self, ctx):
+    ev = ExpressionVisitor()
+    return BooleanCompare(ev.visit(ctx.left), Op(ctx.op.getText()), ev.visit(ctx.right))</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parse.BooleanExpressionVisitor.visitConjunction"><code class="name flex">
+<span>def <span class="ident">visitConjunction</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitConjunction(self, ctx):
+    return BooleanCompare(self.visit(ctx.left), Op(&#39;AND&#39;), self.visit(ctx.right))</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parse.BooleanExpressionVisitor.visitDisjunction"><code class="name flex">
+<span>def <span class="ident">visitDisjunction</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitDisjunction(self, ctx):
+    return BooleanCompare(self.visit(ctx.left), Op(&#39;OR&#39;), self.visit(ctx.right))</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parse.BooleanExpressionVisitor.visitInCondition"><code class="name flex">
+<span>def <span class="ident">visitInCondition</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitInCondition(self, ctx):
+    is_not = (ctx.NOT() is not None)
+    expressions = Seq([ExpressionVisitor().visit(e) for e in ctx.expression()])
+    return InCondition(expressions, is_not)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parse.BooleanExpressionVisitor.visitIsCondition"><code class="name flex">
+<span>def <span class="ident">visitIsCondition</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitIsCondition(self, ctx):
+    is_not = (ctx.NOT() is not None)
+    if ctx.TRUE() is not None:
+        value = Literal(True)
+    elif ctx.FALSE() is not None:
+        value = Literal(False)
+    elif ctx.NULL() is not None:
+        value = Literal(None)
+    else:
+        raise ValueError(&#34;Unknown condition in IS clause: &#34; + allText(ctx))
+    return IsCondition(value, is_not)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parse.BooleanExpressionVisitor.visitLogicalNot"><code class="name flex">
+<span>def <span class="ident">visitLogicalNot</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitLogicalNot(self, ctx):
+    return LogicalNot(self.visit(ctx.booleanExpression()))</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parse.BooleanExpressionVisitor.visitNestedBoolean"><code class="name flex">
+<span>def <span class="ident">visitNestedBoolean</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitNestedBoolean(self, ctx):
+    return NestedBoolean(self.visit(ctx.booleanExpression()))</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parse.BooleanExpressionVisitor.visitPredicated"><code class="name flex">
+<span>def <span class="ident">visitPredicated</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitPredicated(self, ctx):
+    expression = ExpressionVisitor().visit(ctx.expression())
+    predicate = self.visit(ctx.predicate())
+    return PredicatedExpression(expression, predicate)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.sql.parse.CaseExpressionVisitor"><code class="flex name class">
+<span>class <span class="ident">CaseExpressionVisitor</span></span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CaseExpressionVisitor(SqlSmallVisitor):
+    def visitCaseExpression(self, ctx):
+        wxp = ctx.whenExpression()
+        whenExpressions = [self.visit(we) for we in wxp] if wxp is not None else None
+        expression = ExpressionVisitor().visit(ctx.baseCaseExpr) if ctx.baseCaseExpr is not None else None
+        else_expr = ExpressionVisitor().visit(ctx.elseExpr) if ctx.elseExpr is not None else None
+
+        return CaseExpression(expression, whenExpressions, else_expr)
+
+    def visitWhenExpression(self, ctx):
+        booleanExpression = BooleanExpressionVisitor().visit(ctx.baseBoolExpr) if ctx.baseBoolExpr is not None else None
+        expression = ExpressionVisitor().visit(ctx.baseWhenExpr) if ctx.baseWhenExpr is not None else None
+
+        retExpr = booleanExpression if booleanExpression is not None else (expression if expression is not None else None)
+
+        thenExpression = ExpressionVisitor().visit(ctx.thenExpr) if ctx.thenExpr is not None else None
+
+        return WhenExpression(retExpr , thenExpression)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor" href="parser/SqlSmallVisitor.html#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor">SqlSmallVisitor</a></li>
+<li>antlr4.tree.Tree.ParseTreeVisitor</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.sql.parse.CaseExpressionVisitor.visitCaseExpression"><code class="name flex">
+<span>def <span class="ident">visitCaseExpression</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitCaseExpression(self, ctx):
+    wxp = ctx.whenExpression()
+    whenExpressions = [self.visit(we) for we in wxp] if wxp is not None else None
+    expression = ExpressionVisitor().visit(ctx.baseCaseExpr) if ctx.baseCaseExpr is not None else None
+    else_expr = ExpressionVisitor().visit(ctx.elseExpr) if ctx.elseExpr is not None else None
+
+    return CaseExpression(expression, whenExpressions, else_expr)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parse.CaseExpressionVisitor.visitWhenExpression"><code class="name flex">
+<span>def <span class="ident">visitWhenExpression</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitWhenExpression(self, ctx):
+    booleanExpression = BooleanExpressionVisitor().visit(ctx.baseBoolExpr) if ctx.baseBoolExpr is not None else None
+    expression = ExpressionVisitor().visit(ctx.baseWhenExpr) if ctx.baseWhenExpr is not None else None
+
+    retExpr = booleanExpression if booleanExpression is not None else (expression if expression is not None else None)
+
+    thenExpression = ExpressionVisitor().visit(ctx.thenExpr) if ctx.thenExpr is not None else None
+
+    return WhenExpression(retExpr , thenExpression)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.sql.parse.ExpressionVisitor"><code class="flex name class">
+<span>class <span class="ident">ExpressionVisitor</span></span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ExpressionVisitor(SqlSmallVisitor):
+    def visitColumnName(self, ctx):
+        return Column(ctx.name.getText())
+    def visitCaseExpr(self, ctx):
+        return CaseExpressionVisitor().visit(ctx)
+    def visitAllExpr(self, ctx):
+        ident = ctx.allExpression().identifier()
+        return AllColumns(ident.getText() if ident is not None else None)
+    def visitMultiply(self, ctx):
+        return ArithmeticExpression(self.visit(ctx.left), Op(&#39;*&#39;), self.visit(ctx.right))
+    def visitDivide(self, ctx):
+        return ArithmeticExpression(self.visit(ctx.left), Op(&#39;/&#39;), self.visit(ctx.right))
+    def visitModulo(self, ctx):
+        return ArithmeticExpression(self.visit(ctx.left), Op(&#39;%&#39;), self.visit(ctx.right))
+    def visitAdd(self, ctx):
+        return ArithmeticExpression(self.visit(ctx.left), Op(&#39;+&#39;), self.visit(ctx.right))
+    def visitSubtract(self, ctx):
+        return ArithmeticExpression(self.visit(ctx.left), Op(&#39;-&#39;), self.visit(ctx.right))
+
+    def visitDecimalLiteral(self, ctx):
+        return Literal(float(allText(ctx)))
+    def visitIntegerLiteral(self, ctx):
+        return Literal(int(allText(ctx)))
+    def visitStringLiteral(self, ctx):
+        return Literal(str(allText(ctx)))
+    def visitTrueLiteral(self, ctx):
+        return Literal(True)
+    def visitFalseLiteral(self, ctx):
+        return Literal(False)
+    def visitNullLiteral(self, ctx):
+        return Literal(None)
+
+    def visitAggFunc(self, ctx):
+        fname = FuncName(ctx.function.getText().upper())
+        qt = ctx.setQuantifier()
+        quantifier = Token(qt.getText().upper()) if qt is not None else None
+        return AggFunction(fname, quantifier, self.visit(ctx.expression()))
+
+    def visitSubqueryExpr(self, ctx):
+        esq = ctx.expressionSubquery()
+        sq = esq.subquery()
+        qv = QueryVisitor()
+        q = qv.visitQuery(sq)
+        return AliasedSubquery(q, None)
+
+    def visitNestedExpr(self, ctx):
+        return NestedExpression(self.visit(ctx.expression()))
+
+    def visitIifFunc(self, ctx):
+        test = BooleanExpressionVisitor().visit(ctx.test)
+        yes = ExpressionVisitor().visit(ctx.yes)
+        no = ExpressionVisitor().visit(ctx.no)
+        return IIFFunction(test, yes, no)
+
+    def visitRoundFunction(self, ctx):
+        expression = ExpressionVisitor().visit(ctx.expression())
+        digits = ExpressionVisitor().visit(ctx.digits)
+        return RoundFunction(expression, digits)
+
+    def visitMathFunc(self, ctx):
+        fname = FuncName(ctx.function.getText().upper())
+        return MathFunction(fname,  self.visit(ctx.expression()))
+
+    def visitChooseFunc(self, ctx):
+        expression = ExpressionVisitor().visit(ctx.index)
+        choices = Seq([ExpressionVisitor().visit(e) for e in ctx.literal()])
+        return ChooseFunction(expression, choices)
+
+    def visitPowerFunction(self, ctx):
+        return PowerFunction(ExpressionVisitor().visit(ctx.expression()), ExpressionVisitor().visit(ctx.number()))
+
+    def visitBareFunction(self, ctx):
+        return BareFunction(FuncName(ctx.function.getText().upper()))
+
+    def visitRankingFunction(self, ctx):
+        fname = FuncName(ctx.function.getText().upper())
+        over = self.visit(ctx.overClause())
+        return RankingFunction(fname, over)
+
+    def visitOverClause(self, ctx):
+        partition = ExpressionVisitor().visit(ctx.expression()) if ctx.expression() is not None else None
+        oc = ctx.orderClause()
+        order = OrderVisitor().visit(oc) if oc is not None else None
+        return OverClause(partition, order)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor" href="parser/SqlSmallVisitor.html#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor">SqlSmallVisitor</a></li>
+<li>antlr4.tree.Tree.ParseTreeVisitor</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.sql.parse.ExpressionVisitor.visitAdd"><code class="name flex">
+<span>def <span class="ident">visitAdd</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitAdd(self, ctx):
+    return ArithmeticExpression(self.visit(ctx.left), Op(&#39;+&#39;), self.visit(ctx.right))</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parse.ExpressionVisitor.visitAggFunc"><code class="name flex">
+<span>def <span class="ident">visitAggFunc</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitAggFunc(self, ctx):
+    fname = FuncName(ctx.function.getText().upper())
+    qt = ctx.setQuantifier()
+    quantifier = Token(qt.getText().upper()) if qt is not None else None
+    return AggFunction(fname, quantifier, self.visit(ctx.expression()))</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parse.ExpressionVisitor.visitAllExpr"><code class="name flex">
+<span>def <span class="ident">visitAllExpr</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitAllExpr(self, ctx):
+    ident = ctx.allExpression().identifier()
+    return AllColumns(ident.getText() if ident is not None else None)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parse.ExpressionVisitor.visitBareFunction"><code class="name flex">
+<span>def <span class="ident">visitBareFunction</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitBareFunction(self, ctx):
+    return BareFunction(FuncName(ctx.function.getText().upper()))</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parse.ExpressionVisitor.visitCaseExpr"><code class="name flex">
+<span>def <span class="ident">visitCaseExpr</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitCaseExpr(self, ctx):
+    return CaseExpressionVisitor().visit(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parse.ExpressionVisitor.visitChooseFunc"><code class="name flex">
+<span>def <span class="ident">visitChooseFunc</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitChooseFunc(self, ctx):
+    expression = ExpressionVisitor().visit(ctx.index)
+    choices = Seq([ExpressionVisitor().visit(e) for e in ctx.literal()])
+    return ChooseFunction(expression, choices)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parse.ExpressionVisitor.visitColumnName"><code class="name flex">
+<span>def <span class="ident">visitColumnName</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitColumnName(self, ctx):
+    return Column(ctx.name.getText())</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parse.ExpressionVisitor.visitDecimalLiteral"><code class="name flex">
+<span>def <span class="ident">visitDecimalLiteral</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitDecimalLiteral(self, ctx):
+    return Literal(float(allText(ctx)))</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parse.ExpressionVisitor.visitDivide"><code class="name flex">
+<span>def <span class="ident">visitDivide</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitDivide(self, ctx):
+    return ArithmeticExpression(self.visit(ctx.left), Op(&#39;/&#39;), self.visit(ctx.right))</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parse.ExpressionVisitor.visitFalseLiteral"><code class="name flex">
+<span>def <span class="ident">visitFalseLiteral</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitFalseLiteral(self, ctx):
+    return Literal(False)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parse.ExpressionVisitor.visitIifFunc"><code class="name flex">
+<span>def <span class="ident">visitIifFunc</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitIifFunc(self, ctx):
+    test = BooleanExpressionVisitor().visit(ctx.test)
+    yes = ExpressionVisitor().visit(ctx.yes)
+    no = ExpressionVisitor().visit(ctx.no)
+    return IIFFunction(test, yes, no)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parse.ExpressionVisitor.visitIntegerLiteral"><code class="name flex">
+<span>def <span class="ident">visitIntegerLiteral</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitIntegerLiteral(self, ctx):
+    return Literal(int(allText(ctx)))</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parse.ExpressionVisitor.visitMathFunc"><code class="name flex">
+<span>def <span class="ident">visitMathFunc</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitMathFunc(self, ctx):
+    fname = FuncName(ctx.function.getText().upper())
+    return MathFunction(fname,  self.visit(ctx.expression()))</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parse.ExpressionVisitor.visitModulo"><code class="name flex">
+<span>def <span class="ident">visitModulo</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitModulo(self, ctx):
+    return ArithmeticExpression(self.visit(ctx.left), Op(&#39;%&#39;), self.visit(ctx.right))</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parse.ExpressionVisitor.visitMultiply"><code class="name flex">
+<span>def <span class="ident">visitMultiply</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitMultiply(self, ctx):
+    return ArithmeticExpression(self.visit(ctx.left), Op(&#39;*&#39;), self.visit(ctx.right))</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parse.ExpressionVisitor.visitNestedExpr"><code class="name flex">
+<span>def <span class="ident">visitNestedExpr</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitNestedExpr(self, ctx):
+    return NestedExpression(self.visit(ctx.expression()))</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parse.ExpressionVisitor.visitNullLiteral"><code class="name flex">
+<span>def <span class="ident">visitNullLiteral</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitNullLiteral(self, ctx):
+    return Literal(None)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parse.ExpressionVisitor.visitOverClause"><code class="name flex">
+<span>def <span class="ident">visitOverClause</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitOverClause(self, ctx):
+    partition = ExpressionVisitor().visit(ctx.expression()) if ctx.expression() is not None else None
+    oc = ctx.orderClause()
+    order = OrderVisitor().visit(oc) if oc is not None else None
+    return OverClause(partition, order)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parse.ExpressionVisitor.visitPowerFunction"><code class="name flex">
+<span>def <span class="ident">visitPowerFunction</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitPowerFunction(self, ctx):
+    return PowerFunction(ExpressionVisitor().visit(ctx.expression()), ExpressionVisitor().visit(ctx.number()))</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parse.ExpressionVisitor.visitRankingFunction"><code class="name flex">
+<span>def <span class="ident">visitRankingFunction</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitRankingFunction(self, ctx):
+    fname = FuncName(ctx.function.getText().upper())
+    over = self.visit(ctx.overClause())
+    return RankingFunction(fname, over)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parse.ExpressionVisitor.visitRoundFunction"><code class="name flex">
+<span>def <span class="ident">visitRoundFunction</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitRoundFunction(self, ctx):
+    expression = ExpressionVisitor().visit(ctx.expression())
+    digits = ExpressionVisitor().visit(ctx.digits)
+    return RoundFunction(expression, digits)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parse.ExpressionVisitor.visitStringLiteral"><code class="name flex">
+<span>def <span class="ident">visitStringLiteral</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitStringLiteral(self, ctx):
+    return Literal(str(allText(ctx)))</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parse.ExpressionVisitor.visitSubqueryExpr"><code class="name flex">
+<span>def <span class="ident">visitSubqueryExpr</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitSubqueryExpr(self, ctx):
+    esq = ctx.expressionSubquery()
+    sq = esq.subquery()
+    qv = QueryVisitor()
+    q = qv.visitQuery(sq)
+    return AliasedSubquery(q, None)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parse.ExpressionVisitor.visitSubtract"><code class="name flex">
+<span>def <span class="ident">visitSubtract</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitSubtract(self, ctx):
+    return ArithmeticExpression(self.visit(ctx.left), Op(&#39;-&#39;), self.visit(ctx.right))</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parse.ExpressionVisitor.visitTrueLiteral"><code class="name flex">
+<span>def <span class="ident">visitTrueLiteral</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitTrueLiteral(self, ctx):
+    return Literal(True)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.sql.parse.FromVisitor"><code class="flex name class">
+<span>class <span class="ident">FromVisitor</span></span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class FromVisitor(SqlSmallVisitor):
+    def visitFromClause(self, ctx):
+        rv = RelationVisitor()
+        relations = [rv.visit(rel) for rel in ctx.relation()]
+        return From(relations)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor" href="parser/SqlSmallVisitor.html#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor">SqlSmallVisitor</a></li>
+<li>antlr4.tree.Tree.ParseTreeVisitor</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.sql.parse.FromVisitor.visitFromClause"><code class="name flex">
+<span>def <span class="ident">visitFromClause</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitFromClause(self, ctx):
+    rv = RelationVisitor()
+    relations = [rv.visit(rel) for rel in ctx.relation()]
+    return From(relations)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.sql.parse.HavingVisitor"><code class="flex name class">
+<span>class <span class="ident">HavingVisitor</span></span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class HavingVisitor(SqlSmallVisitor):
+    def visitHavingClause(self, ctx):
+        bev = BooleanExpressionVisitor()
+        return Having(bev.visit(ctx.booleanExpression()))</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor" href="parser/SqlSmallVisitor.html#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor">SqlSmallVisitor</a></li>
+<li>antlr4.tree.Tree.ParseTreeVisitor</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.sql.parse.HavingVisitor.visitHavingClause"><code class="name flex">
+<span>def <span class="ident">visitHavingClause</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitHavingClause(self, ctx):
+    bev = BooleanExpressionVisitor()
+    return Having(bev.visit(ctx.booleanExpression()))</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.sql.parse.LimitVisitor"><code class="flex name class">
+<span>class <span class="ident">LimitVisitor</span></span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class LimitVisitor(SqlSmallVisitor):
+    def visitLimitClause(self, ctx):
+        return Limit(int(ctx.n.getText()))
+    def visitTopClause(self, ctx):
+        return Top(int(ctx.n.getText()))</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor" href="parser/SqlSmallVisitor.html#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor">SqlSmallVisitor</a></li>
+<li>antlr4.tree.Tree.ParseTreeVisitor</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.sql.parse.LimitVisitor.visitLimitClause"><code class="name flex">
+<span>def <span class="ident">visitLimitClause</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitLimitClause(self, ctx):
+    return Limit(int(ctx.n.getText()))</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parse.LimitVisitor.visitTopClause"><code class="name flex">
+<span>def <span class="ident">visitTopClause</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitTopClause(self, ctx):
+    return Top(int(ctx.n.getText()))</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.sql.parse.NamedExpressionVisitor"><code class="flex name class">
+<span>class <span class="ident">NamedExpressionVisitor</span></span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class NamedExpressionVisitor(SqlSmallVisitor):
+    def visitNamedExpressionSeq(self, ctx):
+        return [self.visit(ne) for ne in ctx.namedExpression()]
+
+    def visitNamedExpression(self, ctx):
+        expression = ExpressionVisitor().visit(ctx.expression())
+        name = Identifier(ctx.name.getText()) if ctx.name is not None else None
+        return NamedExpression(name, expression)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor" href="parser/SqlSmallVisitor.html#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor">SqlSmallVisitor</a></li>
+<li>antlr4.tree.Tree.ParseTreeVisitor</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.sql.parse.NamedExpressionVisitor.visitNamedExpression"><code class="name flex">
+<span>def <span class="ident">visitNamedExpression</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitNamedExpression(self, ctx):
+    expression = ExpressionVisitor().visit(ctx.expression())
+    name = Identifier(ctx.name.getText()) if ctx.name is not None else None
+    return NamedExpression(name, expression)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parse.NamedExpressionVisitor.visitNamedExpressionSeq"><code class="name flex">
+<span>def <span class="ident">visitNamedExpressionSeq</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitNamedExpressionSeq(self, ctx):
+    return [self.visit(ne) for ne in ctx.namedExpression()]</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.sql.parse.OrderVisitor"><code class="flex name class">
+<span>class <span class="ident">OrderVisitor</span></span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class OrderVisitor(SqlSmallVisitor):
+    def visitOrderClause(self, ctx):
+        sortItems = [self.visit(si) for si in ctx.sortItem()]
+        return Order(sortItems)
+    def visitSortItem(self, ctx):
+        ev = ExpressionVisitor()
+        expr = ev.visit(ctx.expression())
+        if ctx.DESC() is not None:
+            o = Token(&#34;DESC&#34;)
+        elif ctx.ASC() is not None:
+            o = Token(&#34;ASC&#34;)
+        else:
+            o = None
+        return SortItem(expr, o)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor" href="parser/SqlSmallVisitor.html#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor">SqlSmallVisitor</a></li>
+<li>antlr4.tree.Tree.ParseTreeVisitor</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.sql.parse.OrderVisitor.visitOrderClause"><code class="name flex">
+<span>def <span class="ident">visitOrderClause</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitOrderClause(self, ctx):
+    sortItems = [self.visit(si) for si in ctx.sortItem()]
+    return Order(sortItems)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parse.OrderVisitor.visitSortItem"><code class="name flex">
+<span>def <span class="ident">visitSortItem</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitSortItem(self, ctx):
+    ev = ExpressionVisitor()
+    expr = ev.visit(ctx.expression())
+    if ctx.DESC() is not None:
+        o = Token(&#34;DESC&#34;)
+    elif ctx.ASC() is not None:
+        o = Token(&#34;ASC&#34;)
+    else:
+        o = None
+    return SortItem(expr, o)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.sql.parse.QueryParser"><code class="flex name class">
+<span>class <span class="ident">QueryParser</span></span>
+<span>(</span><span>metadata=None)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class QueryParser:
+    def __init__(self, metadata = None):
+        self.metadata = metadata
+
+    def start_parser(self, stream):
+        lexer = SqlSmallLexer(stream)
+        stream = CommonTokenStream(lexer)
+        parser = SqlSmallParser(stream)
+        parser._interp.predictionMode = PredictionMode.LL_EXACT_AMBIG_DETECTION
+        lexer._listeners = [SyntaxErrorListener(), DiagnosticErrorListener()]
+        parser._listeners = [SyntaxErrorListener(), DiagnosticErrorListener()]
+        return parser
+
+    def queries(self, query_string, metadata = None):
+        if metadata is None and self.metadata is not None:
+            metadata = self.metadata
+        istream = InputStream(query_string)
+        parser = self.start_parser(istream)
+        bv = BatchVisitor()
+        queries = [q for q in bv.visit(parser.batch()).queries]
+        if metadata is not None:
+            for q in queries:
+                q.load_symbols(metadata)
+        return queries
+
+    def query(self, query_string, metadata = None):
+        queries = self.queries(query_string, metadata)
+        if len(queries) &gt; 1:
+            raise ValueError(&#34;Attempt to parse query resulted in a batch with more than one&#34;)
+        q = queries[0]
+        if metadata is not None:
+            q.load_symbols(metadata)
+        return q
+
+    def parse_only(self, query_string):
+        if (query_string.strip().upper().startswith(&#34;SELECT&#34;) or query_string.strip().startswith(&#34;--&#34;)):
+            istream = InputStream(query_string)
+        else:
+            istream = FileStream(query_string)
+        parser = self.start_parser(istream)
+        SqlSmallVisitor().visit(parser.batch())
+        return None
+
+    def parse_named_expressions(self, expression_string):
+        istream = InputStream(expression_string)
+        parser = self.start_parser(istream)
+        nev = NamedExpressionVisitor()
+        return nev.visitNamedExpressionSeq(parser.namedExpressionSeq())
+
+    def parse_expression(self, expression_string):
+        istream = InputStream(expression_string)
+        parser = self.start_parser(istream)
+        ev = ExpressionVisitor()
+        return ev.visit(parser.expression())</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.sql.parse.QueryParser.parse_expression"><code class="name flex">
+<span>def <span class="ident">parse_expression</span></span>(<span>self, expression_string)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def parse_expression(self, expression_string):
+    istream = InputStream(expression_string)
+    parser = self.start_parser(istream)
+    ev = ExpressionVisitor()
+    return ev.visit(parser.expression())</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parse.QueryParser.parse_named_expressions"><code class="name flex">
+<span>def <span class="ident">parse_named_expressions</span></span>(<span>self, expression_string)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def parse_named_expressions(self, expression_string):
+    istream = InputStream(expression_string)
+    parser = self.start_parser(istream)
+    nev = NamedExpressionVisitor()
+    return nev.visitNamedExpressionSeq(parser.namedExpressionSeq())</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parse.QueryParser.parse_only"><code class="name flex">
+<span>def <span class="ident">parse_only</span></span>(<span>self, query_string)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def parse_only(self, query_string):
+    if (query_string.strip().upper().startswith(&#34;SELECT&#34;) or query_string.strip().startswith(&#34;--&#34;)):
+        istream = InputStream(query_string)
+    else:
+        istream = FileStream(query_string)
+    parser = self.start_parser(istream)
+    SqlSmallVisitor().visit(parser.batch())
+    return None</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parse.QueryParser.queries"><code class="name flex">
+<span>def <span class="ident">queries</span></span>(<span>self, query_string, metadata=None)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def queries(self, query_string, metadata = None):
+    if metadata is None and self.metadata is not None:
+        metadata = self.metadata
+    istream = InputStream(query_string)
+    parser = self.start_parser(istream)
+    bv = BatchVisitor()
+    queries = [q for q in bv.visit(parser.batch()).queries]
+    if metadata is not None:
+        for q in queries:
+            q.load_symbols(metadata)
+    return queries</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parse.QueryParser.query"><code class="name flex">
+<span>def <span class="ident">query</span></span>(<span>self, query_string, metadata=None)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def query(self, query_string, metadata = None):
+    queries = self.queries(query_string, metadata)
+    if len(queries) &gt; 1:
+        raise ValueError(&#34;Attempt to parse query resulted in a batch with more than one&#34;)
+    q = queries[0]
+    if metadata is not None:
+        q.load_symbols(metadata)
+    return q</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parse.QueryParser.start_parser"><code class="name flex">
+<span>def <span class="ident">start_parser</span></span>(<span>self, stream)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def start_parser(self, stream):
+    lexer = SqlSmallLexer(stream)
+    stream = CommonTokenStream(lexer)
+    parser = SqlSmallParser(stream)
+    parser._interp.predictionMode = PredictionMode.LL_EXACT_AMBIG_DETECTION
+    lexer._listeners = [SyntaxErrorListener(), DiagnosticErrorListener()]
+    parser._listeners = [SyntaxErrorListener(), DiagnosticErrorListener()]
+    return parser</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.sql.parse.QueryVisitor"><code class="flex name class">
+<span>class <span class="ident">QueryVisitor</span></span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class QueryVisitor(SqlSmallVisitor):
+    def visitQuery(self, ctx):
+
+        # SELECT and FROM are required
+        select = SelectVisitor().visit(ctx.selectClause())
+        source = FromVisitor().visit(ctx.fromClause())
+
+        wc = ctx.whereClause()
+        where = WhereVisitor().visit(wc) if wc is not None else None
+
+        hc = ctx.havingClause()
+        having = HavingVisitor().visit(hc) if hc is not None else None
+
+        ac = ctx.aggregationClause()
+        agg = AggregateVisitor().visit(ac) if ac is not None else None
+
+        oc = ctx.orderClause()
+        order = OrderVisitor().visit(oc) if oc is not None else None
+
+        limit = None
+        if hasattr(ctx, &#39;limitClause&#39;):
+            lc = ctx.limitClause()
+            limit = LimitVisitor().visit(lc) if lc is not None else None
+
+        return Query(select, source, where, agg, having, order, limit)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor" href="parser/SqlSmallVisitor.html#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor">SqlSmallVisitor</a></li>
+<li>antlr4.tree.Tree.ParseTreeVisitor</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.sql.parse.QueryVisitor.visitQuery"><code class="name flex">
+<span>def <span class="ident">visitQuery</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitQuery(self, ctx):
+
+    # SELECT and FROM are required
+    select = SelectVisitor().visit(ctx.selectClause())
+    source = FromVisitor().visit(ctx.fromClause())
+
+    wc = ctx.whereClause()
+    where = WhereVisitor().visit(wc) if wc is not None else None
+
+    hc = ctx.havingClause()
+    having = HavingVisitor().visit(hc) if hc is not None else None
+
+    ac = ctx.aggregationClause()
+    agg = AggregateVisitor().visit(ac) if ac is not None else None
+
+    oc = ctx.orderClause()
+    order = OrderVisitor().visit(oc) if oc is not None else None
+
+    limit = None
+    if hasattr(ctx, &#39;limitClause&#39;):
+        lc = ctx.limitClause()
+        limit = LimitVisitor().visit(lc) if lc is not None else None
+
+    return Query(select, source, where, agg, having, order, limit)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.sql.parse.RelationVisitor"><code class="flex name class">
+<span>class <span class="ident">RelationVisitor</span></span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RelationVisitor(SqlSmallVisitor):
+    def visitRelation(self, ctx):
+        primary = self.visit(ctx.relationPrimary())
+        jr = ctx.joinRelation()
+        joins = [self.visit(j) for j in jr] if jr is not None else None
+        return Relation(primary, joins)
+
+    def visitTable(self, ctx):
+        alias = Identifier(ctx.alias.getText()) if ctx.alias is not None else None
+        return Table(Identifier(ctx.qualifiedTableName().getText()), alias)
+
+    def visitAliasedQuery(self, ctx):
+        alias = Identifier(ctx.alias.getText()) if ctx.alias is not None else None
+        qv = QueryVisitor()
+        return AliasedSubquery(qv.visitQuery(ctx.subquery()), alias)
+
+    def visitAliasedRelation(self, ctx):
+        alias = Identifier(ctx.alias.getText()) if ctx.alias is not None else None
+        relation = self.visit(ctx.relation())
+        return AliasedRelation(relation, alias)
+
+    def visitJoinRelation(self, ctx):
+        joinType = Token(allText(ctx.joinType()))
+        right = RelationVisitor().visit(ctx.right)
+        crit = ctx.joinCriteria()
+        if type(crit) is SqlSmallParser.BooleanJoinContext:
+            bev = BooleanExpressionVisitor()
+            criteria = BooleanJoinCriteria(bev.visit(crit.booleanExpression()))
+        elif type(crit) is SqlSmallParser.UsingJoinContext:
+            ids = crit.identifier()
+            criteria = UsingJoinCriteria([Column(i.getText()) for i in ids])
+        else:
+            criteria = None
+        return Join(joinType, right, criteria)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor" href="parser/SqlSmallVisitor.html#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor">SqlSmallVisitor</a></li>
+<li>antlr4.tree.Tree.ParseTreeVisitor</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.sql.parse.RelationVisitor.visitAliasedQuery"><code class="name flex">
+<span>def <span class="ident">visitAliasedQuery</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitAliasedQuery(self, ctx):
+    alias = Identifier(ctx.alias.getText()) if ctx.alias is not None else None
+    qv = QueryVisitor()
+    return AliasedSubquery(qv.visitQuery(ctx.subquery()), alias)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parse.RelationVisitor.visitAliasedRelation"><code class="name flex">
+<span>def <span class="ident">visitAliasedRelation</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitAliasedRelation(self, ctx):
+    alias = Identifier(ctx.alias.getText()) if ctx.alias is not None else None
+    relation = self.visit(ctx.relation())
+    return AliasedRelation(relation, alias)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parse.RelationVisitor.visitJoinRelation"><code class="name flex">
+<span>def <span class="ident">visitJoinRelation</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitJoinRelation(self, ctx):
+    joinType = Token(allText(ctx.joinType()))
+    right = RelationVisitor().visit(ctx.right)
+    crit = ctx.joinCriteria()
+    if type(crit) is SqlSmallParser.BooleanJoinContext:
+        bev = BooleanExpressionVisitor()
+        criteria = BooleanJoinCriteria(bev.visit(crit.booleanExpression()))
+    elif type(crit) is SqlSmallParser.UsingJoinContext:
+        ids = crit.identifier()
+        criteria = UsingJoinCriteria([Column(i.getText()) for i in ids])
+    else:
+        criteria = None
+    return Join(joinType, right, criteria)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parse.RelationVisitor.visitRelation"><code class="name flex">
+<span>def <span class="ident">visitRelation</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitRelation(self, ctx):
+    primary = self.visit(ctx.relationPrimary())
+    jr = ctx.joinRelation()
+    joins = [self.visit(j) for j in jr] if jr is not None else None
+    return Relation(primary, joins)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parse.RelationVisitor.visitTable"><code class="name flex">
+<span>def <span class="ident">visitTable</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitTable(self, ctx):
+    alias = Identifier(ctx.alias.getText()) if ctx.alias is not None else None
+    return Table(Identifier(ctx.qualifiedTableName().getText()), alias)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.sql.parse.SelectVisitor"><code class="flex name class">
+<span>class <span class="ident">SelectVisitor</span></span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class SelectVisitor(SqlSmallVisitor):
+    def visitSelectClause(self, ctx):
+        nev = NamedExpressionVisitor()
+        namedExpressions = nev.visit(ctx.namedExpressionSeq())
+
+        sq = ctx.setQuantifier()
+        tc = sq.topClause() if sq is not None else None
+        if tc is None:
+            quantifier = None if sq is None else Token(sq.getText())
+        else:
+            quantifier = LimitVisitor().visit(tc)
+
+        return Select(quantifier, [ne for ne in namedExpressions if ne is not None])</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor" href="parser/SqlSmallVisitor.html#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor">SqlSmallVisitor</a></li>
+<li>antlr4.tree.Tree.ParseTreeVisitor</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.sql.parse.SelectVisitor.visitSelectClause"><code class="name flex">
+<span>def <span class="ident">visitSelectClause</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitSelectClause(self, ctx):
+    nev = NamedExpressionVisitor()
+    namedExpressions = nev.visit(ctx.namedExpressionSeq())
+
+    sq = ctx.setQuantifier()
+    tc = sq.topClause() if sq is not None else None
+    if tc is None:
+        quantifier = None if sq is None else Token(sq.getText())
+    else:
+        quantifier = LimitVisitor().visit(tc)
+
+    return Select(quantifier, [ne for ne in namedExpressions if ne is not None])</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.sql.parse.WhereVisitor"><code class="flex name class">
+<span>class <span class="ident">WhereVisitor</span></span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class WhereVisitor(SqlSmallVisitor):
+    def visitWhereClause(self, ctx):
+        bev = BooleanExpressionVisitor()
+        return Where(bev.visit(ctx.booleanExpression()))</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor" href="parser/SqlSmallVisitor.html#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor">SqlSmallVisitor</a></li>
+<li>antlr4.tree.Tree.ParseTreeVisitor</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.sql.parse.WhereVisitor.visitWhereClause"><code class="name flex">
+<span>def <span class="ident">visitWhereClause</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitWhereClause(self, ctx):
+    bev = BooleanExpressionVisitor()
+    return Where(bev.visit(ctx.booleanExpression()))</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="burdock.sql" href="index.html">burdock.sql</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="burdock.sql.parse.allText" href="#burdock.sql.parse.allText">allText</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="burdock.sql.parse.AggregateVisitor" href="#burdock.sql.parse.AggregateVisitor">AggregateVisitor</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.sql.parse.AggregateVisitor.visitAggregationClause" href="#burdock.sql.parse.AggregateVisitor.visitAggregationClause">visitAggregationClause</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.sql.parse.BatchVisitor" href="#burdock.sql.parse.BatchVisitor">BatchVisitor</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.sql.parse.BatchVisitor.visitBatch" href="#burdock.sql.parse.BatchVisitor.visitBatch">visitBatch</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.sql.parse.BooleanExpressionVisitor" href="#burdock.sql.parse.BooleanExpressionVisitor">BooleanExpressionVisitor</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.sql.parse.BooleanExpressionVisitor.visitBetweenCondition" href="#burdock.sql.parse.BooleanExpressionVisitor.visitBetweenCondition">visitBetweenCondition</a></code></li>
+<li><code><a title="burdock.sql.parse.BooleanExpressionVisitor.visitComparison" href="#burdock.sql.parse.BooleanExpressionVisitor.visitComparison">visitComparison</a></code></li>
+<li><code><a title="burdock.sql.parse.BooleanExpressionVisitor.visitConjunction" href="#burdock.sql.parse.BooleanExpressionVisitor.visitConjunction">visitConjunction</a></code></li>
+<li><code><a title="burdock.sql.parse.BooleanExpressionVisitor.visitDisjunction" href="#burdock.sql.parse.BooleanExpressionVisitor.visitDisjunction">visitDisjunction</a></code></li>
+<li><code><a title="burdock.sql.parse.BooleanExpressionVisitor.visitInCondition" href="#burdock.sql.parse.BooleanExpressionVisitor.visitInCondition">visitInCondition</a></code></li>
+<li><code><a title="burdock.sql.parse.BooleanExpressionVisitor.visitIsCondition" href="#burdock.sql.parse.BooleanExpressionVisitor.visitIsCondition">visitIsCondition</a></code></li>
+<li><code><a title="burdock.sql.parse.BooleanExpressionVisitor.visitLogicalNot" href="#burdock.sql.parse.BooleanExpressionVisitor.visitLogicalNot">visitLogicalNot</a></code></li>
+<li><code><a title="burdock.sql.parse.BooleanExpressionVisitor.visitNestedBoolean" href="#burdock.sql.parse.BooleanExpressionVisitor.visitNestedBoolean">visitNestedBoolean</a></code></li>
+<li><code><a title="burdock.sql.parse.BooleanExpressionVisitor.visitPredicated" href="#burdock.sql.parse.BooleanExpressionVisitor.visitPredicated">visitPredicated</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.sql.parse.CaseExpressionVisitor" href="#burdock.sql.parse.CaseExpressionVisitor">CaseExpressionVisitor</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.sql.parse.CaseExpressionVisitor.visitCaseExpression" href="#burdock.sql.parse.CaseExpressionVisitor.visitCaseExpression">visitCaseExpression</a></code></li>
+<li><code><a title="burdock.sql.parse.CaseExpressionVisitor.visitWhenExpression" href="#burdock.sql.parse.CaseExpressionVisitor.visitWhenExpression">visitWhenExpression</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.sql.parse.ExpressionVisitor" href="#burdock.sql.parse.ExpressionVisitor">ExpressionVisitor</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.sql.parse.ExpressionVisitor.visitAdd" href="#burdock.sql.parse.ExpressionVisitor.visitAdd">visitAdd</a></code></li>
+<li><code><a title="burdock.sql.parse.ExpressionVisitor.visitAggFunc" href="#burdock.sql.parse.ExpressionVisitor.visitAggFunc">visitAggFunc</a></code></li>
+<li><code><a title="burdock.sql.parse.ExpressionVisitor.visitAllExpr" href="#burdock.sql.parse.ExpressionVisitor.visitAllExpr">visitAllExpr</a></code></li>
+<li><code><a title="burdock.sql.parse.ExpressionVisitor.visitBareFunction" href="#burdock.sql.parse.ExpressionVisitor.visitBareFunction">visitBareFunction</a></code></li>
+<li><code><a title="burdock.sql.parse.ExpressionVisitor.visitCaseExpr" href="#burdock.sql.parse.ExpressionVisitor.visitCaseExpr">visitCaseExpr</a></code></li>
+<li><code><a title="burdock.sql.parse.ExpressionVisitor.visitChooseFunc" href="#burdock.sql.parse.ExpressionVisitor.visitChooseFunc">visitChooseFunc</a></code></li>
+<li><code><a title="burdock.sql.parse.ExpressionVisitor.visitColumnName" href="#burdock.sql.parse.ExpressionVisitor.visitColumnName">visitColumnName</a></code></li>
+<li><code><a title="burdock.sql.parse.ExpressionVisitor.visitDecimalLiteral" href="#burdock.sql.parse.ExpressionVisitor.visitDecimalLiteral">visitDecimalLiteral</a></code></li>
+<li><code><a title="burdock.sql.parse.ExpressionVisitor.visitDivide" href="#burdock.sql.parse.ExpressionVisitor.visitDivide">visitDivide</a></code></li>
+<li><code><a title="burdock.sql.parse.ExpressionVisitor.visitFalseLiteral" href="#burdock.sql.parse.ExpressionVisitor.visitFalseLiteral">visitFalseLiteral</a></code></li>
+<li><code><a title="burdock.sql.parse.ExpressionVisitor.visitIifFunc" href="#burdock.sql.parse.ExpressionVisitor.visitIifFunc">visitIifFunc</a></code></li>
+<li><code><a title="burdock.sql.parse.ExpressionVisitor.visitIntegerLiteral" href="#burdock.sql.parse.ExpressionVisitor.visitIntegerLiteral">visitIntegerLiteral</a></code></li>
+<li><code><a title="burdock.sql.parse.ExpressionVisitor.visitMathFunc" href="#burdock.sql.parse.ExpressionVisitor.visitMathFunc">visitMathFunc</a></code></li>
+<li><code><a title="burdock.sql.parse.ExpressionVisitor.visitModulo" href="#burdock.sql.parse.ExpressionVisitor.visitModulo">visitModulo</a></code></li>
+<li><code><a title="burdock.sql.parse.ExpressionVisitor.visitMultiply" href="#burdock.sql.parse.ExpressionVisitor.visitMultiply">visitMultiply</a></code></li>
+<li><code><a title="burdock.sql.parse.ExpressionVisitor.visitNestedExpr" href="#burdock.sql.parse.ExpressionVisitor.visitNestedExpr">visitNestedExpr</a></code></li>
+<li><code><a title="burdock.sql.parse.ExpressionVisitor.visitNullLiteral" href="#burdock.sql.parse.ExpressionVisitor.visitNullLiteral">visitNullLiteral</a></code></li>
+<li><code><a title="burdock.sql.parse.ExpressionVisitor.visitOverClause" href="#burdock.sql.parse.ExpressionVisitor.visitOverClause">visitOverClause</a></code></li>
+<li><code><a title="burdock.sql.parse.ExpressionVisitor.visitPowerFunction" href="#burdock.sql.parse.ExpressionVisitor.visitPowerFunction">visitPowerFunction</a></code></li>
+<li><code><a title="burdock.sql.parse.ExpressionVisitor.visitRankingFunction" href="#burdock.sql.parse.ExpressionVisitor.visitRankingFunction">visitRankingFunction</a></code></li>
+<li><code><a title="burdock.sql.parse.ExpressionVisitor.visitRoundFunction" href="#burdock.sql.parse.ExpressionVisitor.visitRoundFunction">visitRoundFunction</a></code></li>
+<li><code><a title="burdock.sql.parse.ExpressionVisitor.visitStringLiteral" href="#burdock.sql.parse.ExpressionVisitor.visitStringLiteral">visitStringLiteral</a></code></li>
+<li><code><a title="burdock.sql.parse.ExpressionVisitor.visitSubqueryExpr" href="#burdock.sql.parse.ExpressionVisitor.visitSubqueryExpr">visitSubqueryExpr</a></code></li>
+<li><code><a title="burdock.sql.parse.ExpressionVisitor.visitSubtract" href="#burdock.sql.parse.ExpressionVisitor.visitSubtract">visitSubtract</a></code></li>
+<li><code><a title="burdock.sql.parse.ExpressionVisitor.visitTrueLiteral" href="#burdock.sql.parse.ExpressionVisitor.visitTrueLiteral">visitTrueLiteral</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.sql.parse.FromVisitor" href="#burdock.sql.parse.FromVisitor">FromVisitor</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.sql.parse.FromVisitor.visitFromClause" href="#burdock.sql.parse.FromVisitor.visitFromClause">visitFromClause</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.sql.parse.HavingVisitor" href="#burdock.sql.parse.HavingVisitor">HavingVisitor</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.sql.parse.HavingVisitor.visitHavingClause" href="#burdock.sql.parse.HavingVisitor.visitHavingClause">visitHavingClause</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.sql.parse.LimitVisitor" href="#burdock.sql.parse.LimitVisitor">LimitVisitor</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.sql.parse.LimitVisitor.visitLimitClause" href="#burdock.sql.parse.LimitVisitor.visitLimitClause">visitLimitClause</a></code></li>
+<li><code><a title="burdock.sql.parse.LimitVisitor.visitTopClause" href="#burdock.sql.parse.LimitVisitor.visitTopClause">visitTopClause</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.sql.parse.NamedExpressionVisitor" href="#burdock.sql.parse.NamedExpressionVisitor">NamedExpressionVisitor</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.sql.parse.NamedExpressionVisitor.visitNamedExpression" href="#burdock.sql.parse.NamedExpressionVisitor.visitNamedExpression">visitNamedExpression</a></code></li>
+<li><code><a title="burdock.sql.parse.NamedExpressionVisitor.visitNamedExpressionSeq" href="#burdock.sql.parse.NamedExpressionVisitor.visitNamedExpressionSeq">visitNamedExpressionSeq</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.sql.parse.OrderVisitor" href="#burdock.sql.parse.OrderVisitor">OrderVisitor</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.sql.parse.OrderVisitor.visitOrderClause" href="#burdock.sql.parse.OrderVisitor.visitOrderClause">visitOrderClause</a></code></li>
+<li><code><a title="burdock.sql.parse.OrderVisitor.visitSortItem" href="#burdock.sql.parse.OrderVisitor.visitSortItem">visitSortItem</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.sql.parse.QueryParser" href="#burdock.sql.parse.QueryParser">QueryParser</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.sql.parse.QueryParser.parse_expression" href="#burdock.sql.parse.QueryParser.parse_expression">parse_expression</a></code></li>
+<li><code><a title="burdock.sql.parse.QueryParser.parse_named_expressions" href="#burdock.sql.parse.QueryParser.parse_named_expressions">parse_named_expressions</a></code></li>
+<li><code><a title="burdock.sql.parse.QueryParser.parse_only" href="#burdock.sql.parse.QueryParser.parse_only">parse_only</a></code></li>
+<li><code><a title="burdock.sql.parse.QueryParser.queries" href="#burdock.sql.parse.QueryParser.queries">queries</a></code></li>
+<li><code><a title="burdock.sql.parse.QueryParser.query" href="#burdock.sql.parse.QueryParser.query">query</a></code></li>
+<li><code><a title="burdock.sql.parse.QueryParser.start_parser" href="#burdock.sql.parse.QueryParser.start_parser">start_parser</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.sql.parse.QueryVisitor" href="#burdock.sql.parse.QueryVisitor">QueryVisitor</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.sql.parse.QueryVisitor.visitQuery" href="#burdock.sql.parse.QueryVisitor.visitQuery">visitQuery</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.sql.parse.RelationVisitor" href="#burdock.sql.parse.RelationVisitor">RelationVisitor</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.sql.parse.RelationVisitor.visitAliasedQuery" href="#burdock.sql.parse.RelationVisitor.visitAliasedQuery">visitAliasedQuery</a></code></li>
+<li><code><a title="burdock.sql.parse.RelationVisitor.visitAliasedRelation" href="#burdock.sql.parse.RelationVisitor.visitAliasedRelation">visitAliasedRelation</a></code></li>
+<li><code><a title="burdock.sql.parse.RelationVisitor.visitJoinRelation" href="#burdock.sql.parse.RelationVisitor.visitJoinRelation">visitJoinRelation</a></code></li>
+<li><code><a title="burdock.sql.parse.RelationVisitor.visitRelation" href="#burdock.sql.parse.RelationVisitor.visitRelation">visitRelation</a></code></li>
+<li><code><a title="burdock.sql.parse.RelationVisitor.visitTable" href="#burdock.sql.parse.RelationVisitor.visitTable">visitTable</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.sql.parse.SelectVisitor" href="#burdock.sql.parse.SelectVisitor">SelectVisitor</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.sql.parse.SelectVisitor.visitSelectClause" href="#burdock.sql.parse.SelectVisitor.visitSelectClause">visitSelectClause</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.sql.parse.WhereVisitor" href="#burdock.sql.parse.WhereVisitor">WhereVisitor</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.sql.parse.WhereVisitor.visitWhereClause" href="#burdock.sql.parse.WhereVisitor.visitWhereClause">visitWhereClause</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.5</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

@@ -1,0 +1,1168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.5" />
+<title>burdock.sql API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>burdock.sql</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from burdock.metadata.collection import CollectionMetadata
+from .private_rewriter import Rewriter
+from .private_reader import PrivateReader
+from burdock.reader.sql.pandas import PandasReader
+from .parse import QueryParser
+
+
+def execute_private_query(reader, schema, budget, query):
+    schema = reader.metadata if hasattr(reader, &#34;metadata&#34;) else schema
+    query = reader._sanitize_query(query) if hasattr(reader ,&#34;_sanitize_query&#34;) else query
+    return PrivateReader(reader, schema, budget).execute(query)
+
+__all__ = [&#34;CollectionMetadata&#34;, &#34;Rewriter&#34;, &#34;QueryParser&#34;,
+           &#34;PandasReader&#34;, &#34;execute_private_query&#34;]</code></pre>
+</details>
+</section>
+<section>
+<h2 class="section-title" id="header-submodules">Sub-modules</h2>
+<dl>
+<dt><code class="name"><a title="burdock.sql.ast" href="ast/index.html">burdock.sql.ast</a></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt><code class="name"><a title="burdock.sql.parse" href="parse.html">burdock.sql.parse</a></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt><code class="name"><a title="burdock.sql.parser" href="parser/index.html">burdock.sql.parser</a></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt><code class="name"><a title="burdock.sql.private_reader" href="private_reader.html">burdock.sql.private_reader</a></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt><code class="name"><a title="burdock.sql.private_rewriter" href="private_rewriter.html">burdock.sql.private_rewriter</a></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="burdock.sql.execute_private_query"><code class="name flex">
+<span>def <span class="ident">execute_private_query</span></span>(<span>reader, schema, budget, query)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def execute_private_query(reader, schema, budget, query):
+    schema = reader.metadata if hasattr(reader, &#34;metadata&#34;) else schema
+    query = reader._sanitize_query(query) if hasattr(reader ,&#34;_sanitize_query&#34;) else query
+    return PrivateReader(reader, schema, budget).execute(query)</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="burdock.sql.CollectionMetadata"><code class="flex name class">
+<span>class <span class="ident">CollectionMetadata</span></span>
+<span>(</span><span>tables, engine, compare=None)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CollectionMetadata:
+    def __init__(self, tables, engine, compare=None):
+        self.m_tables = dict([(t.table_name(), t) for t in tables])
+        self.engine = engine if engine is not None else &#34;Unknown&#34;
+        self.compare = NameCompare.get_name_compare(engine) if compare is None else compare
+
+    def __getitem__(self, tablename):
+        schema_name = &#39;&#39;
+        parts = tablename.split(&#39;.&#39;)
+        if len(parts) == 2:
+            schema_name, tablename = parts
+        for tname in self.m_tables.keys():
+            table = self.m_tables[tname]
+            if self.compare.schema_match(schema_name, table.schema) and self.compare.identifier_match(tablename, table.name):
+                table.compare = self.compare
+                return table
+        return None
+    def __str__(self):
+        return &#34;\n\n&#34;.join([str(self.m_tables[table]) for table in self.m_tables.keys()])
+    def tables(self):
+        return [self.m_tables[tname] for tname in self.m_tables.keys()]
+
+    @staticmethod
+    def from_file(filename):
+        ys = CollectionYamlLoader(filename)
+        return ys.read_file()
+
+    @staticmethod
+    def from_dict(schema_dict):
+        ys = CollectionYamlLoader(&#34;dummy&#34;)
+        return ys._create_metadata_object(schema_dict)
+
+    def to_file(self, filename, collection_name):
+        ys = CollectionYamlLoader(filename)
+        ys.write_file(self, collection_name)</code></pre>
+</details>
+<h3>Static methods</h3>
+<dl>
+<dt id="burdock.sql.CollectionMetadata.from_dict"><code class="name flex">
+<span>def <span class="ident">from_dict</span></span>(<span>schema_dict)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def from_dict(schema_dict):
+    ys = CollectionYamlLoader(&#34;dummy&#34;)
+    return ys._create_metadata_object(schema_dict)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.CollectionMetadata.from_file"><code class="name flex">
+<span>def <span class="ident">from_file</span></span>(<span>filename)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def from_file(filename):
+    ys = CollectionYamlLoader(filename)
+    return ys.read_file()</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.sql.CollectionMetadata.tables"><code class="name flex">
+<span>def <span class="ident">tables</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def tables(self):
+    return [self.m_tables[tname] for tname in self.m_tables.keys()]</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.CollectionMetadata.to_file"><code class="name flex">
+<span>def <span class="ident">to_file</span></span>(<span>self, filename, collection_name)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def to_file(self, filename, collection_name):
+    ys = CollectionYamlLoader(filename)
+    ys.write_file(self, collection_name)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.sql.PandasReader"><code class="flex name class">
+<span>class <span class="ident">PandasReader</span></span>
+<span>(</span><span>metadata, df)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class PandasReader(Reader):
+    def __init__(self, metadata, df):
+        super().__init__()
+        self.original_column_names = []
+        self.df = df
+        self.metadata = self._sanitize_metadata(metadata)
+        self.serializer = None
+        self.engine = &#34;Pandas&#34;
+
+    def _sanitize_column_name(self, column_name):
+        x = re.search(r&#34;.*[a-zA-Z0-9()_]&#34;, column_name)
+        if x is None:
+            raise Exception(&#34;Unsupported column name {}. Column names must be alphanumeric or _, (, ).&#34;.format(
+                column_name))
+        column_name = column_name.replace(&#34; &#34;, &#34;_&#34;).replace(&#34;(&#34;, &#34;_0_&#34;).replace(&#34;)&#34;, &#34;_1_&#34;)
+        return column_name
+
+    def _sanitize_metadata(self, metadata):
+        metadata = copy.deepcopy(metadata)
+        table_names = list(metadata.m_tables.keys())
+        if len(table_names) &gt; 1:
+            raise Exception(&#34;Only one table is supported for PandasReader. {} found.&#34;.format(len(table_names)))
+        table_name = table_names[0]
+        self.original_column_names = list(metadata.m_tables[table_name].m_columns)
+
+        has_key = False
+        for column_name in self.original_column_names:
+            sanitized_column_name = self._sanitize_column_name(column_name)
+            metadata.m_tables[table_name].m_columns[sanitized_column_name] = metadata.m_tables[table_name].m_columns[column_name]
+            metadata.m_tables[table_name].m_columns[sanitized_column_name].name = sanitized_column_name
+            has_key = has_key or metadata.m_tables[table_name].m_columns[sanitized_column_name].is_key
+            self.df[sanitized_column_name] = self.df[column_name]
+            if column_name != sanitized_column_name:
+                del metadata.m_tables[table_name].m_columns[column_name]
+
+        if not has_key:
+            key = &#34;primary_key&#34;
+            self.df[key] = range(len(self.df))
+            metadata.m_tables[table_name].m_columns[key] = Int(key,
+            minval=0,
+            maxval=len(self.df),
+            is_key=True)
+        return metadata
+
+    def _sanitize_query(self, query):
+        for column in self.original_column_names:
+            sanitized_column = self._sanitize_column_name(column)
+            for column_form in [&#34;&#39;{}&#39;&#34;.format(column), &#39;&#34;{}&#34;&#39;.format(column), column]:
+                query = query.replace(column_form, sanitized_column)
+        return query
+    &#34;&#34;&#34;
+        Get the database associated with this connection
+    &#34;&#34;&#34;
+    def db_name(self):
+        sql = &#34;SELECT current_database();&#34;
+        dbname = self.execute(sql)[1][0]
+        return dbname
+    &#34;&#34;&#34;
+        Executes a raw SQL string against the database and returns
+        tuples for rows.  This will NOT fix the query to target the
+        specific SQL dialect.  Call execute_typed to fix dialect.
+    &#34;&#34;&#34;
+    def execute(self, query):
+        query = self._sanitize_query(query)
+        from pandasql import sqldf
+        if not isinstance(query, str):
+            raise ValueError(&#34;Please pass strings to execute.  To execute ASTs, use execute_typed.&#34;)
+        table_names = list(self.metadata.m_tables.keys())
+        if len(table_names) &gt; 1:
+            raise Exception(&#34;PandasReader only supports one table, {} found.&#34;.format(len(table_names)))
+
+        df_name = &#34;df_for_diffpriv1234&#34;
+        table_name = table_names[0]
+        def clean_query(query):
+            for column in self.metadata.m_tables[table_name].m_columns:
+                if &#34; &#34; in column or &#34;(&#34; in column or &#34;)&#34; in column:
+                    new_column_name = column.replace(&#34; &#34;, &#34;_&#34;).replace(&#34;(&#34;, &#34;_&#34;).replace(&#34;)&#34;, &#34;_&#34;)
+                    query = query.replace(column, new_column_name)
+                    query = query.replace(&#34;&#39;{}&#39;&#34;.format(new_column_name), new_column_name)
+            return query.replace(table_name, df_name)
+
+        for column in self.metadata.m_tables[table_name].m_columns:
+            new_column_name = column.replace(&#34; &#34;, &#34;_&#34;).replace(&#34;(&#34;, &#34;_&#34;).replace(&#34;)&#34;, &#34;_&#34;)
+            if self.metadata.m_tables[table_name].m_columns[column].is_key:
+                if column not in self.df:
+                    self.df[column] = range(len(self.df))
+            else:
+                if new_column_name not in self.df:
+                    self.df[new_column_name] = self.df[column]
+
+        df_for_diffpriv1234 = self.df
+        q_result = sqldf(clean_query(query), locals())
+        return [tuple([col for col in q_result.columns])] + [val[1:] for val in q_result.itertuples()]</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="burdock.reader.sql.base.Reader" href="../reader/sql/base.html#burdock.reader.sql.base.Reader">Reader</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.sql.PandasReader.db_name"><code class="name flex">
+<span>def <span class="ident">db_name</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def db_name(self):
+    sql = &#34;SELECT current_database();&#34;
+    dbname = self.execute(sql)[1][0]
+    return dbname</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.PandasReader.execute"><code class="name flex">
+<span>def <span class="ident">execute</span></span>(<span>self, query)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def execute(self, query):
+    query = self._sanitize_query(query)
+    from pandasql import sqldf
+    if not isinstance(query, str):
+        raise ValueError(&#34;Please pass strings to execute.  To execute ASTs, use execute_typed.&#34;)
+    table_names = list(self.metadata.m_tables.keys())
+    if len(table_names) &gt; 1:
+        raise Exception(&#34;PandasReader only supports one table, {} found.&#34;.format(len(table_names)))
+
+    df_name = &#34;df_for_diffpriv1234&#34;
+    table_name = table_names[0]
+    def clean_query(query):
+        for column in self.metadata.m_tables[table_name].m_columns:
+            if &#34; &#34; in column or &#34;(&#34; in column or &#34;)&#34; in column:
+                new_column_name = column.replace(&#34; &#34;, &#34;_&#34;).replace(&#34;(&#34;, &#34;_&#34;).replace(&#34;)&#34;, &#34;_&#34;)
+                query = query.replace(column, new_column_name)
+                query = query.replace(&#34;&#39;{}&#39;&#34;.format(new_column_name), new_column_name)
+        return query.replace(table_name, df_name)
+
+    for column in self.metadata.m_tables[table_name].m_columns:
+        new_column_name = column.replace(&#34; &#34;, &#34;_&#34;).replace(&#34;(&#34;, &#34;_&#34;).replace(&#34;)&#34;, &#34;_&#34;)
+        if self.metadata.m_tables[table_name].m_columns[column].is_key:
+            if column not in self.df:
+                self.df[column] = range(len(self.df))
+        else:
+            if new_column_name not in self.df:
+                self.df[new_column_name] = self.df[column]
+
+    df_for_diffpriv1234 = self.df
+    q_result = sqldf(clean_query(query), locals())
+    return [tuple([col for col in q_result.columns])] + [val[1:] for val in q_result.itertuples()]</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.sql.QueryParser"><code class="flex name class">
+<span>class <span class="ident">QueryParser</span></span>
+<span>(</span><span>metadata=None)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class QueryParser:
+    def __init__(self, metadata = None):
+        self.metadata = metadata
+
+    def start_parser(self, stream):
+        lexer = SqlSmallLexer(stream)
+        stream = CommonTokenStream(lexer)
+        parser = SqlSmallParser(stream)
+        parser._interp.predictionMode = PredictionMode.LL_EXACT_AMBIG_DETECTION
+        lexer._listeners = [SyntaxErrorListener(), DiagnosticErrorListener()]
+        parser._listeners = [SyntaxErrorListener(), DiagnosticErrorListener()]
+        return parser
+
+    def queries(self, query_string, metadata = None):
+        if metadata is None and self.metadata is not None:
+            metadata = self.metadata
+        istream = InputStream(query_string)
+        parser = self.start_parser(istream)
+        bv = BatchVisitor()
+        queries = [q for q in bv.visit(parser.batch()).queries]
+        if metadata is not None:
+            for q in queries:
+                q.load_symbols(metadata)
+        return queries
+
+    def query(self, query_string, metadata = None):
+        queries = self.queries(query_string, metadata)
+        if len(queries) &gt; 1:
+            raise ValueError(&#34;Attempt to parse query resulted in a batch with more than one&#34;)
+        q = queries[0]
+        if metadata is not None:
+            q.load_symbols(metadata)
+        return q
+
+    def parse_only(self, query_string):
+        if (query_string.strip().upper().startswith(&#34;SELECT&#34;) or query_string.strip().startswith(&#34;--&#34;)):
+            istream = InputStream(query_string)
+        else:
+            istream = FileStream(query_string)
+        parser = self.start_parser(istream)
+        SqlSmallVisitor().visit(parser.batch())
+        return None
+
+    def parse_named_expressions(self, expression_string):
+        istream = InputStream(expression_string)
+        parser = self.start_parser(istream)
+        nev = NamedExpressionVisitor()
+        return nev.visitNamedExpressionSeq(parser.namedExpressionSeq())
+
+    def parse_expression(self, expression_string):
+        istream = InputStream(expression_string)
+        parser = self.start_parser(istream)
+        ev = ExpressionVisitor()
+        return ev.visit(parser.expression())</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.sql.QueryParser.parse_expression"><code class="name flex">
+<span>def <span class="ident">parse_expression</span></span>(<span>self, expression_string)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def parse_expression(self, expression_string):
+    istream = InputStream(expression_string)
+    parser = self.start_parser(istream)
+    ev = ExpressionVisitor()
+    return ev.visit(parser.expression())</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.QueryParser.parse_named_expressions"><code class="name flex">
+<span>def <span class="ident">parse_named_expressions</span></span>(<span>self, expression_string)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def parse_named_expressions(self, expression_string):
+    istream = InputStream(expression_string)
+    parser = self.start_parser(istream)
+    nev = NamedExpressionVisitor()
+    return nev.visitNamedExpressionSeq(parser.namedExpressionSeq())</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.QueryParser.parse_only"><code class="name flex">
+<span>def <span class="ident">parse_only</span></span>(<span>self, query_string)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def parse_only(self, query_string):
+    if (query_string.strip().upper().startswith(&#34;SELECT&#34;) or query_string.strip().startswith(&#34;--&#34;)):
+        istream = InputStream(query_string)
+    else:
+        istream = FileStream(query_string)
+    parser = self.start_parser(istream)
+    SqlSmallVisitor().visit(parser.batch())
+    return None</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.QueryParser.queries"><code class="name flex">
+<span>def <span class="ident">queries</span></span>(<span>self, query_string, metadata=None)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def queries(self, query_string, metadata = None):
+    if metadata is None and self.metadata is not None:
+        metadata = self.metadata
+    istream = InputStream(query_string)
+    parser = self.start_parser(istream)
+    bv = BatchVisitor()
+    queries = [q for q in bv.visit(parser.batch()).queries]
+    if metadata is not None:
+        for q in queries:
+            q.load_symbols(metadata)
+    return queries</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.QueryParser.query"><code class="name flex">
+<span>def <span class="ident">query</span></span>(<span>self, query_string, metadata=None)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def query(self, query_string, metadata = None):
+    queries = self.queries(query_string, metadata)
+    if len(queries) &gt; 1:
+        raise ValueError(&#34;Attempt to parse query resulted in a batch with more than one&#34;)
+    q = queries[0]
+    if metadata is not None:
+        q.load_symbols(metadata)
+    return q</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.QueryParser.start_parser"><code class="name flex">
+<span>def <span class="ident">start_parser</span></span>(<span>self, stream)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def start_parser(self, stream):
+    lexer = SqlSmallLexer(stream)
+    stream = CommonTokenStream(lexer)
+    parser = SqlSmallParser(stream)
+    parser._interp.predictionMode = PredictionMode.LL_EXACT_AMBIG_DETECTION
+    lexer._listeners = [SyntaxErrorListener(), DiagnosticErrorListener()]
+    parser._listeners = [SyntaxErrorListener(), DiagnosticErrorListener()]
+    return parser</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.sql.Rewriter"><code class="flex name class">
+<span>class <span class="ident">Rewriter</span></span>
+<span>(</span><span>metadata, options=None)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Rewriter:
+    def __init__(self, metadata, options=None):
+        self.options = RewriterOptions() if options is None else options
+        self.metadata = metadata
+
+    &#34;&#34;&#34;
+        Takes an expression for a noisy mean and rewrites
+        to a noisy sum and a noisy count
+    &#34;&#34;&#34;
+    def calculate_avg(self, exp, scope):
+        expr = exp.expression
+        quant = exp.quantifier
+
+        sum_expr = self.push_sum_or_count(AggFunction(&#34;SUM&#34;, quant, expr), scope)
+        count_expr = self.push_sum_or_count(AggFunction(&#34;COUNT&#34;, quant, expr), scope)
+
+        new_exp = NestedExpression(ArithmeticExpression(sum_expr, &#34;/&#34;, count_expr))
+        return new_exp
+
+    &#34;&#34;&#34;
+        Takes an expression for a noisy mean and rewrites
+        to a noisy sum and a noisy count
+    &#34;&#34;&#34;
+    def calculate_variance(self, exp, scope):
+        expr = exp.expression
+        quant = exp.quantifier
+
+        avg_of_square = self.calculate_avg(AggFunction(&#34;AVG&#34;, quant, ArithmeticExpression(expr, &#39;*&#39;, expr)), scope)
+        avg = self.calculate_avg(AggFunction(&#34;AVG&#34;, quant, expr), scope)
+        avg_squared = ArithmeticExpression(avg, &#39;*&#39;, avg)
+
+        new_exp = ArithmeticExpression(avg_of_square, &#34;-&#34;, avg_squared)
+        return new_exp
+
+    &#34;&#34;&#34;
+        Takes an expression for a noisy mean and rewrites
+        to a noisy sum and a noisy count
+    &#34;&#34;&#34;
+    def calculate_stddev(self, exp, scope):
+        expr = AggFunction(&#39;STD&#39;, exp.quantifier, exp.expression)
+        var_expr = self.calculate_variance(expr, scope)
+
+        new_exp = MathFunction(&#34;SQRT&#34;, var_expr)
+        return new_exp
+
+    &#34;&#34;&#34;
+        Push a sum or count expression to child scope
+        and convert to a sum
+    &#34;&#34;&#34;
+    def push_sum_or_count(self, exp, scope):
+        new_name = scope.push_name(AggFunction(exp.name, exp.quantifier, exp.expression))
+
+        new_exp = AggFunction(&#34;SUM&#34;, None, Column(new_name))
+        return new_exp
+
+    &#34;&#34;&#34;
+        rewrite AVG, VAR, etc. and push all sum or count
+        to child scope, preserving all other portions of
+        expression
+    &#34;&#34;&#34;
+    def rewrite_outer_named_expression(self, ne, scope):
+        name = ne.name
+        exp = ne.expression
+        if type(exp) is not AggFunction:
+            outer_col_exps = exp.find_nodes(Column, AggFunction)
+        else:
+            outer_col_exps = []
+        if type(exp) is Column:
+            outer_col_exps += [exp]
+        for outer_col_exp in outer_col_exps:
+            new_name = scope.push_name(Column(outer_col_exp.name))
+            outer_col_exp.name = new_name
+        agg_exps = exp.find_nodes(AggFunction)
+        if type(exp) is AggFunction:
+            agg_exps = agg_exps + [exp]
+        for agg_exp in agg_exps:
+            child_agg_exps = agg_exp.find_nodes(AggFunction)
+            if len(child_agg_exps) &gt; 0:
+                raise ValueError(&#34;Cannot have nested aggregate functions: &#34; + str(agg_exp))
+            agg_func = agg_exp.name
+            if agg_func in [&#34;SUM&#34;, &#34;COUNT&#34;]:
+                new_exp = self.push_sum_or_count(agg_exp, scope)
+            elif agg_func == &#34;AVG&#34;:
+                new_exp = self.calculate_avg(agg_exp, scope)
+            elif agg_func in [&#34;VAR&#34;,&#34;VARIANCE&#34;]:
+                new_exp = self.calculate_variance(agg_exp, scope)
+            elif agg_func in [&#34;STD&#34;,&#34;STDDEV&#34;]:
+                new_exp = self.calculate_stddev(agg_exp, scope)
+            else:
+                raise ValueError(&#34;We don&#39;t know how to rewrite aggregate function: &#34; + str(agg_exp))
+            agg_exp.name = &#34;&#34;
+            agg_exp.quantifier = None
+            agg_exp.expression = new_exp
+        return NamedExpression(name, exp)
+
+
+    def query(self, query):
+        query = QueryParser(self.metadata).query(str(query))
+        Validate().validateQuery(query, self.metadata)
+
+        child_scope = Scope()
+        # we make sure aggregates are in select scope for subqueries
+        if query.agg is not None:
+            for ge in query.agg.groupingExpressions:
+                child_scope.push_name(ge.expression)
+
+        select = Seq([self.rewrite_outer_named_expression(ne, child_scope) for ne in query.select.namedExpressions])
+        select = Select(None, select)
+
+        subquery = Query(child_scope.select(), query.source, query.where, query.agg, query.having, None, None)
+        subquery = self.exact_aggregates(subquery)
+        subquery = [AliasedRelation(subquery, &#34;exact_aggregates&#34;)]
+
+        q = Query(select, From(subquery), None, query.agg, None, query.order, query.limit)
+
+        return QueryParser(self.metadata).query(str(q))
+
+    def exact_aggregates(self, query):
+
+        key_col = self.key_col(query)
+
+        child_scope = Scope()
+
+        keycount_expr = AggFunction(&#34;COUNT&#34;, &#34;DISTINCT&#34;, Column(key_col))
+        child_scope.push_name(keycount_expr.expression)
+        keycount = NamedExpression(&#34;keycount&#34;, keycount_expr) # need to either treat this as reserved or pass through to outer
+
+        select = Seq([keycount] + [self.rewrite_outer_named_expression(ne, child_scope) for ne in query.select.namedExpressions])
+        select = Select(None, select)
+
+        subquery = Query(child_scope.select(), query.source, query.where, query.agg, query.having, None, None)
+        if self.options.reservoir_sample:
+            subquery = self.per_key_random(subquery)
+            subquery = [AliasedRelation(subquery, &#34;per_key_random&#34;)]
+
+            filtered = Where(BooleanCompare(Column(&#34;per_key_random.row_num&#34;), &#34;&lt;=&#34;, Literal(str(self.options.max_contrib), self.options.max_contrib)))
+            return Query(select, From(subquery), filtered, query.agg, None, None, None)
+        else:
+            subquery = self.per_key_clamped(subquery)
+            subquery = [AliasedRelation(subquery, &#34;per_key_all&#34;)]
+            return Query(select, From(subquery), None, query.agg, None, None, None)
+
+    def per_key_random(self, query):
+        key_col = self.key_col(query)
+
+        select = Seq([NamedExpression(None, AllColumns()), NamedExpression(&#34;row_num&#34;, Expression(&#34;ROW_NUMBER() OVER (PARTITION BY {0} ORDER BY random())&#34;.format(key_col)))])
+        select = Select(None, select)
+
+        subquery = self.per_key_clamped(query)
+        subquery = [AliasedRelation(subquery, &#34;per_key_clamped&#34;)]
+
+        return Query(select, From(subquery), None, None, None, None, None)
+
+
+    def per_key_clamped(self, query):
+
+        key_col = self.key_col(query)
+
+        child_scope = Scope()
+
+        keygroup = [GroupingExpression(Column(key_col))] + (query.agg.groupingExpressions.seq if query.agg is not None else [])
+        new_agg = Aggregate(Seq(keygroup))
+
+        relations = query.source.relations
+
+        select = Seq([self.clampExpression(ne, relations, child_scope, self.options.clamp_columns) for ne in query.select.namedExpressions])
+        select = Select(None, select)
+        subquery = Query(child_scope.select(), query.source, query.where, None, None, None, None)
+
+        if self.options.clamp_columns:
+            subquery = [AliasedRelation(subquery, &#34;clamped&#34;)]
+        else:
+            subquery = [AliasedRelation(subquery, &#34;not_clamped&#34;)]
+
+        return Query(select, From(subquery), None, new_agg, None, None, None)
+
+
+    &#34;&#34;&#34;
+        Lookup the expression referenced in each named expression and
+        write a clamped select for it, using the schema
+    &#34;&#34;&#34;
+    def clampExpression(self, ne, relations, scope, do_clamp=True):
+        exp = ne.expression
+        cols = exp.find_nodes(Column)
+        if type(exp) is Column:
+            cols += [exp]
+        for col in cols:
+            colname = col.name
+            minval = None
+            maxval = None
+            sym = col.symbol(relations)
+            if do_clamp and sym.valtype in [&#34;float&#34;, &#34;int&#34;] and not sym.unbounded:
+                minval = sym.minval
+                maxval = sym.maxval
+                if minval is None or sym.is_key:
+                    cexpr = Column(colname)
+                    ce_name = scope.push_name(cexpr, str(colname))
+                else:
+                    clamped_string = &#34;CASE WHEN {0} &lt; {1} THEN {1} WHEN {0} &gt; {2} THEN {2} ELSE {0} END&#34;.format(str(colname), minval, maxval)
+                    cexpr = Expression(clamped_string)
+                    ce_name = scope.push_name(cexpr, str(colname))
+            else:
+                cexpr = Column(colname)
+                ce_name = scope.push_name(cexpr, str(colname))
+            col.name = ce_name
+        return ne
+
+    &#34;&#34;&#34;
+        Return the key column, given a from clause
+    &#34;&#34;&#34;
+    def key_col(self, query):
+        rsyms = query.source.relations[0].all_symbols(AllColumns())
+        tcsyms = [r for name, r in rsyms if type(r) is TableColumn]
+        keys = [str(tc) for tc in tcsyms if tc.is_key]
+        if len(keys) &gt; 1:
+            raise ValueError(&#34;We only know how to handle tables with one key: &#34; + str(keys))
+        elif len(keys) &lt; 1:
+            raise ValueError(&#34;No key column available in query relations&#34;)
+
+        kp = keys[0].split(&#34;.&#34;)
+        return kp[len(kp) - 1]</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.sql.Rewriter.calculate_avg"><code class="name flex">
+<span>def <span class="ident">calculate_avg</span></span>(<span>self, exp, scope)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def calculate_avg(self, exp, scope):
+    expr = exp.expression
+    quant = exp.quantifier
+
+    sum_expr = self.push_sum_or_count(AggFunction(&#34;SUM&#34;, quant, expr), scope)
+    count_expr = self.push_sum_or_count(AggFunction(&#34;COUNT&#34;, quant, expr), scope)
+
+    new_exp = NestedExpression(ArithmeticExpression(sum_expr, &#34;/&#34;, count_expr))
+    return new_exp</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.Rewriter.calculate_stddev"><code class="name flex">
+<span>def <span class="ident">calculate_stddev</span></span>(<span>self, exp, scope)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def calculate_stddev(self, exp, scope):
+    expr = AggFunction(&#39;STD&#39;, exp.quantifier, exp.expression)
+    var_expr = self.calculate_variance(expr, scope)
+
+    new_exp = MathFunction(&#34;SQRT&#34;, var_expr)
+    return new_exp</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.Rewriter.calculate_variance"><code class="name flex">
+<span>def <span class="ident">calculate_variance</span></span>(<span>self, exp, scope)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def calculate_variance(self, exp, scope):
+    expr = exp.expression
+    quant = exp.quantifier
+
+    avg_of_square = self.calculate_avg(AggFunction(&#34;AVG&#34;, quant, ArithmeticExpression(expr, &#39;*&#39;, expr)), scope)
+    avg = self.calculate_avg(AggFunction(&#34;AVG&#34;, quant, expr), scope)
+    avg_squared = ArithmeticExpression(avg, &#39;*&#39;, avg)
+
+    new_exp = ArithmeticExpression(avg_of_square, &#34;-&#34;, avg_squared)
+    return new_exp</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.Rewriter.clampExpression"><code class="name flex">
+<span>def <span class="ident">clampExpression</span></span>(<span>self, ne, relations, scope, do_clamp=True)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def clampExpression(self, ne, relations, scope, do_clamp=True):
+    exp = ne.expression
+    cols = exp.find_nodes(Column)
+    if type(exp) is Column:
+        cols += [exp]
+    for col in cols:
+        colname = col.name
+        minval = None
+        maxval = None
+        sym = col.symbol(relations)
+        if do_clamp and sym.valtype in [&#34;float&#34;, &#34;int&#34;] and not sym.unbounded:
+            minval = sym.minval
+            maxval = sym.maxval
+            if minval is None or sym.is_key:
+                cexpr = Column(colname)
+                ce_name = scope.push_name(cexpr, str(colname))
+            else:
+                clamped_string = &#34;CASE WHEN {0} &lt; {1} THEN {1} WHEN {0} &gt; {2} THEN {2} ELSE {0} END&#34;.format(str(colname), minval, maxval)
+                cexpr = Expression(clamped_string)
+                ce_name = scope.push_name(cexpr, str(colname))
+        else:
+            cexpr = Column(colname)
+            ce_name = scope.push_name(cexpr, str(colname))
+        col.name = ce_name
+    return ne</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.Rewriter.exact_aggregates"><code class="name flex">
+<span>def <span class="ident">exact_aggregates</span></span>(<span>self, query)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def exact_aggregates(self, query):
+
+    key_col = self.key_col(query)
+
+    child_scope = Scope()
+
+    keycount_expr = AggFunction(&#34;COUNT&#34;, &#34;DISTINCT&#34;, Column(key_col))
+    child_scope.push_name(keycount_expr.expression)
+    keycount = NamedExpression(&#34;keycount&#34;, keycount_expr) # need to either treat this as reserved or pass through to outer
+
+    select = Seq([keycount] + [self.rewrite_outer_named_expression(ne, child_scope) for ne in query.select.namedExpressions])
+    select = Select(None, select)
+
+    subquery = Query(child_scope.select(), query.source, query.where, query.agg, query.having, None, None)
+    if self.options.reservoir_sample:
+        subquery = self.per_key_random(subquery)
+        subquery = [AliasedRelation(subquery, &#34;per_key_random&#34;)]
+
+        filtered = Where(BooleanCompare(Column(&#34;per_key_random.row_num&#34;), &#34;&lt;=&#34;, Literal(str(self.options.max_contrib), self.options.max_contrib)))
+        return Query(select, From(subquery), filtered, query.agg, None, None, None)
+    else:
+        subquery = self.per_key_clamped(subquery)
+        subquery = [AliasedRelation(subquery, &#34;per_key_all&#34;)]
+        return Query(select, From(subquery), None, query.agg, None, None, None)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.Rewriter.key_col"><code class="name flex">
+<span>def <span class="ident">key_col</span></span>(<span>self, query)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def key_col(self, query):
+    rsyms = query.source.relations[0].all_symbols(AllColumns())
+    tcsyms = [r for name, r in rsyms if type(r) is TableColumn]
+    keys = [str(tc) for tc in tcsyms if tc.is_key]
+    if len(keys) &gt; 1:
+        raise ValueError(&#34;We only know how to handle tables with one key: &#34; + str(keys))
+    elif len(keys) &lt; 1:
+        raise ValueError(&#34;No key column available in query relations&#34;)
+
+    kp = keys[0].split(&#34;.&#34;)
+    return kp[len(kp) - 1]</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.Rewriter.per_key_clamped"><code class="name flex">
+<span>def <span class="ident">per_key_clamped</span></span>(<span>self, query)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def per_key_clamped(self, query):
+
+    key_col = self.key_col(query)
+
+    child_scope = Scope()
+
+    keygroup = [GroupingExpression(Column(key_col))] + (query.agg.groupingExpressions.seq if query.agg is not None else [])
+    new_agg = Aggregate(Seq(keygroup))
+
+    relations = query.source.relations
+
+    select = Seq([self.clampExpression(ne, relations, child_scope, self.options.clamp_columns) for ne in query.select.namedExpressions])
+    select = Select(None, select)
+    subquery = Query(child_scope.select(), query.source, query.where, None, None, None, None)
+
+    if self.options.clamp_columns:
+        subquery = [AliasedRelation(subquery, &#34;clamped&#34;)]
+    else:
+        subquery = [AliasedRelation(subquery, &#34;not_clamped&#34;)]
+
+    return Query(select, From(subquery), None, new_agg, None, None, None)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.Rewriter.per_key_random"><code class="name flex">
+<span>def <span class="ident">per_key_random</span></span>(<span>self, query)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def per_key_random(self, query):
+    key_col = self.key_col(query)
+
+    select = Seq([NamedExpression(None, AllColumns()), NamedExpression(&#34;row_num&#34;, Expression(&#34;ROW_NUMBER() OVER (PARTITION BY {0} ORDER BY random())&#34;.format(key_col)))])
+    select = Select(None, select)
+
+    subquery = self.per_key_clamped(query)
+    subquery = [AliasedRelation(subquery, &#34;per_key_clamped&#34;)]
+
+    return Query(select, From(subquery), None, None, None, None, None)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.Rewriter.push_sum_or_count"><code class="name flex">
+<span>def <span class="ident">push_sum_or_count</span></span>(<span>self, exp, scope)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def push_sum_or_count(self, exp, scope):
+    new_name = scope.push_name(AggFunction(exp.name, exp.quantifier, exp.expression))
+
+    new_exp = AggFunction(&#34;SUM&#34;, None, Column(new_name))
+    return new_exp</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.Rewriter.query"><code class="name flex">
+<span>def <span class="ident">query</span></span>(<span>self, query)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def query(self, query):
+    query = QueryParser(self.metadata).query(str(query))
+    Validate().validateQuery(query, self.metadata)
+
+    child_scope = Scope()
+    # we make sure aggregates are in select scope for subqueries
+    if query.agg is not None:
+        for ge in query.agg.groupingExpressions:
+            child_scope.push_name(ge.expression)
+
+    select = Seq([self.rewrite_outer_named_expression(ne, child_scope) for ne in query.select.namedExpressions])
+    select = Select(None, select)
+
+    subquery = Query(child_scope.select(), query.source, query.where, query.agg, query.having, None, None)
+    subquery = self.exact_aggregates(subquery)
+    subquery = [AliasedRelation(subquery, &#34;exact_aggregates&#34;)]
+
+    q = Query(select, From(subquery), None, query.agg, None, query.order, query.limit)
+
+    return QueryParser(self.metadata).query(str(q))</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.Rewriter.rewrite_outer_named_expression"><code class="name flex">
+<span>def <span class="ident">rewrite_outer_named_expression</span></span>(<span>self, ne, scope)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def rewrite_outer_named_expression(self, ne, scope):
+    name = ne.name
+    exp = ne.expression
+    if type(exp) is not AggFunction:
+        outer_col_exps = exp.find_nodes(Column, AggFunction)
+    else:
+        outer_col_exps = []
+    if type(exp) is Column:
+        outer_col_exps += [exp]
+    for outer_col_exp in outer_col_exps:
+        new_name = scope.push_name(Column(outer_col_exp.name))
+        outer_col_exp.name = new_name
+    agg_exps = exp.find_nodes(AggFunction)
+    if type(exp) is AggFunction:
+        agg_exps = agg_exps + [exp]
+    for agg_exp in agg_exps:
+        child_agg_exps = agg_exp.find_nodes(AggFunction)
+        if len(child_agg_exps) &gt; 0:
+            raise ValueError(&#34;Cannot have nested aggregate functions: &#34; + str(agg_exp))
+        agg_func = agg_exp.name
+        if agg_func in [&#34;SUM&#34;, &#34;COUNT&#34;]:
+            new_exp = self.push_sum_or_count(agg_exp, scope)
+        elif agg_func == &#34;AVG&#34;:
+            new_exp = self.calculate_avg(agg_exp, scope)
+        elif agg_func in [&#34;VAR&#34;,&#34;VARIANCE&#34;]:
+            new_exp = self.calculate_variance(agg_exp, scope)
+        elif agg_func in [&#34;STD&#34;,&#34;STDDEV&#34;]:
+            new_exp = self.calculate_stddev(agg_exp, scope)
+        else:
+            raise ValueError(&#34;We don&#39;t know how to rewrite aggregate function: &#34; + str(agg_exp))
+        agg_exp.name = &#34;&#34;
+        agg_exp.quantifier = None
+        agg_exp.expression = new_exp
+    return NamedExpression(name, exp)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="burdock" href="../index.html">burdock</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-submodules">Sub-modules</a></h3>
+<ul>
+<li><code><a title="burdock.sql.ast" href="ast/index.html">burdock.sql.ast</a></code></li>
+<li><code><a title="burdock.sql.parse" href="parse.html">burdock.sql.parse</a></code></li>
+<li><code><a title="burdock.sql.parser" href="parser/index.html">burdock.sql.parser</a></code></li>
+<li><code><a title="burdock.sql.private_reader" href="private_reader.html">burdock.sql.private_reader</a></code></li>
+<li><code><a title="burdock.sql.private_rewriter" href="private_rewriter.html">burdock.sql.private_rewriter</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="burdock.sql.execute_private_query" href="#burdock.sql.execute_private_query">execute_private_query</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="burdock.sql.CollectionMetadata" href="#burdock.sql.CollectionMetadata">CollectionMetadata</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.sql.CollectionMetadata.from_dict" href="#burdock.sql.CollectionMetadata.from_dict">from_dict</a></code></li>
+<li><code><a title="burdock.sql.CollectionMetadata.from_file" href="#burdock.sql.CollectionMetadata.from_file">from_file</a></code></li>
+<li><code><a title="burdock.sql.CollectionMetadata.tables" href="#burdock.sql.CollectionMetadata.tables">tables</a></code></li>
+<li><code><a title="burdock.sql.CollectionMetadata.to_file" href="#burdock.sql.CollectionMetadata.to_file">to_file</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.sql.PandasReader" href="#burdock.sql.PandasReader">PandasReader</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.sql.PandasReader.db_name" href="#burdock.sql.PandasReader.db_name">db_name</a></code></li>
+<li><code><a title="burdock.sql.PandasReader.execute" href="#burdock.sql.PandasReader.execute">execute</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.sql.QueryParser" href="#burdock.sql.QueryParser">QueryParser</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.sql.QueryParser.parse_expression" href="#burdock.sql.QueryParser.parse_expression">parse_expression</a></code></li>
+<li><code><a title="burdock.sql.QueryParser.parse_named_expressions" href="#burdock.sql.QueryParser.parse_named_expressions">parse_named_expressions</a></code></li>
+<li><code><a title="burdock.sql.QueryParser.parse_only" href="#burdock.sql.QueryParser.parse_only">parse_only</a></code></li>
+<li><code><a title="burdock.sql.QueryParser.queries" href="#burdock.sql.QueryParser.queries">queries</a></code></li>
+<li><code><a title="burdock.sql.QueryParser.query" href="#burdock.sql.QueryParser.query">query</a></code></li>
+<li><code><a title="burdock.sql.QueryParser.start_parser" href="#burdock.sql.QueryParser.start_parser">start_parser</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.sql.Rewriter" href="#burdock.sql.Rewriter">Rewriter</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.sql.Rewriter.calculate_avg" href="#burdock.sql.Rewriter.calculate_avg">calculate_avg</a></code></li>
+<li><code><a title="burdock.sql.Rewriter.calculate_stddev" href="#burdock.sql.Rewriter.calculate_stddev">calculate_stddev</a></code></li>
+<li><code><a title="burdock.sql.Rewriter.calculate_variance" href="#burdock.sql.Rewriter.calculate_variance">calculate_variance</a></code></li>
+<li><code><a title="burdock.sql.Rewriter.clampExpression" href="#burdock.sql.Rewriter.clampExpression">clampExpression</a></code></li>
+<li><code><a title="burdock.sql.Rewriter.exact_aggregates" href="#burdock.sql.Rewriter.exact_aggregates">exact_aggregates</a></code></li>
+<li><code><a title="burdock.sql.Rewriter.key_col" href="#burdock.sql.Rewriter.key_col">key_col</a></code></li>
+<li><code><a title="burdock.sql.Rewriter.per_key_clamped" href="#burdock.sql.Rewriter.per_key_clamped">per_key_clamped</a></code></li>
+<li><code><a title="burdock.sql.Rewriter.per_key_random" href="#burdock.sql.Rewriter.per_key_random">per_key_random</a></code></li>
+<li><code><a title="burdock.sql.Rewriter.push_sum_or_count" href="#burdock.sql.Rewriter.push_sum_or_count">push_sum_or_count</a></code></li>
+<li><code><a title="burdock.sql.Rewriter.query" href="#burdock.sql.Rewriter.query">query</a></code></li>
+<li><code><a title="burdock.sql.Rewriter.rewrite_outer_named_expression" href="#burdock.sql.Rewriter.rewrite_outer_named_expression">rewrite_outer_named_expression</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.5</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

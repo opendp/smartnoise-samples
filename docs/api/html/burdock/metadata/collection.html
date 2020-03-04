@@ -1,0 +1,1123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.5" />
+<title>burdock.metadata.collection API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>burdock.metadata.collection</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import importlib
+import yaml
+from burdock.reader.sql.base import NameCompare
+
+# implements spec at https://docs.google.com/document/d/1Q4lUKyEu2W9qQKq6A0dbo0dohgSUxitbdGhX97sUNOM/
+
+class CollectionMetadata:
+    def __init__(self, tables, engine, compare=None):
+        self.m_tables = dict([(t.table_name(), t) for t in tables])
+        self.engine = engine if engine is not None else &#34;Unknown&#34;
+        self.compare = NameCompare.get_name_compare(engine) if compare is None else compare
+
+    def __getitem__(self, tablename):
+        schema_name = &#39;&#39;
+        parts = tablename.split(&#39;.&#39;)
+        if len(parts) == 2:
+            schema_name, tablename = parts
+        for tname in self.m_tables.keys():
+            table = self.m_tables[tname]
+            if self.compare.schema_match(schema_name, table.schema) and self.compare.identifier_match(tablename, table.name):
+                table.compare = self.compare
+                return table
+        return None
+    def __str__(self):
+        return &#34;\n\n&#34;.join([str(self.m_tables[table]) for table in self.m_tables.keys()])
+    def tables(self):
+        return [self.m_tables[tname] for tname in self.m_tables.keys()]
+
+    @staticmethod
+    def from_file(filename):
+        ys = CollectionYamlLoader(filename)
+        return ys.read_file()
+
+    @staticmethod
+    def from_dict(schema_dict):
+        ys = CollectionYamlLoader(&#34;dummy&#34;)
+        return ys._create_metadata_object(schema_dict)
+
+    def to_file(self, filename, collection_name):
+        ys = CollectionYamlLoader(filename)
+        ys.write_file(self, collection_name)
+
+&#34;&#34;&#34;
+    Common attributes for a table or a view
+&#34;&#34;&#34;
+class Table:
+    def __init__(self, schema, name, rowcount, columns, row_privacy=False, max_ids=1, sample_max_ids=True, rows_exact=None):
+        self.schema = schema
+        self.name = name
+        self.rowcount = rowcount
+        self.row_privacy = row_privacy
+        self.max_ids = max_ids
+        self.sample_max_ids = sample_max_ids
+        self.rows_exact = rows_exact
+        self.m_columns = dict([(c.name, c) for c in columns])
+        self.compare = None
+    def __getitem__(self, colname):
+        for cname in self.m_columns.keys():
+            col = self.m_columns[cname]
+            if self.compare is None:
+                # the database will attach the engine-specific comparer usually
+                self.compare = NameCompare()
+            if self.compare.identifier_match(colname, col.name):
+                return col
+        return None
+    def __str__(self):
+        return str(self.schema) + &#34;.&#34; + str(self.name) + &#34; [&#34; + str(self.rowcount) + &#34; rows]\n\t&#34; + &#34;\n\t&#34;.join([str(self.m_columns[col]) for col in self.m_columns.keys()])
+    def key_cols(self):
+        return [self.m_columns[name] for name in self.m_columns.keys() if self.m_columns[name].is_key == True]
+    def columns(self):
+        return [self.m_columns[name] for name in self.m_columns.keys()]
+    def table_name(self):
+        return (self.schema + &#34;.&#34; if len(self.schema.strip()) &gt; 0 else &#34;&#34;) + self.name
+
+class String:
+    def __init__(self, name, card, is_key = False, bounded = False):
+        self.name = name
+        self.card = card
+        self.is_key = is_key
+        self.bounded = bounded
+    def __str__(self):
+        return (&#34;*&#34; if self.is_key else &#34;&#34;) + str(self.name) + &#34; (card: &#34; + str(self.card) + &#34;)&#34;
+    def typename(self):
+        return &#34;string&#34;
+
+class Boolean:
+    def __init__(self, name, is_key = False, bounded = False):
+        self.name = name
+        self.is_key = is_key
+        self.bounded = bounded
+    def __str__(self):
+        return (&#34;*&#34; if self.is_key else &#34;&#34;) + str(self.name) + &#34; (boolean)&#34;
+    def typename(self):
+        return &#34;boolean&#34;
+
+class DateTime:
+    def __init__(self, name, is_key = False, bounded = False):
+        self.name = name
+        self.is_key = is_key
+        self.bounded = bounded
+    def __str__(self):
+        return (&#34;*&#34; if self.is_key else &#34;&#34;) + str(self.name) + &#34; (datetime)&#34;
+    def typename(self):
+        return &#34;datetime&#34;
+
+class Int:
+    def __init__(self, name, minval = None, maxval = None, is_key = False, bounded = False):
+        self.name = name
+        self.minval = minval
+        self.maxval = maxval
+        self.is_key = is_key
+        self.unbounded = minval is None or maxval is None
+        self.bounded = bounded
+    def __str__(self):
+        bounds = &#34;unbounded&#34; if self.unbounded else str(self.minval) + &#34;,&#34; + str(self.maxval) 
+        return (&#34;*&#34; if self.is_key else &#34;&#34;) + str(self.name) + &#34; [int] (&#34; + bounds + &#34;)&#34;
+    def typename(self):
+        return &#34;int&#34;
+
+class Float:
+    def __init__(self, name, minval = None, maxval = None, is_key = False, bounded = False):
+        self.name = name
+        self.minval = minval
+        self.maxval = maxval
+        self.is_key = is_key
+        self.unbounded = minval is None or maxval is None
+        self.bounded = bounded
+    def __str__(self):
+        bounds = &#34;unbounded&#34; if self.unbounded else str(self.minval) + &#34;,&#34; + str(self.maxval) 
+        return (&#34;*&#34; if self.is_key else &#34;&#34;) + str(self.name) + &#34; [float] (&#34; + bounds + &#34;)&#34;
+    def typename(self):
+        return &#34;float&#34;
+
+class Unknown:
+    def __init__(self, name):
+        self.name = name
+        self.is_key = False
+    def __str__(self):
+        return str(self.name) + &#34; (unknown)&#34;
+    def typename(self):
+        return &#34;unknown&#34;
+
+
+class CollectionYamlLoader:
+    def __init__(self, filename):
+        self.filename = filename
+
+    def read_file(self):
+        with open(self.filename, &#39;r&#39;) as stream:
+            try:
+                c_s = yaml.safe_load(stream)
+            except yaml.YAMLError as exc:
+                print(exc)
+        return self._create_metadata_object(c_s)
+
+    def _create_metadata_object(self, c_s):
+        keys = list(c_s.keys())
+        engine = &#34;Unknown&#34;
+
+        if len(keys) == 0:
+            raise ValueError(&#34;No collections in YAML file!&#34;)
+
+        if len(keys) == 1:
+            collection = keys[0]
+        elif len(keys) &gt; 2:
+            raise ValueError(&#34;Please include only one collection per config file: &#34; + str(keys))
+        else:  # we have two keys; one should be engine
+            if &#39;engine&#39; not in keys:
+                raise ValueError(&#34;Please include only one collection per config file: &#34; + str(keys))
+            engine = c_s[&#39;engine&#39;]
+            collection = [k for k in keys if k != &#39;engine&#39;][0]
+
+        db = c_s[collection]
+
+        tables = []
+
+        for schema in db.keys():
+            s = db[schema]
+            for table in s.keys():
+                t = s[table]
+                tables.append(self.load_table(schema, table, t))
+
+        return CollectionMetadata(tables, engine)
+
+    def load_table(self, schema, table, t):
+        rowcount = int(t[&#34;rows&#34;]) if &#34;rows&#34; in t else 0
+        rows_exact = int(t[&#34;rows_exact&#34;]) if &#34;rows_exact&#34; in t else None
+        row_privacy = bool(t[&#34;row_privacy&#34;]) if &#34;row_privacy&#34; in t else False
+        max_ids = int(t[&#34;max_ids&#34;]) if &#34;max_ids&#34; in t else 1
+        sample_max_ids = bool(t[&#34;sample_max_ids&#34;]) if &#34;sample_max_ids&#34; in t else None
+
+        columns = []
+        colnames = [cn for cn in t.keys() if cn != &#34;rows&#34;]
+        for column in colnames:
+            columns.append(self.load_column(column, t[column]))
+
+        return Table(schema, table, rowcount, columns, row_privacy, max_ids, sample_max_ids, rows_exact)
+
+    def load_column(self, column, c):
+        is_key = False if &#34;private_id&#34; not in c else bool(c[&#34;private_id&#34;])
+        bounded = False if &#34;bounded&#34; not in c else bool(c[&#34;bounded&#34;])
+
+        if c[&#34;type&#34;] == &#34;boolean&#34;:
+            return Boolean(column, is_key, bounded)
+        elif c[&#34;type&#34;] == &#34;datetime&#34;:
+            return DateTime(column, is_key, bounded)
+        elif c[&#34;type&#34;] == &#34;int&#34;:
+            minval = int(c[&#34;lower&#34;]) if &#34;lower&#34; in c else None
+            maxval = int(c[&#34;upper&#34;]) if &#34;upper&#34; in c else None
+            return Int(column, minval, maxval, is_key, bounded)
+        elif c[&#34;type&#34;] == &#34;float&#34;:
+            minval = float(c[&#34;lower&#34;]) if &#34;lower&#34; in c else None
+            maxval = float(c[&#34;upper&#34;]) if &#34;upper&#34; in c else None
+            return Float(column, minval, maxval, is_key, bounded)
+        elif c[&#34;type&#34;] == &#34;string&#34;:
+            card = int(c[&#34;cardinality&#34;]) if &#34;cardinality&#34; in c else 0
+            return String(column, card, is_key, bounded)
+        else:
+            raise ValueError(&#34;Unknown column type for column {0}: {1}&#34;.format(column, c))
+
+    def write_file(self, collection_metadata, collection_name):
+
+        engine = collection_metadata.engine
+        schemas = {}
+        for t in collection_metadata.tables():
+            schema_name = t.schema
+            table_name = t.name
+            if schema_name not in schemas:
+                schemas[schema_name] = {}
+            schema = schemas[schema_name]
+            if table_name in schema:
+                raise ValueError(&#34;Attempt to insert table with same name twice: &#34; + schema_name + table_name)
+            schema[table_name] = {}
+            table = schema[table_name]
+            table[&#34;rows&#34;] = t.rowcount
+            if t.row_privacy is not None: 
+                table[&#34;row_privacy&#34;] = t.row_privacy
+            if t.max_ids is not None: 
+                table[&#34;max_ids&#34;] = t.max_ids
+            if t.sample_max_ids is not None: 
+                table[&#34;sample_max_ids&#34;] = t.sample_max_ids
+            if t.rows_exact is not None:
+                table[&#34;rows_exact&#34;] = t.rows_exact
+
+            for c in t.columns():
+                cname = c.name
+                if cname in table:
+                    raise ValueError(&#34;Duplicate column name {0} in table {1}&#34;.format(cname, table_name))
+                table[cname] = {}
+                column = table[cname]
+                if hasattr(c, &#34;bounded&#34;) and c.bounded == True:
+                    column[&#34;bounded&#34;] = c.bounded
+                if hasattr(c, &#34;card&#34;):
+                    column[&#34;cardinality&#34;] = c.card
+                if hasattr(c, &#34;minval&#34;) and c.minval is not None:
+                    column[&#34;lower&#34;] = c.minval
+                if hasattr(c, &#34;maxval&#34;) and c.maxval is not None:
+                    column[&#34;upper&#34;] = c.maxval
+                if c.is_key is not None and c.is_key == True:
+                    column[&#34;private_id&#34;] = c.is_key
+                if type(c) is String:
+                    column[&#34;type&#34;] = &#34;string&#34;
+                elif type(c) is Int:
+                    column[&#34;type&#34;] = &#34;int&#34;
+                elif type(c) is Float:
+                    column[&#34;type&#34;] = &#34;float&#34;
+                elif type(c) is Boolean:
+                    column[&#34;type&#34;] = &#34;boolean&#34;
+                elif type(c) is DateTime:
+                    column[&#34;type&#34;] = &#34;datetime&#34;
+                elif type(c) is Unknown:
+                    column[&#34;type&#34;] = &#34;unknown&#34;
+                else:
+                    raise ValueError(&#34;Unknown column type: &#34; + str(type(c)))
+        db = {}
+        db[collection_name] = schemas
+        db[&#34;engine&#34;] = collection_metadata.engine
+        with open(self.filename, &#39;w&#39;) as outfile:
+            yaml.dump(db, outfile)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="burdock.metadata.collection.Boolean"><code class="flex name class">
+<span>class <span class="ident">Boolean</span></span>
+<span>(</span><span>name, is_key=False, bounded=False)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Boolean:
+    def __init__(self, name, is_key = False, bounded = False):
+        self.name = name
+        self.is_key = is_key
+        self.bounded = bounded
+    def __str__(self):
+        return (&#34;*&#34; if self.is_key else &#34;&#34;) + str(self.name) + &#34; (boolean)&#34;
+    def typename(self):
+        return &#34;boolean&#34;</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.metadata.collection.Boolean.typename"><code class="name flex">
+<span>def <span class="ident">typename</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def typename(self):
+    return &#34;boolean&#34;</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.metadata.collection.CollectionMetadata"><code class="flex name class">
+<span>class <span class="ident">CollectionMetadata</span></span>
+<span>(</span><span>tables, engine, compare=None)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CollectionMetadata:
+    def __init__(self, tables, engine, compare=None):
+        self.m_tables = dict([(t.table_name(), t) for t in tables])
+        self.engine = engine if engine is not None else &#34;Unknown&#34;
+        self.compare = NameCompare.get_name_compare(engine) if compare is None else compare
+
+    def __getitem__(self, tablename):
+        schema_name = &#39;&#39;
+        parts = tablename.split(&#39;.&#39;)
+        if len(parts) == 2:
+            schema_name, tablename = parts
+        for tname in self.m_tables.keys():
+            table = self.m_tables[tname]
+            if self.compare.schema_match(schema_name, table.schema) and self.compare.identifier_match(tablename, table.name):
+                table.compare = self.compare
+                return table
+        return None
+    def __str__(self):
+        return &#34;\n\n&#34;.join([str(self.m_tables[table]) for table in self.m_tables.keys()])
+    def tables(self):
+        return [self.m_tables[tname] for tname in self.m_tables.keys()]
+
+    @staticmethod
+    def from_file(filename):
+        ys = CollectionYamlLoader(filename)
+        return ys.read_file()
+
+    @staticmethod
+    def from_dict(schema_dict):
+        ys = CollectionYamlLoader(&#34;dummy&#34;)
+        return ys._create_metadata_object(schema_dict)
+
+    def to_file(self, filename, collection_name):
+        ys = CollectionYamlLoader(filename)
+        ys.write_file(self, collection_name)</code></pre>
+</details>
+<h3>Static methods</h3>
+<dl>
+<dt id="burdock.metadata.collection.CollectionMetadata.from_dict"><code class="name flex">
+<span>def <span class="ident">from_dict</span></span>(<span>schema_dict)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def from_dict(schema_dict):
+    ys = CollectionYamlLoader(&#34;dummy&#34;)
+    return ys._create_metadata_object(schema_dict)</code></pre>
+</details>
+</dd>
+<dt id="burdock.metadata.collection.CollectionMetadata.from_file"><code class="name flex">
+<span>def <span class="ident">from_file</span></span>(<span>filename)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def from_file(filename):
+    ys = CollectionYamlLoader(filename)
+    return ys.read_file()</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.metadata.collection.CollectionMetadata.tables"><code class="name flex">
+<span>def <span class="ident">tables</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def tables(self):
+    return [self.m_tables[tname] for tname in self.m_tables.keys()]</code></pre>
+</details>
+</dd>
+<dt id="burdock.metadata.collection.CollectionMetadata.to_file"><code class="name flex">
+<span>def <span class="ident">to_file</span></span>(<span>self, filename, collection_name)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def to_file(self, filename, collection_name):
+    ys = CollectionYamlLoader(filename)
+    ys.write_file(self, collection_name)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.metadata.collection.CollectionYamlLoader"><code class="flex name class">
+<span>class <span class="ident">CollectionYamlLoader</span></span>
+<span>(</span><span>filename)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CollectionYamlLoader:
+    def __init__(self, filename):
+        self.filename = filename
+
+    def read_file(self):
+        with open(self.filename, &#39;r&#39;) as stream:
+            try:
+                c_s = yaml.safe_load(stream)
+            except yaml.YAMLError as exc:
+                print(exc)
+        return self._create_metadata_object(c_s)
+
+    def _create_metadata_object(self, c_s):
+        keys = list(c_s.keys())
+        engine = &#34;Unknown&#34;
+
+        if len(keys) == 0:
+            raise ValueError(&#34;No collections in YAML file!&#34;)
+
+        if len(keys) == 1:
+            collection = keys[0]
+        elif len(keys) &gt; 2:
+            raise ValueError(&#34;Please include only one collection per config file: &#34; + str(keys))
+        else:  # we have two keys; one should be engine
+            if &#39;engine&#39; not in keys:
+                raise ValueError(&#34;Please include only one collection per config file: &#34; + str(keys))
+            engine = c_s[&#39;engine&#39;]
+            collection = [k for k in keys if k != &#39;engine&#39;][0]
+
+        db = c_s[collection]
+
+        tables = []
+
+        for schema in db.keys():
+            s = db[schema]
+            for table in s.keys():
+                t = s[table]
+                tables.append(self.load_table(schema, table, t))
+
+        return CollectionMetadata(tables, engine)
+
+    def load_table(self, schema, table, t):
+        rowcount = int(t[&#34;rows&#34;]) if &#34;rows&#34; in t else 0
+        rows_exact = int(t[&#34;rows_exact&#34;]) if &#34;rows_exact&#34; in t else None
+        row_privacy = bool(t[&#34;row_privacy&#34;]) if &#34;row_privacy&#34; in t else False
+        max_ids = int(t[&#34;max_ids&#34;]) if &#34;max_ids&#34; in t else 1
+        sample_max_ids = bool(t[&#34;sample_max_ids&#34;]) if &#34;sample_max_ids&#34; in t else None
+
+        columns = []
+        colnames = [cn for cn in t.keys() if cn != &#34;rows&#34;]
+        for column in colnames:
+            columns.append(self.load_column(column, t[column]))
+
+        return Table(schema, table, rowcount, columns, row_privacy, max_ids, sample_max_ids, rows_exact)
+
+    def load_column(self, column, c):
+        is_key = False if &#34;private_id&#34; not in c else bool(c[&#34;private_id&#34;])
+        bounded = False if &#34;bounded&#34; not in c else bool(c[&#34;bounded&#34;])
+
+        if c[&#34;type&#34;] == &#34;boolean&#34;:
+            return Boolean(column, is_key, bounded)
+        elif c[&#34;type&#34;] == &#34;datetime&#34;:
+            return DateTime(column, is_key, bounded)
+        elif c[&#34;type&#34;] == &#34;int&#34;:
+            minval = int(c[&#34;lower&#34;]) if &#34;lower&#34; in c else None
+            maxval = int(c[&#34;upper&#34;]) if &#34;upper&#34; in c else None
+            return Int(column, minval, maxval, is_key, bounded)
+        elif c[&#34;type&#34;] == &#34;float&#34;:
+            minval = float(c[&#34;lower&#34;]) if &#34;lower&#34; in c else None
+            maxval = float(c[&#34;upper&#34;]) if &#34;upper&#34; in c else None
+            return Float(column, minval, maxval, is_key, bounded)
+        elif c[&#34;type&#34;] == &#34;string&#34;:
+            card = int(c[&#34;cardinality&#34;]) if &#34;cardinality&#34; in c else 0
+            return String(column, card, is_key, bounded)
+        else:
+            raise ValueError(&#34;Unknown column type for column {0}: {1}&#34;.format(column, c))
+
+    def write_file(self, collection_metadata, collection_name):
+
+        engine = collection_metadata.engine
+        schemas = {}
+        for t in collection_metadata.tables():
+            schema_name = t.schema
+            table_name = t.name
+            if schema_name not in schemas:
+                schemas[schema_name] = {}
+            schema = schemas[schema_name]
+            if table_name in schema:
+                raise ValueError(&#34;Attempt to insert table with same name twice: &#34; + schema_name + table_name)
+            schema[table_name] = {}
+            table = schema[table_name]
+            table[&#34;rows&#34;] = t.rowcount
+            if t.row_privacy is not None: 
+                table[&#34;row_privacy&#34;] = t.row_privacy
+            if t.max_ids is not None: 
+                table[&#34;max_ids&#34;] = t.max_ids
+            if t.sample_max_ids is not None: 
+                table[&#34;sample_max_ids&#34;] = t.sample_max_ids
+            if t.rows_exact is not None:
+                table[&#34;rows_exact&#34;] = t.rows_exact
+
+            for c in t.columns():
+                cname = c.name
+                if cname in table:
+                    raise ValueError(&#34;Duplicate column name {0} in table {1}&#34;.format(cname, table_name))
+                table[cname] = {}
+                column = table[cname]
+                if hasattr(c, &#34;bounded&#34;) and c.bounded == True:
+                    column[&#34;bounded&#34;] = c.bounded
+                if hasattr(c, &#34;card&#34;):
+                    column[&#34;cardinality&#34;] = c.card
+                if hasattr(c, &#34;minval&#34;) and c.minval is not None:
+                    column[&#34;lower&#34;] = c.minval
+                if hasattr(c, &#34;maxval&#34;) and c.maxval is not None:
+                    column[&#34;upper&#34;] = c.maxval
+                if c.is_key is not None and c.is_key == True:
+                    column[&#34;private_id&#34;] = c.is_key
+                if type(c) is String:
+                    column[&#34;type&#34;] = &#34;string&#34;
+                elif type(c) is Int:
+                    column[&#34;type&#34;] = &#34;int&#34;
+                elif type(c) is Float:
+                    column[&#34;type&#34;] = &#34;float&#34;
+                elif type(c) is Boolean:
+                    column[&#34;type&#34;] = &#34;boolean&#34;
+                elif type(c) is DateTime:
+                    column[&#34;type&#34;] = &#34;datetime&#34;
+                elif type(c) is Unknown:
+                    column[&#34;type&#34;] = &#34;unknown&#34;
+                else:
+                    raise ValueError(&#34;Unknown column type: &#34; + str(type(c)))
+        db = {}
+        db[collection_name] = schemas
+        db[&#34;engine&#34;] = collection_metadata.engine
+        with open(self.filename, &#39;w&#39;) as outfile:
+            yaml.dump(db, outfile)</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.metadata.collection.CollectionYamlLoader.load_column"><code class="name flex">
+<span>def <span class="ident">load_column</span></span>(<span>self, column, c)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load_column(self, column, c):
+    is_key = False if &#34;private_id&#34; not in c else bool(c[&#34;private_id&#34;])
+    bounded = False if &#34;bounded&#34; not in c else bool(c[&#34;bounded&#34;])
+
+    if c[&#34;type&#34;] == &#34;boolean&#34;:
+        return Boolean(column, is_key, bounded)
+    elif c[&#34;type&#34;] == &#34;datetime&#34;:
+        return DateTime(column, is_key, bounded)
+    elif c[&#34;type&#34;] == &#34;int&#34;:
+        minval = int(c[&#34;lower&#34;]) if &#34;lower&#34; in c else None
+        maxval = int(c[&#34;upper&#34;]) if &#34;upper&#34; in c else None
+        return Int(column, minval, maxval, is_key, bounded)
+    elif c[&#34;type&#34;] == &#34;float&#34;:
+        minval = float(c[&#34;lower&#34;]) if &#34;lower&#34; in c else None
+        maxval = float(c[&#34;upper&#34;]) if &#34;upper&#34; in c else None
+        return Float(column, minval, maxval, is_key, bounded)
+    elif c[&#34;type&#34;] == &#34;string&#34;:
+        card = int(c[&#34;cardinality&#34;]) if &#34;cardinality&#34; in c else 0
+        return String(column, card, is_key, bounded)
+    else:
+        raise ValueError(&#34;Unknown column type for column {0}: {1}&#34;.format(column, c))</code></pre>
+</details>
+</dd>
+<dt id="burdock.metadata.collection.CollectionYamlLoader.load_table"><code class="name flex">
+<span>def <span class="ident">load_table</span></span>(<span>self, schema, table, t)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load_table(self, schema, table, t):
+    rowcount = int(t[&#34;rows&#34;]) if &#34;rows&#34; in t else 0
+    rows_exact = int(t[&#34;rows_exact&#34;]) if &#34;rows_exact&#34; in t else None
+    row_privacy = bool(t[&#34;row_privacy&#34;]) if &#34;row_privacy&#34; in t else False
+    max_ids = int(t[&#34;max_ids&#34;]) if &#34;max_ids&#34; in t else 1
+    sample_max_ids = bool(t[&#34;sample_max_ids&#34;]) if &#34;sample_max_ids&#34; in t else None
+
+    columns = []
+    colnames = [cn for cn in t.keys() if cn != &#34;rows&#34;]
+    for column in colnames:
+        columns.append(self.load_column(column, t[column]))
+
+    return Table(schema, table, rowcount, columns, row_privacy, max_ids, sample_max_ids, rows_exact)</code></pre>
+</details>
+</dd>
+<dt id="burdock.metadata.collection.CollectionYamlLoader.read_file"><code class="name flex">
+<span>def <span class="ident">read_file</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def read_file(self):
+    with open(self.filename, &#39;r&#39;) as stream:
+        try:
+            c_s = yaml.safe_load(stream)
+        except yaml.YAMLError as exc:
+            print(exc)
+    return self._create_metadata_object(c_s)</code></pre>
+</details>
+</dd>
+<dt id="burdock.metadata.collection.CollectionYamlLoader.write_file"><code class="name flex">
+<span>def <span class="ident">write_file</span></span>(<span>self, collection_metadata, collection_name)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def write_file(self, collection_metadata, collection_name):
+
+    engine = collection_metadata.engine
+    schemas = {}
+    for t in collection_metadata.tables():
+        schema_name = t.schema
+        table_name = t.name
+        if schema_name not in schemas:
+            schemas[schema_name] = {}
+        schema = schemas[schema_name]
+        if table_name in schema:
+            raise ValueError(&#34;Attempt to insert table with same name twice: &#34; + schema_name + table_name)
+        schema[table_name] = {}
+        table = schema[table_name]
+        table[&#34;rows&#34;] = t.rowcount
+        if t.row_privacy is not None: 
+            table[&#34;row_privacy&#34;] = t.row_privacy
+        if t.max_ids is not None: 
+            table[&#34;max_ids&#34;] = t.max_ids
+        if t.sample_max_ids is not None: 
+            table[&#34;sample_max_ids&#34;] = t.sample_max_ids
+        if t.rows_exact is not None:
+            table[&#34;rows_exact&#34;] = t.rows_exact
+
+        for c in t.columns():
+            cname = c.name
+            if cname in table:
+                raise ValueError(&#34;Duplicate column name {0} in table {1}&#34;.format(cname, table_name))
+            table[cname] = {}
+            column = table[cname]
+            if hasattr(c, &#34;bounded&#34;) and c.bounded == True:
+                column[&#34;bounded&#34;] = c.bounded
+            if hasattr(c, &#34;card&#34;):
+                column[&#34;cardinality&#34;] = c.card
+            if hasattr(c, &#34;minval&#34;) and c.minval is not None:
+                column[&#34;lower&#34;] = c.minval
+            if hasattr(c, &#34;maxval&#34;) and c.maxval is not None:
+                column[&#34;upper&#34;] = c.maxval
+            if c.is_key is not None and c.is_key == True:
+                column[&#34;private_id&#34;] = c.is_key
+            if type(c) is String:
+                column[&#34;type&#34;] = &#34;string&#34;
+            elif type(c) is Int:
+                column[&#34;type&#34;] = &#34;int&#34;
+            elif type(c) is Float:
+                column[&#34;type&#34;] = &#34;float&#34;
+            elif type(c) is Boolean:
+                column[&#34;type&#34;] = &#34;boolean&#34;
+            elif type(c) is DateTime:
+                column[&#34;type&#34;] = &#34;datetime&#34;
+            elif type(c) is Unknown:
+                column[&#34;type&#34;] = &#34;unknown&#34;
+            else:
+                raise ValueError(&#34;Unknown column type: &#34; + str(type(c)))
+    db = {}
+    db[collection_name] = schemas
+    db[&#34;engine&#34;] = collection_metadata.engine
+    with open(self.filename, &#39;w&#39;) as outfile:
+        yaml.dump(db, outfile)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.metadata.collection.DateTime"><code class="flex name class">
+<span>class <span class="ident">DateTime</span></span>
+<span>(</span><span>name, is_key=False, bounded=False)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class DateTime:
+    def __init__(self, name, is_key = False, bounded = False):
+        self.name = name
+        self.is_key = is_key
+        self.bounded = bounded
+    def __str__(self):
+        return (&#34;*&#34; if self.is_key else &#34;&#34;) + str(self.name) + &#34; (datetime)&#34;
+    def typename(self):
+        return &#34;datetime&#34;</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.metadata.collection.DateTime.typename"><code class="name flex">
+<span>def <span class="ident">typename</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def typename(self):
+    return &#34;datetime&#34;</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.metadata.collection.Float"><code class="flex name class">
+<span>class <span class="ident">Float</span></span>
+<span>(</span><span>name, minval=None, maxval=None, is_key=False, bounded=False)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Float:
+    def __init__(self, name, minval = None, maxval = None, is_key = False, bounded = False):
+        self.name = name
+        self.minval = minval
+        self.maxval = maxval
+        self.is_key = is_key
+        self.unbounded = minval is None or maxval is None
+        self.bounded = bounded
+    def __str__(self):
+        bounds = &#34;unbounded&#34; if self.unbounded else str(self.minval) + &#34;,&#34; + str(self.maxval) 
+        return (&#34;*&#34; if self.is_key else &#34;&#34;) + str(self.name) + &#34; [float] (&#34; + bounds + &#34;)&#34;
+    def typename(self):
+        return &#34;float&#34;</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.metadata.collection.Float.typename"><code class="name flex">
+<span>def <span class="ident">typename</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def typename(self):
+    return &#34;float&#34;</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.metadata.collection.Int"><code class="flex name class">
+<span>class <span class="ident">Int</span></span>
+<span>(</span><span>name, minval=None, maxval=None, is_key=False, bounded=False)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Int:
+    def __init__(self, name, minval = None, maxval = None, is_key = False, bounded = False):
+        self.name = name
+        self.minval = minval
+        self.maxval = maxval
+        self.is_key = is_key
+        self.unbounded = minval is None or maxval is None
+        self.bounded = bounded
+    def __str__(self):
+        bounds = &#34;unbounded&#34; if self.unbounded else str(self.minval) + &#34;,&#34; + str(self.maxval) 
+        return (&#34;*&#34; if self.is_key else &#34;&#34;) + str(self.name) + &#34; [int] (&#34; + bounds + &#34;)&#34;
+    def typename(self):
+        return &#34;int&#34;</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.metadata.collection.Int.typename"><code class="name flex">
+<span>def <span class="ident">typename</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def typename(self):
+    return &#34;int&#34;</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.metadata.collection.String"><code class="flex name class">
+<span>class <span class="ident">String</span></span>
+<span>(</span><span>name, card, is_key=False, bounded=False)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class String:
+    def __init__(self, name, card, is_key = False, bounded = False):
+        self.name = name
+        self.card = card
+        self.is_key = is_key
+        self.bounded = bounded
+    def __str__(self):
+        return (&#34;*&#34; if self.is_key else &#34;&#34;) + str(self.name) + &#34; (card: &#34; + str(self.card) + &#34;)&#34;
+    def typename(self):
+        return &#34;string&#34;</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.metadata.collection.String.typename"><code class="name flex">
+<span>def <span class="ident">typename</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def typename(self):
+    return &#34;string&#34;</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.metadata.collection.Table"><code class="flex name class">
+<span>class <span class="ident">Table</span></span>
+<span>(</span><span>schema, name, rowcount, columns, row_privacy=False, max_ids=1, sample_max_ids=True, rows_exact=None)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Table:
+    def __init__(self, schema, name, rowcount, columns, row_privacy=False, max_ids=1, sample_max_ids=True, rows_exact=None):
+        self.schema = schema
+        self.name = name
+        self.rowcount = rowcount
+        self.row_privacy = row_privacy
+        self.max_ids = max_ids
+        self.sample_max_ids = sample_max_ids
+        self.rows_exact = rows_exact
+        self.m_columns = dict([(c.name, c) for c in columns])
+        self.compare = None
+    def __getitem__(self, colname):
+        for cname in self.m_columns.keys():
+            col = self.m_columns[cname]
+            if self.compare is None:
+                # the database will attach the engine-specific comparer usually
+                self.compare = NameCompare()
+            if self.compare.identifier_match(colname, col.name):
+                return col
+        return None
+    def __str__(self):
+        return str(self.schema) + &#34;.&#34; + str(self.name) + &#34; [&#34; + str(self.rowcount) + &#34; rows]\n\t&#34; + &#34;\n\t&#34;.join([str(self.m_columns[col]) for col in self.m_columns.keys()])
+    def key_cols(self):
+        return [self.m_columns[name] for name in self.m_columns.keys() if self.m_columns[name].is_key == True]
+    def columns(self):
+        return [self.m_columns[name] for name in self.m_columns.keys()]
+    def table_name(self):
+        return (self.schema + &#34;.&#34; if len(self.schema.strip()) &gt; 0 else &#34;&#34;) + self.name</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.metadata.collection.Table.columns"><code class="name flex">
+<span>def <span class="ident">columns</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def columns(self):
+    return [self.m_columns[name] for name in self.m_columns.keys()]</code></pre>
+</details>
+</dd>
+<dt id="burdock.metadata.collection.Table.key_cols"><code class="name flex">
+<span>def <span class="ident">key_cols</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def key_cols(self):
+    return [self.m_columns[name] for name in self.m_columns.keys() if self.m_columns[name].is_key == True]</code></pre>
+</details>
+</dd>
+<dt id="burdock.metadata.collection.Table.table_name"><code class="name flex">
+<span>def <span class="ident">table_name</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def table_name(self):
+    return (self.schema + &#34;.&#34; if len(self.schema.strip()) &gt; 0 else &#34;&#34;) + self.name</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.metadata.collection.Unknown"><code class="flex name class">
+<span>class <span class="ident">Unknown</span></span>
+<span>(</span><span>name)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Unknown:
+    def __init__(self, name):
+        self.name = name
+        self.is_key = False
+    def __str__(self):
+        return str(self.name) + &#34; (unknown)&#34;
+    def typename(self):
+        return &#34;unknown&#34;</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.metadata.collection.Unknown.typename"><code class="name flex">
+<span>def <span class="ident">typename</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def typename(self):
+    return &#34;unknown&#34;</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="burdock.metadata" href="index.html">burdock.metadata</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="burdock.metadata.collection.Boolean" href="#burdock.metadata.collection.Boolean">Boolean</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.metadata.collection.Boolean.typename" href="#burdock.metadata.collection.Boolean.typename">typename</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.metadata.collection.CollectionMetadata" href="#burdock.metadata.collection.CollectionMetadata">CollectionMetadata</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.metadata.collection.CollectionMetadata.from_dict" href="#burdock.metadata.collection.CollectionMetadata.from_dict">from_dict</a></code></li>
+<li><code><a title="burdock.metadata.collection.CollectionMetadata.from_file" href="#burdock.metadata.collection.CollectionMetadata.from_file">from_file</a></code></li>
+<li><code><a title="burdock.metadata.collection.CollectionMetadata.tables" href="#burdock.metadata.collection.CollectionMetadata.tables">tables</a></code></li>
+<li><code><a title="burdock.metadata.collection.CollectionMetadata.to_file" href="#burdock.metadata.collection.CollectionMetadata.to_file">to_file</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.metadata.collection.CollectionYamlLoader" href="#burdock.metadata.collection.CollectionYamlLoader">CollectionYamlLoader</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.metadata.collection.CollectionYamlLoader.load_column" href="#burdock.metadata.collection.CollectionYamlLoader.load_column">load_column</a></code></li>
+<li><code><a title="burdock.metadata.collection.CollectionYamlLoader.load_table" href="#burdock.metadata.collection.CollectionYamlLoader.load_table">load_table</a></code></li>
+<li><code><a title="burdock.metadata.collection.CollectionYamlLoader.read_file" href="#burdock.metadata.collection.CollectionYamlLoader.read_file">read_file</a></code></li>
+<li><code><a title="burdock.metadata.collection.CollectionYamlLoader.write_file" href="#burdock.metadata.collection.CollectionYamlLoader.write_file">write_file</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.metadata.collection.DateTime" href="#burdock.metadata.collection.DateTime">DateTime</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.metadata.collection.DateTime.typename" href="#burdock.metadata.collection.DateTime.typename">typename</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.metadata.collection.Float" href="#burdock.metadata.collection.Float">Float</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.metadata.collection.Float.typename" href="#burdock.metadata.collection.Float.typename">typename</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.metadata.collection.Int" href="#burdock.metadata.collection.Int">Int</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.metadata.collection.Int.typename" href="#burdock.metadata.collection.Int.typename">typename</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.metadata.collection.String" href="#burdock.metadata.collection.String">String</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.metadata.collection.String.typename" href="#burdock.metadata.collection.String.typename">typename</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.metadata.collection.Table" href="#burdock.metadata.collection.Table">Table</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.metadata.collection.Table.columns" href="#burdock.metadata.collection.Table.columns">columns</a></code></li>
+<li><code><a title="burdock.metadata.collection.Table.key_cols" href="#burdock.metadata.collection.Table.key_cols">key_cols</a></code></li>
+<li><code><a title="burdock.metadata.collection.Table.table_name" href="#burdock.metadata.collection.Table.table_name">table_name</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.metadata.collection.Unknown" href="#burdock.metadata.collection.Unknown">Unknown</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.metadata.collection.Unknown.typename" href="#burdock.metadata.collection.Unknown.typename">typename</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.5</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

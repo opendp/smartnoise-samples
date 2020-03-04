@@ -1,0 +1,1161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.5" />
+<title>burdock.sql.ast.expressions.logical API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>burdock.sql.ast.expressions.logical</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from burdock.sql.ast.tokens import *
+
+import numpy as np
+
+ops = {
+    &#39;&gt;&#39;: np.greater,
+    &#39;&lt;&#39;: np.less,
+    &#39;&gt;=&#39;: np.greater_equal,
+    &#39;&lt;=&#39;: np.less_equal,
+    &#39;=&#39;: np.equal,
+    &#39;and&#39;: np.logical_and,
+    &#39;or&#39;: np.logical_or
+}
+
+class BooleanCompare(SqlExpr):
+    &#34;&#34;&#34; AND, OR, &lt;=, &gt;=, etc &#34;&#34;&#34;
+    def __init__(self, left, op, right):
+        self.left = left
+        self.right = right
+        self.op = op
+    def symbol(self, relations):
+        return BooleanCompare(self.left.symbol(relations), self.op, self.right.symbol(relations))
+    def type(self):
+        return &#34;boolean&#34;
+    def sensitivity(self):
+        return 1
+    def children(self):
+        return [self.left, self.op, self.right]
+    def evaluate(self, bindings):
+        l = self.left.evaluate(bindings)
+        r = self.right.evaluate(bindings)
+        return ops[self.op.lower()](l, r)
+
+class NestedBoolean(SqlExpr):
+    &#34;&#34;&#34;A nested expression with no name&#34;&#34;&#34;
+    def __init__(self, expression):
+        self.expression = expression
+    def symbol(self, relations):
+        return NestedBoolean(self.expression.symbol(relations))
+    def type(self):
+        return self.expression.type()
+    def sensitivity(self):
+        return self.expression.sensitivity()
+    def children(self):
+        return [Token(&#34;(&#34;), self.expression, Token(&#34;)&#34;)]
+    def evaluate(self, bindings):
+        return self.expression.evaluate(bindings)
+
+class LogicalNot(SqlExpr):
+    &#34;&#34;&#34;Negation of a boolean expression&#34;&#34;&#34;
+    def __init__(self, expression):
+        self.expression = expression
+    def symbol(self, relations):
+        return LogicalNot(self.expression.symbol(relations))
+    def type(self):
+        return &#34;boolean&#34;
+    def sensitivity(self):
+        return 1
+    def children(self):
+        return [Token(&#34;NOT&#34;), self.expression]
+    def evaluate(self, bindings):
+        return np.logical_not(self.expression.evaluate(bindings))
+
+class PredicatedExpression(SqlExpr):
+    def __init__(self, expression, predicate):
+        self.expression = expression
+        self.predicate = predicate
+    def children(self):
+        return [self.expression, self.predicate]
+    def symbol(self, relations):
+        return PredicatedExpression(self.expression.symbol(relations), self.predicate.symbol(relations))
+
+class InCondition(SqlExpr):
+    def __init__(self, expressions, is_not=False):
+        self.expressions = expressions
+        self.is_not = is_not
+    def children(self):
+        pre = ([Token(&#34;NOT&#34;)] if self.is_not else []) + [Token(&#34;IN&#34;), Token(&#39;(&#39;)]
+        post = [Token(&#39;)&#39;)]
+        return pre + [self.expressions] + post
+
+
+class BetweenCondition(SqlExpr):
+    def __init__(self, lower, upper, is_not=False):
+        self.lower = lower
+        self.upper = upper
+        self.is_not = is_not
+    def children(self):
+        pre = [Token(&#34;NOT&#34;)] if self.is_not else [] + [Token(&#34;BETWEEN&#34;)]
+        return pre + [self.lower, Token(&#39;AND&#39;), self.upper]
+
+class IsCondition(SqlExpr):
+    def __init__(self, value, is_not=False):
+        self.value = value
+        self.is_not = is_not
+    def children(self):
+        pre = [Token(&#34;IS&#34;)] + [Token(&#34;NOT&#34;)] if self.is_not else []
+        return pre + [self.value]
+
+class CaseExpression(SqlExpr):
+    &#34;&#34;&#34;A case expression&#34;&#34;&#34;
+    def __init__(self, expression, when_exprs, else_expr):
+        self.expression = expression
+        self.when_exprs = when_exprs
+        self.else_expr = else_expr
+    def symbol(self, relations):
+        return CaseExpression( \
+            self.expression.symbol(relations) if self.expression is not None else None,\
+            [we.symbol(relations) for we in self.when_exprs], \
+            self.else_expr.symbol(relations) if self.else_expr is not None else None)
+    def type(self):
+        t = [self.else_expr.type()] if self.else_expr is not None else []
+        t = t + [we.type() for we in self.when_exprs]
+        if len(unique(t)) == 1:
+            return t[0]
+        elif &#34;string&#34; in t:
+            return &#34;string&#34;
+        elif sorted(unique(t)) == [&#34;float&#34;, &#34;int&#34;]:
+            return &#34;float&#34;
+        else:
+            return &#34;unknown&#34;
+    def sensitivity(self):
+        t = [self.else_expr.sensitivity()] if self.else_expr is not None else []
+        t = t + [we.sensitivity() for we in self.when_exprs]
+        t = [s for s in t if s is not None]
+        if len(t) &gt; 0:
+            return max(t)
+        else:
+            return None
+    def children(self):
+        return [Token(&#34;CASE&#34;), self.expression] + self.when_exprs + ([Token(&#34;ELSE &#34;), self.else_expr] if self.else_expr is not None else []) + [Token(&#34;END&#34;)]
+    def evaluate(self, bindings):
+        else_exp = self.else_expr.evaluate(bindings)
+        res = np.repeat(else_exp, len(bindings[list(bindings.keys())[0]]))
+        if self.expression is not None:
+            # simple search
+            for we in self.when_exprs:
+                match = BooleanCompare(self.expression, &#39;=&#39;, we.expression).evaluate(bindings)
+                res[match] = we.then.evaluate(bindings)
+        else:
+            # regular search
+            for we in self.when_exprs:
+                match = we.expression.evaluate(bindings)
+                res[match] = we.then.evaluate(bindings)
+        return res
+
+class WhenExpression(SqlExpr):
+    &#34;&#34;&#34;A when expression in a case expression&#34;&#34;&#34;
+    def __init__(self, expression, then):
+        self.expression = expression
+        self.then = then
+    def symbol(self, relations):
+        return WhenExpression(self.expression.symbol(relations), self.then.symbol(relations))
+    def type(self):
+        return self.then.type()
+    def sensitivity(self):
+        return self.then.sensitivity()
+    def children(self):
+        return [Token(&#34;WHEN&#34;), self.expression, Token(&#34;THEN&#34;), self.then]
+    def evaluate(self, bindings):
+        if self.expression.evaluate(bindings):
+            return self.then.evaluate(bindings)
+        else:
+            return None
+
+class ChooseFunction(SqlExpr):
+    def __init__(self, expression, choices):
+        self.expression = expression
+        self.choices = choices
+    def children(self):
+        return [Token(&#39;CHOOSE&#39;), Token(&#39;(&#39;), self.expression, Token(&#39;,&#39;), self.choices, Token(&#39;)&#39;)]
+
+
+class IIFFunction(SqlExpr):
+    def __init__(self, test, yes, no):
+        self.test = test
+        self.yes = yes
+        self.no = no
+    def children(self):
+        return [Token(&#39;IIF&#39;), Token(&#39;(&#39;), self.test, Token(&#39;,&#39;), self.yes, Token(&#39;,&#39;), self.no, Token(&#39;)&#39;) ]</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="burdock.sql.ast.expressions.logical.BetweenCondition"><code class="flex name class">
+<span>class <span class="ident">BetweenCondition</span></span>
+<span>(</span><span>lower, upper, is_not=False)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class BetweenCondition(SqlExpr):
+    def __init__(self, lower, upper, is_not=False):
+        self.lower = lower
+        self.upper = upper
+        self.is_not = is_not
+    def children(self):
+        pre = [Token(&#34;NOT&#34;)] if self.is_not else [] + [Token(&#34;BETWEEN&#34;)]
+        return pre + [self.lower, Token(&#39;AND&#39;), self.upper]</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="burdock.sql.ast.tokens.SqlExpr" href="../tokens.html#burdock.sql.ast.tokens.SqlExpr">SqlExpr</a></li>
+<li><a title="burdock.sql.ast.tokens.Sql" href="../tokens.html#burdock.sql.ast.tokens.Sql">Sql</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.sql.ast.expressions.logical.BetweenCondition.children"><code class="name flex">
+<span>def <span class="ident">children</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def children(self):
+    pre = [Token(&#34;NOT&#34;)] if self.is_not else [] + [Token(&#34;BETWEEN&#34;)]
+    return pre + [self.lower, Token(&#39;AND&#39;), self.upper]</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.sql.ast.expressions.logical.BooleanCompare"><code class="flex name class">
+<span>class <span class="ident">BooleanCompare</span></span>
+<span>(</span><span>left, op, right)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>AND, OR, &lt;=, &gt;=, etc</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class BooleanCompare(SqlExpr):
+    &#34;&#34;&#34; AND, OR, &lt;=, &gt;=, etc &#34;&#34;&#34;
+    def __init__(self, left, op, right):
+        self.left = left
+        self.right = right
+        self.op = op
+    def symbol(self, relations):
+        return BooleanCompare(self.left.symbol(relations), self.op, self.right.symbol(relations))
+    def type(self):
+        return &#34;boolean&#34;
+    def sensitivity(self):
+        return 1
+    def children(self):
+        return [self.left, self.op, self.right]
+    def evaluate(self, bindings):
+        l = self.left.evaluate(bindings)
+        r = self.right.evaluate(bindings)
+        return ops[self.op.lower()](l, r)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="burdock.sql.ast.tokens.SqlExpr" href="../tokens.html#burdock.sql.ast.tokens.SqlExpr">SqlExpr</a></li>
+<li><a title="burdock.sql.ast.tokens.Sql" href="../tokens.html#burdock.sql.ast.tokens.Sql">Sql</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.sql.ast.expressions.logical.BooleanCompare.children"><code class="name flex">
+<span>def <span class="ident">children</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def children(self):
+    return [self.left, self.op, self.right]</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.ast.expressions.logical.BooleanCompare.evaluate"><code class="name flex">
+<span>def <span class="ident">evaluate</span></span>(<span>self, bindings)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def evaluate(self, bindings):
+    l = self.left.evaluate(bindings)
+    r = self.right.evaluate(bindings)
+    return ops[self.op.lower()](l, r)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.ast.expressions.logical.BooleanCompare.sensitivity"><code class="name flex">
+<span>def <span class="ident">sensitivity</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def sensitivity(self):
+    return 1</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.ast.expressions.logical.BooleanCompare.symbol"><code class="name flex">
+<span>def <span class="ident">symbol</span></span>(<span>self, relations)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def symbol(self, relations):
+    return BooleanCompare(self.left.symbol(relations), self.op, self.right.symbol(relations))</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.ast.expressions.logical.BooleanCompare.type"><code class="name flex">
+<span>def <span class="ident">type</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def type(self):
+    return &#34;boolean&#34;</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.sql.ast.expressions.logical.CaseExpression"><code class="flex name class">
+<span>class <span class="ident">CaseExpression</span></span>
+<span>(</span><span>expression, when_exprs, else_expr)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>A case expression</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CaseExpression(SqlExpr):
+    &#34;&#34;&#34;A case expression&#34;&#34;&#34;
+    def __init__(self, expression, when_exprs, else_expr):
+        self.expression = expression
+        self.when_exprs = when_exprs
+        self.else_expr = else_expr
+    def symbol(self, relations):
+        return CaseExpression( \
+            self.expression.symbol(relations) if self.expression is not None else None,\
+            [we.symbol(relations) for we in self.when_exprs], \
+            self.else_expr.symbol(relations) if self.else_expr is not None else None)
+    def type(self):
+        t = [self.else_expr.type()] if self.else_expr is not None else []
+        t = t + [we.type() for we in self.when_exprs]
+        if len(unique(t)) == 1:
+            return t[0]
+        elif &#34;string&#34; in t:
+            return &#34;string&#34;
+        elif sorted(unique(t)) == [&#34;float&#34;, &#34;int&#34;]:
+            return &#34;float&#34;
+        else:
+            return &#34;unknown&#34;
+    def sensitivity(self):
+        t = [self.else_expr.sensitivity()] if self.else_expr is not None else []
+        t = t + [we.sensitivity() for we in self.when_exprs]
+        t = [s for s in t if s is not None]
+        if len(t) &gt; 0:
+            return max(t)
+        else:
+            return None
+    def children(self):
+        return [Token(&#34;CASE&#34;), self.expression] + self.when_exprs + ([Token(&#34;ELSE &#34;), self.else_expr] if self.else_expr is not None else []) + [Token(&#34;END&#34;)]
+    def evaluate(self, bindings):
+        else_exp = self.else_expr.evaluate(bindings)
+        res = np.repeat(else_exp, len(bindings[list(bindings.keys())[0]]))
+        if self.expression is not None:
+            # simple search
+            for we in self.when_exprs:
+                match = BooleanCompare(self.expression, &#39;=&#39;, we.expression).evaluate(bindings)
+                res[match] = we.then.evaluate(bindings)
+        else:
+            # regular search
+            for we in self.when_exprs:
+                match = we.expression.evaluate(bindings)
+                res[match] = we.then.evaluate(bindings)
+        return res</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="burdock.sql.ast.tokens.SqlExpr" href="../tokens.html#burdock.sql.ast.tokens.SqlExpr">SqlExpr</a></li>
+<li><a title="burdock.sql.ast.tokens.Sql" href="../tokens.html#burdock.sql.ast.tokens.Sql">Sql</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.sql.ast.expressions.logical.CaseExpression.children"><code class="name flex">
+<span>def <span class="ident">children</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def children(self):
+    return [Token(&#34;CASE&#34;), self.expression] + self.when_exprs + ([Token(&#34;ELSE &#34;), self.else_expr] if self.else_expr is not None else []) + [Token(&#34;END&#34;)]</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.ast.expressions.logical.CaseExpression.evaluate"><code class="name flex">
+<span>def <span class="ident">evaluate</span></span>(<span>self, bindings)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def evaluate(self, bindings):
+    else_exp = self.else_expr.evaluate(bindings)
+    res = np.repeat(else_exp, len(bindings[list(bindings.keys())[0]]))
+    if self.expression is not None:
+        # simple search
+        for we in self.when_exprs:
+            match = BooleanCompare(self.expression, &#39;=&#39;, we.expression).evaluate(bindings)
+            res[match] = we.then.evaluate(bindings)
+    else:
+        # regular search
+        for we in self.when_exprs:
+            match = we.expression.evaluate(bindings)
+            res[match] = we.then.evaluate(bindings)
+    return res</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.ast.expressions.logical.CaseExpression.sensitivity"><code class="name flex">
+<span>def <span class="ident">sensitivity</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def sensitivity(self):
+    t = [self.else_expr.sensitivity()] if self.else_expr is not None else []
+    t = t + [we.sensitivity() for we in self.when_exprs]
+    t = [s for s in t if s is not None]
+    if len(t) &gt; 0:
+        return max(t)
+    else:
+        return None</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.ast.expressions.logical.CaseExpression.symbol"><code class="name flex">
+<span>def <span class="ident">symbol</span></span>(<span>self, relations)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def symbol(self, relations):
+    return CaseExpression( \
+        self.expression.symbol(relations) if self.expression is not None else None,\
+        [we.symbol(relations) for we in self.when_exprs], \
+        self.else_expr.symbol(relations) if self.else_expr is not None else None)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.ast.expressions.logical.CaseExpression.type"><code class="name flex">
+<span>def <span class="ident">type</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def type(self):
+    t = [self.else_expr.type()] if self.else_expr is not None else []
+    t = t + [we.type() for we in self.when_exprs]
+    if len(unique(t)) == 1:
+        return t[0]
+    elif &#34;string&#34; in t:
+        return &#34;string&#34;
+    elif sorted(unique(t)) == [&#34;float&#34;, &#34;int&#34;]:
+        return &#34;float&#34;
+    else:
+        return &#34;unknown&#34;</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.sql.ast.expressions.logical.ChooseFunction"><code class="flex name class">
+<span>class <span class="ident">ChooseFunction</span></span>
+<span>(</span><span>expression, choices)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ChooseFunction(SqlExpr):
+    def __init__(self, expression, choices):
+        self.expression = expression
+        self.choices = choices
+    def children(self):
+        return [Token(&#39;CHOOSE&#39;), Token(&#39;(&#39;), self.expression, Token(&#39;,&#39;), self.choices, Token(&#39;)&#39;)]</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="burdock.sql.ast.tokens.SqlExpr" href="../tokens.html#burdock.sql.ast.tokens.SqlExpr">SqlExpr</a></li>
+<li><a title="burdock.sql.ast.tokens.Sql" href="../tokens.html#burdock.sql.ast.tokens.Sql">Sql</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.sql.ast.expressions.logical.ChooseFunction.children"><code class="name flex">
+<span>def <span class="ident">children</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def children(self):
+    return [Token(&#39;CHOOSE&#39;), Token(&#39;(&#39;), self.expression, Token(&#39;,&#39;), self.choices, Token(&#39;)&#39;)]</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.sql.ast.expressions.logical.IIFFunction"><code class="flex name class">
+<span>class <span class="ident">IIFFunction</span></span>
+<span>(</span><span>test, yes, no)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class IIFFunction(SqlExpr):
+    def __init__(self, test, yes, no):
+        self.test = test
+        self.yes = yes
+        self.no = no
+    def children(self):
+        return [Token(&#39;IIF&#39;), Token(&#39;(&#39;), self.test, Token(&#39;,&#39;), self.yes, Token(&#39;,&#39;), self.no, Token(&#39;)&#39;) ]</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="burdock.sql.ast.tokens.SqlExpr" href="../tokens.html#burdock.sql.ast.tokens.SqlExpr">SqlExpr</a></li>
+<li><a title="burdock.sql.ast.tokens.Sql" href="../tokens.html#burdock.sql.ast.tokens.Sql">Sql</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.sql.ast.expressions.logical.IIFFunction.children"><code class="name flex">
+<span>def <span class="ident">children</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def children(self):
+    return [Token(&#39;IIF&#39;), Token(&#39;(&#39;), self.test, Token(&#39;,&#39;), self.yes, Token(&#39;,&#39;), self.no, Token(&#39;)&#39;) ]</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.sql.ast.expressions.logical.InCondition"><code class="flex name class">
+<span>class <span class="ident">InCondition</span></span>
+<span>(</span><span>expressions, is_not=False)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class InCondition(SqlExpr):
+    def __init__(self, expressions, is_not=False):
+        self.expressions = expressions
+        self.is_not = is_not
+    def children(self):
+        pre = ([Token(&#34;NOT&#34;)] if self.is_not else []) + [Token(&#34;IN&#34;), Token(&#39;(&#39;)]
+        post = [Token(&#39;)&#39;)]
+        return pre + [self.expressions] + post</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="burdock.sql.ast.tokens.SqlExpr" href="../tokens.html#burdock.sql.ast.tokens.SqlExpr">SqlExpr</a></li>
+<li><a title="burdock.sql.ast.tokens.Sql" href="../tokens.html#burdock.sql.ast.tokens.Sql">Sql</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.sql.ast.expressions.logical.InCondition.children"><code class="name flex">
+<span>def <span class="ident">children</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def children(self):
+    pre = ([Token(&#34;NOT&#34;)] if self.is_not else []) + [Token(&#34;IN&#34;), Token(&#39;(&#39;)]
+    post = [Token(&#39;)&#39;)]
+    return pre + [self.expressions] + post</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.sql.ast.expressions.logical.IsCondition"><code class="flex name class">
+<span>class <span class="ident">IsCondition</span></span>
+<span>(</span><span>value, is_not=False)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class IsCondition(SqlExpr):
+    def __init__(self, value, is_not=False):
+        self.value = value
+        self.is_not = is_not
+    def children(self):
+        pre = [Token(&#34;IS&#34;)] + [Token(&#34;NOT&#34;)] if self.is_not else []
+        return pre + [self.value]</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="burdock.sql.ast.tokens.SqlExpr" href="../tokens.html#burdock.sql.ast.tokens.SqlExpr">SqlExpr</a></li>
+<li><a title="burdock.sql.ast.tokens.Sql" href="../tokens.html#burdock.sql.ast.tokens.Sql">Sql</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.sql.ast.expressions.logical.IsCondition.children"><code class="name flex">
+<span>def <span class="ident">children</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def children(self):
+    pre = [Token(&#34;IS&#34;)] + [Token(&#34;NOT&#34;)] if self.is_not else []
+    return pre + [self.value]</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.sql.ast.expressions.logical.LogicalNot"><code class="flex name class">
+<span>class <span class="ident">LogicalNot</span></span>
+<span>(</span><span>expression)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Negation of a boolean expression</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class LogicalNot(SqlExpr):
+    &#34;&#34;&#34;Negation of a boolean expression&#34;&#34;&#34;
+    def __init__(self, expression):
+        self.expression = expression
+    def symbol(self, relations):
+        return LogicalNot(self.expression.symbol(relations))
+    def type(self):
+        return &#34;boolean&#34;
+    def sensitivity(self):
+        return 1
+    def children(self):
+        return [Token(&#34;NOT&#34;), self.expression]
+    def evaluate(self, bindings):
+        return np.logical_not(self.expression.evaluate(bindings))</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="burdock.sql.ast.tokens.SqlExpr" href="../tokens.html#burdock.sql.ast.tokens.SqlExpr">SqlExpr</a></li>
+<li><a title="burdock.sql.ast.tokens.Sql" href="../tokens.html#burdock.sql.ast.tokens.Sql">Sql</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.sql.ast.expressions.logical.LogicalNot.children"><code class="name flex">
+<span>def <span class="ident">children</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def children(self):
+    return [Token(&#34;NOT&#34;), self.expression]</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.ast.expressions.logical.LogicalNot.evaluate"><code class="name flex">
+<span>def <span class="ident">evaluate</span></span>(<span>self, bindings)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def evaluate(self, bindings):
+    return np.logical_not(self.expression.evaluate(bindings))</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.ast.expressions.logical.LogicalNot.sensitivity"><code class="name flex">
+<span>def <span class="ident">sensitivity</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def sensitivity(self):
+    return 1</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.ast.expressions.logical.LogicalNot.symbol"><code class="name flex">
+<span>def <span class="ident">symbol</span></span>(<span>self, relations)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def symbol(self, relations):
+    return LogicalNot(self.expression.symbol(relations))</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.ast.expressions.logical.LogicalNot.type"><code class="name flex">
+<span>def <span class="ident">type</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def type(self):
+    return &#34;boolean&#34;</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.sql.ast.expressions.logical.NestedBoolean"><code class="flex name class">
+<span>class <span class="ident">NestedBoolean</span></span>
+<span>(</span><span>expression)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>A nested expression with no name</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class NestedBoolean(SqlExpr):
+    &#34;&#34;&#34;A nested expression with no name&#34;&#34;&#34;
+    def __init__(self, expression):
+        self.expression = expression
+    def symbol(self, relations):
+        return NestedBoolean(self.expression.symbol(relations))
+    def type(self):
+        return self.expression.type()
+    def sensitivity(self):
+        return self.expression.sensitivity()
+    def children(self):
+        return [Token(&#34;(&#34;), self.expression, Token(&#34;)&#34;)]
+    def evaluate(self, bindings):
+        return self.expression.evaluate(bindings)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="burdock.sql.ast.tokens.SqlExpr" href="../tokens.html#burdock.sql.ast.tokens.SqlExpr">SqlExpr</a></li>
+<li><a title="burdock.sql.ast.tokens.Sql" href="../tokens.html#burdock.sql.ast.tokens.Sql">Sql</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.sql.ast.expressions.logical.NestedBoolean.children"><code class="name flex">
+<span>def <span class="ident">children</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def children(self):
+    return [Token(&#34;(&#34;), self.expression, Token(&#34;)&#34;)]</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.ast.expressions.logical.NestedBoolean.evaluate"><code class="name flex">
+<span>def <span class="ident">evaluate</span></span>(<span>self, bindings)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def evaluate(self, bindings):
+    return self.expression.evaluate(bindings)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.ast.expressions.logical.NestedBoolean.sensitivity"><code class="name flex">
+<span>def <span class="ident">sensitivity</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def sensitivity(self):
+    return self.expression.sensitivity()</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.ast.expressions.logical.NestedBoolean.symbol"><code class="name flex">
+<span>def <span class="ident">symbol</span></span>(<span>self, relations)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def symbol(self, relations):
+    return NestedBoolean(self.expression.symbol(relations))</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.ast.expressions.logical.NestedBoolean.type"><code class="name flex">
+<span>def <span class="ident">type</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def type(self):
+    return self.expression.type()</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.sql.ast.expressions.logical.PredicatedExpression"><code class="flex name class">
+<span>class <span class="ident">PredicatedExpression</span></span>
+<span>(</span><span>expression, predicate)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class PredicatedExpression(SqlExpr):
+    def __init__(self, expression, predicate):
+        self.expression = expression
+        self.predicate = predicate
+    def children(self):
+        return [self.expression, self.predicate]
+    def symbol(self, relations):
+        return PredicatedExpression(self.expression.symbol(relations), self.predicate.symbol(relations))</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="burdock.sql.ast.tokens.SqlExpr" href="../tokens.html#burdock.sql.ast.tokens.SqlExpr">SqlExpr</a></li>
+<li><a title="burdock.sql.ast.tokens.Sql" href="../tokens.html#burdock.sql.ast.tokens.Sql">Sql</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.sql.ast.expressions.logical.PredicatedExpression.children"><code class="name flex">
+<span>def <span class="ident">children</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def children(self):
+    return [self.expression, self.predicate]</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.ast.expressions.logical.PredicatedExpression.symbol"><code class="name flex">
+<span>def <span class="ident">symbol</span></span>(<span>self, relations)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def symbol(self, relations):
+    return PredicatedExpression(self.expression.symbol(relations), self.predicate.symbol(relations))</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.sql.ast.expressions.logical.WhenExpression"><code class="flex name class">
+<span>class <span class="ident">WhenExpression</span></span>
+<span>(</span><span>expression, then)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>A when expression in a case expression</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class WhenExpression(SqlExpr):
+    &#34;&#34;&#34;A when expression in a case expression&#34;&#34;&#34;
+    def __init__(self, expression, then):
+        self.expression = expression
+        self.then = then
+    def symbol(self, relations):
+        return WhenExpression(self.expression.symbol(relations), self.then.symbol(relations))
+    def type(self):
+        return self.then.type()
+    def sensitivity(self):
+        return self.then.sensitivity()
+    def children(self):
+        return [Token(&#34;WHEN&#34;), self.expression, Token(&#34;THEN&#34;), self.then]
+    def evaluate(self, bindings):
+        if self.expression.evaluate(bindings):
+            return self.then.evaluate(bindings)
+        else:
+            return None</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="burdock.sql.ast.tokens.SqlExpr" href="../tokens.html#burdock.sql.ast.tokens.SqlExpr">SqlExpr</a></li>
+<li><a title="burdock.sql.ast.tokens.Sql" href="../tokens.html#burdock.sql.ast.tokens.Sql">Sql</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.sql.ast.expressions.logical.WhenExpression.children"><code class="name flex">
+<span>def <span class="ident">children</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def children(self):
+    return [Token(&#34;WHEN&#34;), self.expression, Token(&#34;THEN&#34;), self.then]</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.ast.expressions.logical.WhenExpression.evaluate"><code class="name flex">
+<span>def <span class="ident">evaluate</span></span>(<span>self, bindings)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def evaluate(self, bindings):
+    if self.expression.evaluate(bindings):
+        return self.then.evaluate(bindings)
+    else:
+        return None</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.ast.expressions.logical.WhenExpression.sensitivity"><code class="name flex">
+<span>def <span class="ident">sensitivity</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def sensitivity(self):
+    return self.then.sensitivity()</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.ast.expressions.logical.WhenExpression.symbol"><code class="name flex">
+<span>def <span class="ident">symbol</span></span>(<span>self, relations)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def symbol(self, relations):
+    return WhenExpression(self.expression.symbol(relations), self.then.symbol(relations))</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.ast.expressions.logical.WhenExpression.type"><code class="name flex">
+<span>def <span class="ident">type</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def type(self):
+    return self.then.type()</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="burdock.sql.ast.expressions" href="index.html">burdock.sql.ast.expressions</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="burdock.sql.ast.expressions.logical.BetweenCondition" href="#burdock.sql.ast.expressions.logical.BetweenCondition">BetweenCondition</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.sql.ast.expressions.logical.BetweenCondition.children" href="#burdock.sql.ast.expressions.logical.BetweenCondition.children">children</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.sql.ast.expressions.logical.BooleanCompare" href="#burdock.sql.ast.expressions.logical.BooleanCompare">BooleanCompare</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.sql.ast.expressions.logical.BooleanCompare.children" href="#burdock.sql.ast.expressions.logical.BooleanCompare.children">children</a></code></li>
+<li><code><a title="burdock.sql.ast.expressions.logical.BooleanCompare.evaluate" href="#burdock.sql.ast.expressions.logical.BooleanCompare.evaluate">evaluate</a></code></li>
+<li><code><a title="burdock.sql.ast.expressions.logical.BooleanCompare.sensitivity" href="#burdock.sql.ast.expressions.logical.BooleanCompare.sensitivity">sensitivity</a></code></li>
+<li><code><a title="burdock.sql.ast.expressions.logical.BooleanCompare.symbol" href="#burdock.sql.ast.expressions.logical.BooleanCompare.symbol">symbol</a></code></li>
+<li><code><a title="burdock.sql.ast.expressions.logical.BooleanCompare.type" href="#burdock.sql.ast.expressions.logical.BooleanCompare.type">type</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.sql.ast.expressions.logical.CaseExpression" href="#burdock.sql.ast.expressions.logical.CaseExpression">CaseExpression</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.sql.ast.expressions.logical.CaseExpression.children" href="#burdock.sql.ast.expressions.logical.CaseExpression.children">children</a></code></li>
+<li><code><a title="burdock.sql.ast.expressions.logical.CaseExpression.evaluate" href="#burdock.sql.ast.expressions.logical.CaseExpression.evaluate">evaluate</a></code></li>
+<li><code><a title="burdock.sql.ast.expressions.logical.CaseExpression.sensitivity" href="#burdock.sql.ast.expressions.logical.CaseExpression.sensitivity">sensitivity</a></code></li>
+<li><code><a title="burdock.sql.ast.expressions.logical.CaseExpression.symbol" href="#burdock.sql.ast.expressions.logical.CaseExpression.symbol">symbol</a></code></li>
+<li><code><a title="burdock.sql.ast.expressions.logical.CaseExpression.type" href="#burdock.sql.ast.expressions.logical.CaseExpression.type">type</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.sql.ast.expressions.logical.ChooseFunction" href="#burdock.sql.ast.expressions.logical.ChooseFunction">ChooseFunction</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.sql.ast.expressions.logical.ChooseFunction.children" href="#burdock.sql.ast.expressions.logical.ChooseFunction.children">children</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.sql.ast.expressions.logical.IIFFunction" href="#burdock.sql.ast.expressions.logical.IIFFunction">IIFFunction</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.sql.ast.expressions.logical.IIFFunction.children" href="#burdock.sql.ast.expressions.logical.IIFFunction.children">children</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.sql.ast.expressions.logical.InCondition" href="#burdock.sql.ast.expressions.logical.InCondition">InCondition</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.sql.ast.expressions.logical.InCondition.children" href="#burdock.sql.ast.expressions.logical.InCondition.children">children</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.sql.ast.expressions.logical.IsCondition" href="#burdock.sql.ast.expressions.logical.IsCondition">IsCondition</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.sql.ast.expressions.logical.IsCondition.children" href="#burdock.sql.ast.expressions.logical.IsCondition.children">children</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.sql.ast.expressions.logical.LogicalNot" href="#burdock.sql.ast.expressions.logical.LogicalNot">LogicalNot</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.sql.ast.expressions.logical.LogicalNot.children" href="#burdock.sql.ast.expressions.logical.LogicalNot.children">children</a></code></li>
+<li><code><a title="burdock.sql.ast.expressions.logical.LogicalNot.evaluate" href="#burdock.sql.ast.expressions.logical.LogicalNot.evaluate">evaluate</a></code></li>
+<li><code><a title="burdock.sql.ast.expressions.logical.LogicalNot.sensitivity" href="#burdock.sql.ast.expressions.logical.LogicalNot.sensitivity">sensitivity</a></code></li>
+<li><code><a title="burdock.sql.ast.expressions.logical.LogicalNot.symbol" href="#burdock.sql.ast.expressions.logical.LogicalNot.symbol">symbol</a></code></li>
+<li><code><a title="burdock.sql.ast.expressions.logical.LogicalNot.type" href="#burdock.sql.ast.expressions.logical.LogicalNot.type">type</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.sql.ast.expressions.logical.NestedBoolean" href="#burdock.sql.ast.expressions.logical.NestedBoolean">NestedBoolean</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.sql.ast.expressions.logical.NestedBoolean.children" href="#burdock.sql.ast.expressions.logical.NestedBoolean.children">children</a></code></li>
+<li><code><a title="burdock.sql.ast.expressions.logical.NestedBoolean.evaluate" href="#burdock.sql.ast.expressions.logical.NestedBoolean.evaluate">evaluate</a></code></li>
+<li><code><a title="burdock.sql.ast.expressions.logical.NestedBoolean.sensitivity" href="#burdock.sql.ast.expressions.logical.NestedBoolean.sensitivity">sensitivity</a></code></li>
+<li><code><a title="burdock.sql.ast.expressions.logical.NestedBoolean.symbol" href="#burdock.sql.ast.expressions.logical.NestedBoolean.symbol">symbol</a></code></li>
+<li><code><a title="burdock.sql.ast.expressions.logical.NestedBoolean.type" href="#burdock.sql.ast.expressions.logical.NestedBoolean.type">type</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.sql.ast.expressions.logical.PredicatedExpression" href="#burdock.sql.ast.expressions.logical.PredicatedExpression">PredicatedExpression</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.sql.ast.expressions.logical.PredicatedExpression.children" href="#burdock.sql.ast.expressions.logical.PredicatedExpression.children">children</a></code></li>
+<li><code><a title="burdock.sql.ast.expressions.logical.PredicatedExpression.symbol" href="#burdock.sql.ast.expressions.logical.PredicatedExpression.symbol">symbol</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.sql.ast.expressions.logical.WhenExpression" href="#burdock.sql.ast.expressions.logical.WhenExpression">WhenExpression</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.sql.ast.expressions.logical.WhenExpression.children" href="#burdock.sql.ast.expressions.logical.WhenExpression.children">children</a></code></li>
+<li><code><a title="burdock.sql.ast.expressions.logical.WhenExpression.evaluate" href="#burdock.sql.ast.expressions.logical.WhenExpression.evaluate">evaluate</a></code></li>
+<li><code><a title="burdock.sql.ast.expressions.logical.WhenExpression.sensitivity" href="#burdock.sql.ast.expressions.logical.WhenExpression.sensitivity">sensitivity</a></code></li>
+<li><code><a title="burdock.sql.ast.expressions.logical.WhenExpression.symbol" href="#burdock.sql.ast.expressions.logical.WhenExpression.symbol">symbol</a></code></li>
+<li><code><a title="burdock.sql.ast.expressions.logical.WhenExpression.type" href="#burdock.sql.ast.expressions.logical.WhenExpression.type">type</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.5</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

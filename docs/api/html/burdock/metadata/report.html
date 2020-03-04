@@ -1,0 +1,1035 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.5" />
+<title>burdock.metadata.report API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>burdock.metadata.report</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import collections.abc
+import numpy as np
+&#34;&#34;&#34;
+Represents the metadata for a differentially private release.
+
+Specification at https://docs.google.com/document/d/1PTAG2xImB5B3m4crc9t3MQLyRUp3GieD-u8tJlNCDzY/edit#heading=h.ga5nyepy7ehj
+
+Note that SQL results may return multiple rows, with columns representing a vector of
+values that share a commoon mechanism, statistic, source, epsilon, delta, interval_widths, and accuracy,
+while having multiple values per column, and multiple intervals per value.
+
+For single row queries with default single confidence interval, there will be only one value
+per column and one interval per value, but callers should be prepared for multiple values.
+&#34;&#34;&#34;
+
+&#34;&#34;&#34;A low and high for a single value interval.  Used for row-based access.&#34;&#34;&#34;
+class IntervalRange:
+    def __init__(self, low, high):
+        self.low = low
+        self.high = high
+    def __str__(self):
+        return &#34;[{0}-{1}]&#34;.format(round(self.low, 2), round(self.high, 2))
+    def contains(self, other):
+        return self.low &lt;= other.low and self.high &gt;= other.high
+    def inside(self, other):
+        return other.contains(self)
+    def __eq__(self, other):
+        return self.low == other.low and self.high == other.high
+    def __lt__(self, other):
+        return self.high &lt; other.low
+    def __gt__(self, other):
+        return self.low &gt; other.high
+    def intersects(self, other):
+        return (self.low &gt;= other.low and self.low &lt;= other.high) or (self.high &gt;= other.low and self.high &lt;= other.high)
+    def __iter__(self):
+        return iter([self.low, self.high])
+    
+
+&#34;&#34;&#34;A vector of CIs for a single column and confidence.&#34;&#34;&#34;
+class Interval:
+    def __init__(self, confidence, accuracy, low=None, high=None):
+        &#34;&#34;&#34;Collection of confidence intervals for a given width
+
+        :param float confidence: the confidence interval width for the CIs in the list.  Between 0.0 and 1.0 inclusive.
+        :param float accuracy: the plus/minus accuracy for values generated here. May be None, if not known or not symmetrical
+        :param float[] low: the lower bound for each CI in the list
+        :param float[] high: the lower bound for each CI in the list
+        &#34;&#34;&#34;
+        self.low = low
+        self.high = high
+        if high is None:
+            self.low = []
+            self.high = []
+        self.confidence = confidence
+        self.accuracy = accuracy
+    def __str__(self):
+        cis = &#34;, &#34;.join([&#34;[{0}-{1}]&#34;.format(round(low, 2), round(high, 2)) for low, high in zip(self.low, self.high)])
+        return &#34;confidence: {0}\naccuracy: {1}\n&#34;.format(self.confidence, self.accuracy) + cis
+    def __len__(self):
+        return len(self.low)
+    def contains(self, other):
+        return all([s.contains(o) for s, o in zip(self, other)])
+    def inside(self, other):
+        return all([s.inside(o) for s, o in zip(self, other)])
+    def __eq__(self, other):
+        return all([s == o for s, o in zip(self, other)])
+    def __lt__(self, other):
+        return all([s &lt; o for s, o in zip(self, other)])
+    def __gt__(self, other):
+        return all([s &gt; o for s, o in zip(self, other)])
+    def intersects(self, other):
+        return all([s.intersects(o) for s, o in zip(self, other)])
+    def __iter__(self):
+        return iter([IntervalRange(low, high) for low, high in zip(self.low, self.high)])
+    def __getitem__(self, key):
+        if isinstance(key, int):
+            return IntervalRange(self.low[key], self.high[key])
+        else:
+            raise ValueError(&#34;Invalid index to interval: &#34; + key)
+    def __setitem__(self, key, value):
+        if isinstance(key, int):
+            if isinstance(value, tuple) or isinstance(value, IntervalRange):
+                low, high = value
+            else:
+                if isinstance(value, float) or isinstance(value, int):
+                    if self.accuracy is not None:
+                        low = value * 1.0 - self.accuracy
+                        high = value * 1.0 + self.accuracy
+                    else:
+                        raise ValueError(&#34;Can only auto-convert value to interval if accuracy is set&#34;)
+                else:
+                    raise ValueError(&#34;Can only set interval value with a tuple or numeric value&#34;)
+            self.low[key] = low
+            self.high[key] = high
+        else:
+            raise ValueError(&#34;Invalid index to interval: &#34; + key)
+    def __delitem__(self, key):
+        if isinstance(key, int):
+            del self.low[key]
+            del self.high[key]
+        else:
+            # note we don&#39;t support slicers
+            raise ValueError(&#34;Invalid index to interval: &#34; + key)
+    def append(self, value):
+        if isinstance(value, tuple) or isinstance(value, IntervalRange):
+            low, high = value
+            self.low.append(low)
+            self.high.append(high)
+        else:
+            if isinstance(value, float) or isinstance(value, int):
+                if self.accuracy is not None:
+                    low = value * 1.0 - self.accuracy
+                    high = value * 1.0 + self.accuracy
+                    self.low.append(low)
+                    self.high.append(high)
+                else:
+                    raise ValueError(&#34;Cannot automatically convert values to intervals if accuracy not symmetrical&#34;)
+            else:
+                raise ValueError(&#34;Can only append intervals as tuples, or automatically convert values.&#34;)        
+    def extend(self, values):
+        if isinstance(values, (collections.abc.Sequence, np.ndarray)) and not type(values) is str:
+            for v in values:
+                self.append(v)
+        else:
+            print(type(values))
+            raise ValueError(&#34;Interval only supports extending intervals by auto-converting values&#34;)
+    def pop(self, item=None):
+        if item is None:
+            low = self.low.pop()
+            high = self.high.pop()
+        else:
+            low = self.low.pop(item)
+            high = self.high.pop(item)
+        return IntervalRange(low, high)
+    def clear(self):
+        self.low.clear()
+        self.high.clear()
+    def remove(self, value):
+        low, high = value
+        for idx in range(len(self.low)):
+            if self.low[idx] == low and self.high[idx] == high:
+                del self.low[idx]
+                del self.high[idx]
+                break
+    
+
+&#34;&#34;&#34;Collection of confidence intervals for varying interval_widths.
+
+Column-vector based access to CIs, with helper methods for
+row-based manipulation.&#34;&#34;&#34;
+class Intervals:
+    def __init__(self, intervals):
+        self._intervals = {}
+        for i in intervals:
+            self._intervals[i.confidence] = i
+    def __str__(self):
+        return &#34;Intervals: \n&#34; + &#34;\n&#34;.join(str(self._intervals[confidence]) for confidence in self._intervals.keys() )
+    def __iter__(self):
+        return iter([self._intervals[k] for k in self._intervals.keys()])
+    def __getitem__(self, key):
+        return self._intervals[key]
+    def __setitem__(self, key, value):
+        self._intervals[key] = value
+    def __delitem__(self, key):
+        del self._intervals[key]
+    def keys(self):
+        return self._intervals.keys()
+    def append(self, value):
+        if isinstance(value, int):
+            for k in self._intervals.keys():
+                self._intervals[k].append(value)
+        else:
+            raise ValueError(&#34;Interval collection only supports appending intervals by auto-converting values&#34;)
+    def extend(self, values):
+        if isinstance(values, (collections.abc.Sequence, np.ndarray)) and type(values) is not str:
+            for k in self._intervals.keys():
+                self._intervals[k].extend(values)
+        else:
+            raise ValueError(&#34;Interval collection only supports extending intervals by auto-converting values&#34;)
+    def clear(self):
+        for k in self._intervals.keys():
+            self._intervals[k].clear()
+    def delete_row(self, idx):
+        for k in self._intervals.keys():
+            interval = self._intervals[k]
+            del interval[idx]
+    @property
+    def interval_widths(self):
+        return [self._intervals[k].confidence for k in self._intervals.keys()]
+    @property
+    def alphas(self):
+        return [1 - confidence for confidence in self.interval_widths]
+    @property
+    def accuracy(self):
+        return [self._intervals[k].accuracy for k in self._intervals.keys()]
+
+&#34;&#34;&#34;A differentially private result, representing a single value or column of related values.
+
+Allows access to values and confidence intervals in column-vector format.  Helper
+methods for adding and deleting rows that span values and confidence intervals.&#34;&#34;&#34;
+class Result:
+    def __init__(self, mechanism, statistic, source, values, epsilon, delta, sensitivity, scale, max_contrib, intervals, name=None):
+        &#34;&#34;&#34;A result within a report.
+
+        :param string mechanism: The label for the mechanism being used (e.g. &#39;laplace&#39;, &#39;gaussian&#39;)
+        :param string statistic: The label for the statistic being computed (e.g. &#39;sum&#39;, &#39;mean&#39;)
+        :param string source: The name or source expression for the variable, usually the column name
+        :param object[] values:  An array of differentialy private values
+        :param float epsilon: The epsilon that was used in computing this value
+        :param float delta: The delta privacy parameter used
+        :param float sensitivity: The sensitivity of the values
+        :param float scale: The mechanism-specific noise level added by the mechanim. For example, may be variance for Gaussian, or scale for Laplace
+        :param int max_contrib: The max contribution of individuals
+        :param Intervals intervals: Typed collection of confidence intervals
+        :param string name: A friendly name for the result.  If missing, uses the source.
+        &#34;&#34;&#34;
+        self.mechanism = mechanism
+        self.statistic = statistic
+        self.source = source
+        self.values = [v for v in values]
+        self.epsilon = epsilon
+        self.delta = delta
+        self.sensitivity = sensitivity
+        self.scale = scale
+        self.max_contrib = max_contrib
+        if isinstance(intervals, Intervals):
+            self.intervals = intervals
+        elif isinstance(intervals, list):
+            self.intervals = Intervals(intervals)
+        elif intervals is None:
+            self.intervals = None
+        else:
+            raise ValueError(&#34;Don&#39;t know how to set intervals: &#34; + str(intervals))
+        self.name = name if name is not None else source
+    def __str__(self):
+        return &#34;mechanism: {0}\nstatistic: {1}\nsource: {2}\nvalues: {3}\nepsilon: {4}\ndelta: {5}\nsensitivity: {6}\nmax_contrib: {7}\nintervals: {8}&#34;.format(self.mechanism, self.statistic, self.source, self.values, self.epsilon, self.delta, self.sensitivity, self.max_contrib, self._intervals)
+    def __delitem__(self, idx):
+        del self.values[idx]
+        if self.intervals is not None:
+            self.intervals.delete_row(idx)
+    def __len__(self):
+        return len(self.values)
+    @property
+    def interval_widths(self):
+        return None if self.intervals is None else self.intervals.interval_widths
+    @property
+    def alphas(self):
+        return None if self.intervals is None else self.intervals.alphas
+    @property
+    def accuracy(self):
+        return None if self.intervals is None else self.intervals.accuracy
+
+
+&#34;&#34;&#34;A differentially private report
+
+Represents a list of result objects, with each result being
+a vector of differentially private results sharing common
+source and privacy paramaters.
+
+The individual result objects need not be the same length,
+though lengths will be the same for multi-column SQL outputs.&#34;&#34;&#34;
+class Report:
+    def __init__(self, results=None):
+        self._results = {}
+        if results is not None:
+            for r in results:
+                self._results[r.name] = r
+    def __getitem__(self, key):
+        return self._results[key]
+    def __setitem__(self, key, value):
+        self._results[key] = value
+    def __delitem__(self, key):
+        del self._results[key]
+    def __contains__(self, key):
+        return key in self._results</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="burdock.metadata.report.Interval"><code class="flex name class">
+<span>class <span class="ident">Interval</span></span>
+<span>(</span><span>confidence, accuracy, low=None, high=None)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Collection of confidence intervals for a given width</p>
+<p>:param float confidence: the confidence interval width for the CIs in the list.
+Between 0.0 and 1.0 inclusive.
+:param float accuracy: the plus/minus accuracy for values generated here. May be None, if not known or not symmetrical
+:param float[] low: the lower bound for each CI in the list
+:param float[] high: the lower bound for each CI in the list</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Interval:
+    def __init__(self, confidence, accuracy, low=None, high=None):
+        &#34;&#34;&#34;Collection of confidence intervals for a given width
+
+        :param float confidence: the confidence interval width for the CIs in the list.  Between 0.0 and 1.0 inclusive.
+        :param float accuracy: the plus/minus accuracy for values generated here. May be None, if not known or not symmetrical
+        :param float[] low: the lower bound for each CI in the list
+        :param float[] high: the lower bound for each CI in the list
+        &#34;&#34;&#34;
+        self.low = low
+        self.high = high
+        if high is None:
+            self.low = []
+            self.high = []
+        self.confidence = confidence
+        self.accuracy = accuracy
+    def __str__(self):
+        cis = &#34;, &#34;.join([&#34;[{0}-{1}]&#34;.format(round(low, 2), round(high, 2)) for low, high in zip(self.low, self.high)])
+        return &#34;confidence: {0}\naccuracy: {1}\n&#34;.format(self.confidence, self.accuracy) + cis
+    def __len__(self):
+        return len(self.low)
+    def contains(self, other):
+        return all([s.contains(o) for s, o in zip(self, other)])
+    def inside(self, other):
+        return all([s.inside(o) for s, o in zip(self, other)])
+    def __eq__(self, other):
+        return all([s == o for s, o in zip(self, other)])
+    def __lt__(self, other):
+        return all([s &lt; o for s, o in zip(self, other)])
+    def __gt__(self, other):
+        return all([s &gt; o for s, o in zip(self, other)])
+    def intersects(self, other):
+        return all([s.intersects(o) for s, o in zip(self, other)])
+    def __iter__(self):
+        return iter([IntervalRange(low, high) for low, high in zip(self.low, self.high)])
+    def __getitem__(self, key):
+        if isinstance(key, int):
+            return IntervalRange(self.low[key], self.high[key])
+        else:
+            raise ValueError(&#34;Invalid index to interval: &#34; + key)
+    def __setitem__(self, key, value):
+        if isinstance(key, int):
+            if isinstance(value, tuple) or isinstance(value, IntervalRange):
+                low, high = value
+            else:
+                if isinstance(value, float) or isinstance(value, int):
+                    if self.accuracy is not None:
+                        low = value * 1.0 - self.accuracy
+                        high = value * 1.0 + self.accuracy
+                    else:
+                        raise ValueError(&#34;Can only auto-convert value to interval if accuracy is set&#34;)
+                else:
+                    raise ValueError(&#34;Can only set interval value with a tuple or numeric value&#34;)
+            self.low[key] = low
+            self.high[key] = high
+        else:
+            raise ValueError(&#34;Invalid index to interval: &#34; + key)
+    def __delitem__(self, key):
+        if isinstance(key, int):
+            del self.low[key]
+            del self.high[key]
+        else:
+            # note we don&#39;t support slicers
+            raise ValueError(&#34;Invalid index to interval: &#34; + key)
+    def append(self, value):
+        if isinstance(value, tuple) or isinstance(value, IntervalRange):
+            low, high = value
+            self.low.append(low)
+            self.high.append(high)
+        else:
+            if isinstance(value, float) or isinstance(value, int):
+                if self.accuracy is not None:
+                    low = value * 1.0 - self.accuracy
+                    high = value * 1.0 + self.accuracy
+                    self.low.append(low)
+                    self.high.append(high)
+                else:
+                    raise ValueError(&#34;Cannot automatically convert values to intervals if accuracy not symmetrical&#34;)
+            else:
+                raise ValueError(&#34;Can only append intervals as tuples, or automatically convert values.&#34;)        
+    def extend(self, values):
+        if isinstance(values, (collections.abc.Sequence, np.ndarray)) and not type(values) is str:
+            for v in values:
+                self.append(v)
+        else:
+            print(type(values))
+            raise ValueError(&#34;Interval only supports extending intervals by auto-converting values&#34;)
+    def pop(self, item=None):
+        if item is None:
+            low = self.low.pop()
+            high = self.high.pop()
+        else:
+            low = self.low.pop(item)
+            high = self.high.pop(item)
+        return IntervalRange(low, high)
+    def clear(self):
+        self.low.clear()
+        self.high.clear()
+    def remove(self, value):
+        low, high = value
+        for idx in range(len(self.low)):
+            if self.low[idx] == low and self.high[idx] == high:
+                del self.low[idx]
+                del self.high[idx]
+                break</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.metadata.report.Interval.append"><code class="name flex">
+<span>def <span class="ident">append</span></span>(<span>self, value)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def append(self, value):
+    if isinstance(value, tuple) or isinstance(value, IntervalRange):
+        low, high = value
+        self.low.append(low)
+        self.high.append(high)
+    else:
+        if isinstance(value, float) or isinstance(value, int):
+            if self.accuracy is not None:
+                low = value * 1.0 - self.accuracy
+                high = value * 1.0 + self.accuracy
+                self.low.append(low)
+                self.high.append(high)
+            else:
+                raise ValueError(&#34;Cannot automatically convert values to intervals if accuracy not symmetrical&#34;)
+        else:
+            raise ValueError(&#34;Can only append intervals as tuples, or automatically convert values.&#34;)        </code></pre>
+</details>
+</dd>
+<dt id="burdock.metadata.report.Interval.clear"><code class="name flex">
+<span>def <span class="ident">clear</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def clear(self):
+    self.low.clear()
+    self.high.clear()</code></pre>
+</details>
+</dd>
+<dt id="burdock.metadata.report.Interval.contains"><code class="name flex">
+<span>def <span class="ident">contains</span></span>(<span>self, other)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def contains(self, other):
+    return all([s.contains(o) for s, o in zip(self, other)])</code></pre>
+</details>
+</dd>
+<dt id="burdock.metadata.report.Interval.extend"><code class="name flex">
+<span>def <span class="ident">extend</span></span>(<span>self, values)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def extend(self, values):
+    if isinstance(values, (collections.abc.Sequence, np.ndarray)) and not type(values) is str:
+        for v in values:
+            self.append(v)
+    else:
+        print(type(values))
+        raise ValueError(&#34;Interval only supports extending intervals by auto-converting values&#34;)</code></pre>
+</details>
+</dd>
+<dt id="burdock.metadata.report.Interval.inside"><code class="name flex">
+<span>def <span class="ident">inside</span></span>(<span>self, other)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def inside(self, other):
+    return all([s.inside(o) for s, o in zip(self, other)])</code></pre>
+</details>
+</dd>
+<dt id="burdock.metadata.report.Interval.intersects"><code class="name flex">
+<span>def <span class="ident">intersects</span></span>(<span>self, other)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def intersects(self, other):
+    return all([s.intersects(o) for s, o in zip(self, other)])</code></pre>
+</details>
+</dd>
+<dt id="burdock.metadata.report.Interval.pop"><code class="name flex">
+<span>def <span class="ident">pop</span></span>(<span>self, item=None)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def pop(self, item=None):
+    if item is None:
+        low = self.low.pop()
+        high = self.high.pop()
+    else:
+        low = self.low.pop(item)
+        high = self.high.pop(item)
+    return IntervalRange(low, high)</code></pre>
+</details>
+</dd>
+<dt id="burdock.metadata.report.Interval.remove"><code class="name flex">
+<span>def <span class="ident">remove</span></span>(<span>self, value)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def remove(self, value):
+    low, high = value
+    for idx in range(len(self.low)):
+        if self.low[idx] == low and self.high[idx] == high:
+            del self.low[idx]
+            del self.high[idx]
+            break</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.metadata.report.IntervalRange"><code class="flex name class">
+<span>class <span class="ident">IntervalRange</span></span>
+<span>(</span><span>low, high)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class IntervalRange:
+    def __init__(self, low, high):
+        self.low = low
+        self.high = high
+    def __str__(self):
+        return &#34;[{0}-{1}]&#34;.format(round(self.low, 2), round(self.high, 2))
+    def contains(self, other):
+        return self.low &lt;= other.low and self.high &gt;= other.high
+    def inside(self, other):
+        return other.contains(self)
+    def __eq__(self, other):
+        return self.low == other.low and self.high == other.high
+    def __lt__(self, other):
+        return self.high &lt; other.low
+    def __gt__(self, other):
+        return self.low &gt; other.high
+    def intersects(self, other):
+        return (self.low &gt;= other.low and self.low &lt;= other.high) or (self.high &gt;= other.low and self.high &lt;= other.high)
+    def __iter__(self):
+        return iter([self.low, self.high])</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.metadata.report.IntervalRange.contains"><code class="name flex">
+<span>def <span class="ident">contains</span></span>(<span>self, other)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def contains(self, other):
+    return self.low &lt;= other.low and self.high &gt;= other.high</code></pre>
+</details>
+</dd>
+<dt id="burdock.metadata.report.IntervalRange.inside"><code class="name flex">
+<span>def <span class="ident">inside</span></span>(<span>self, other)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def inside(self, other):
+    return other.contains(self)</code></pre>
+</details>
+</dd>
+<dt id="burdock.metadata.report.IntervalRange.intersects"><code class="name flex">
+<span>def <span class="ident">intersects</span></span>(<span>self, other)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def intersects(self, other):
+    return (self.low &gt;= other.low and self.low &lt;= other.high) or (self.high &gt;= other.low and self.high &lt;= other.high)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.metadata.report.Intervals"><code class="flex name class">
+<span>class <span class="ident">Intervals</span></span>
+<span>(</span><span>intervals)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Intervals:
+    def __init__(self, intervals):
+        self._intervals = {}
+        for i in intervals:
+            self._intervals[i.confidence] = i
+    def __str__(self):
+        return &#34;Intervals: \n&#34; + &#34;\n&#34;.join(str(self._intervals[confidence]) for confidence in self._intervals.keys() )
+    def __iter__(self):
+        return iter([self._intervals[k] for k in self._intervals.keys()])
+    def __getitem__(self, key):
+        return self._intervals[key]
+    def __setitem__(self, key, value):
+        self._intervals[key] = value
+    def __delitem__(self, key):
+        del self._intervals[key]
+    def keys(self):
+        return self._intervals.keys()
+    def append(self, value):
+        if isinstance(value, int):
+            for k in self._intervals.keys():
+                self._intervals[k].append(value)
+        else:
+            raise ValueError(&#34;Interval collection only supports appending intervals by auto-converting values&#34;)
+    def extend(self, values):
+        if isinstance(values, (collections.abc.Sequence, np.ndarray)) and type(values) is not str:
+            for k in self._intervals.keys():
+                self._intervals[k].extend(values)
+        else:
+            raise ValueError(&#34;Interval collection only supports extending intervals by auto-converting values&#34;)
+    def clear(self):
+        for k in self._intervals.keys():
+            self._intervals[k].clear()
+    def delete_row(self, idx):
+        for k in self._intervals.keys():
+            interval = self._intervals[k]
+            del interval[idx]
+    @property
+    def interval_widths(self):
+        return [self._intervals[k].confidence for k in self._intervals.keys()]
+    @property
+    def alphas(self):
+        return [1 - confidence for confidence in self.interval_widths]
+    @property
+    def accuracy(self):
+        return [self._intervals[k].accuracy for k in self._intervals.keys()]</code></pre>
+</details>
+<h3>Instance variables</h3>
+<dl>
+<dt id="burdock.metadata.report.Intervals.accuracy"><code class="name">var <span class="ident">accuracy</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def accuracy(self):
+    return [self._intervals[k].accuracy for k in self._intervals.keys()]</code></pre>
+</details>
+</dd>
+<dt id="burdock.metadata.report.Intervals.alphas"><code class="name">var <span class="ident">alphas</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def alphas(self):
+    return [1 - confidence for confidence in self.interval_widths]</code></pre>
+</details>
+</dd>
+<dt id="burdock.metadata.report.Intervals.interval_widths"><code class="name">var <span class="ident">interval_widths</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def interval_widths(self):
+    return [self._intervals[k].confidence for k in self._intervals.keys()]</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.metadata.report.Intervals.append"><code class="name flex">
+<span>def <span class="ident">append</span></span>(<span>self, value)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def append(self, value):
+    if isinstance(value, int):
+        for k in self._intervals.keys():
+            self._intervals[k].append(value)
+    else:
+        raise ValueError(&#34;Interval collection only supports appending intervals by auto-converting values&#34;)</code></pre>
+</details>
+</dd>
+<dt id="burdock.metadata.report.Intervals.clear"><code class="name flex">
+<span>def <span class="ident">clear</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def clear(self):
+    for k in self._intervals.keys():
+        self._intervals[k].clear()</code></pre>
+</details>
+</dd>
+<dt id="burdock.metadata.report.Intervals.delete_row"><code class="name flex">
+<span>def <span class="ident">delete_row</span></span>(<span>self, idx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def delete_row(self, idx):
+    for k in self._intervals.keys():
+        interval = self._intervals[k]
+        del interval[idx]</code></pre>
+</details>
+</dd>
+<dt id="burdock.metadata.report.Intervals.extend"><code class="name flex">
+<span>def <span class="ident">extend</span></span>(<span>self, values)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def extend(self, values):
+    if isinstance(values, (collections.abc.Sequence, np.ndarray)) and type(values) is not str:
+        for k in self._intervals.keys():
+            self._intervals[k].extend(values)
+    else:
+        raise ValueError(&#34;Interval collection only supports extending intervals by auto-converting values&#34;)</code></pre>
+</details>
+</dd>
+<dt id="burdock.metadata.report.Intervals.keys"><code class="name flex">
+<span>def <span class="ident">keys</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def keys(self):
+    return self._intervals.keys()</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.metadata.report.Report"><code class="flex name class">
+<span>class <span class="ident">Report</span></span>
+<span>(</span><span>results=None)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Report:
+    def __init__(self, results=None):
+        self._results = {}
+        if results is not None:
+            for r in results:
+                self._results[r.name] = r
+    def __getitem__(self, key):
+        return self._results[key]
+    def __setitem__(self, key, value):
+        self._results[key] = value
+    def __delitem__(self, key):
+        del self._results[key]
+    def __contains__(self, key):
+        return key in self._results</code></pre>
+</details>
+</dd>
+<dt id="burdock.metadata.report.Result"><code class="flex name class">
+<span>class <span class="ident">Result</span></span>
+<span>(</span><span>mechanism, statistic, source, values, epsilon, delta, sensitivity, scale, max_contrib, intervals, name=None)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>A result within a report.</p>
+<p>:param string mechanism: The label for the mechanism being used (e.g. 'laplace', 'gaussian')
+:param string statistic: The label for the statistic being computed (e.g. 'sum', 'mean')
+:param string source: The name or source expression for the variable, usually the column name
+:param object[] values:
+An array of differentialy private values
+:param float epsilon: The epsilon that was used in computing this value
+:param float delta: The delta privacy parameter used
+:param float sensitivity: The sensitivity of the values
+:param float scale: The mechanism-specific noise level added by the mechanim. For example, may be variance for Gaussian, or scale for Laplace
+:param int max_contrib: The max contribution of individuals
+:param Intervals intervals: Typed collection of confidence intervals
+:param string name: A friendly name for the result.
+If missing, uses the source.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Result:
+    def __init__(self, mechanism, statistic, source, values, epsilon, delta, sensitivity, scale, max_contrib, intervals, name=None):
+        &#34;&#34;&#34;A result within a report.
+
+        :param string mechanism: The label for the mechanism being used (e.g. &#39;laplace&#39;, &#39;gaussian&#39;)
+        :param string statistic: The label for the statistic being computed (e.g. &#39;sum&#39;, &#39;mean&#39;)
+        :param string source: The name or source expression for the variable, usually the column name
+        :param object[] values:  An array of differentialy private values
+        :param float epsilon: The epsilon that was used in computing this value
+        :param float delta: The delta privacy parameter used
+        :param float sensitivity: The sensitivity of the values
+        :param float scale: The mechanism-specific noise level added by the mechanim. For example, may be variance for Gaussian, or scale for Laplace
+        :param int max_contrib: The max contribution of individuals
+        :param Intervals intervals: Typed collection of confidence intervals
+        :param string name: A friendly name for the result.  If missing, uses the source.
+        &#34;&#34;&#34;
+        self.mechanism = mechanism
+        self.statistic = statistic
+        self.source = source
+        self.values = [v for v in values]
+        self.epsilon = epsilon
+        self.delta = delta
+        self.sensitivity = sensitivity
+        self.scale = scale
+        self.max_contrib = max_contrib
+        if isinstance(intervals, Intervals):
+            self.intervals = intervals
+        elif isinstance(intervals, list):
+            self.intervals = Intervals(intervals)
+        elif intervals is None:
+            self.intervals = None
+        else:
+            raise ValueError(&#34;Don&#39;t know how to set intervals: &#34; + str(intervals))
+        self.name = name if name is not None else source
+    def __str__(self):
+        return &#34;mechanism: {0}\nstatistic: {1}\nsource: {2}\nvalues: {3}\nepsilon: {4}\ndelta: {5}\nsensitivity: {6}\nmax_contrib: {7}\nintervals: {8}&#34;.format(self.mechanism, self.statistic, self.source, self.values, self.epsilon, self.delta, self.sensitivity, self.max_contrib, self._intervals)
+    def __delitem__(self, idx):
+        del self.values[idx]
+        if self.intervals is not None:
+            self.intervals.delete_row(idx)
+    def __len__(self):
+        return len(self.values)
+    @property
+    def interval_widths(self):
+        return None if self.intervals is None else self.intervals.interval_widths
+    @property
+    def alphas(self):
+        return None if self.intervals is None else self.intervals.alphas
+    @property
+    def accuracy(self):
+        return None if self.intervals is None else self.intervals.accuracy</code></pre>
+</details>
+<h3>Instance variables</h3>
+<dl>
+<dt id="burdock.metadata.report.Result.accuracy"><code class="name">var <span class="ident">accuracy</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def accuracy(self):
+    return None if self.intervals is None else self.intervals.accuracy</code></pre>
+</details>
+</dd>
+<dt id="burdock.metadata.report.Result.alphas"><code class="name">var <span class="ident">alphas</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def alphas(self):
+    return None if self.intervals is None else self.intervals.alphas</code></pre>
+</details>
+</dd>
+<dt id="burdock.metadata.report.Result.interval_widths"><code class="name">var <span class="ident">interval_widths</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def interval_widths(self):
+    return None if self.intervals is None else self.intervals.interval_widths</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="burdock.metadata" href="index.html">burdock.metadata</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="burdock.metadata.report.Interval" href="#burdock.metadata.report.Interval">Interval</a></code></h4>
+<ul class="two-column">
+<li><code><a title="burdock.metadata.report.Interval.append" href="#burdock.metadata.report.Interval.append">append</a></code></li>
+<li><code><a title="burdock.metadata.report.Interval.clear" href="#burdock.metadata.report.Interval.clear">clear</a></code></li>
+<li><code><a title="burdock.metadata.report.Interval.contains" href="#burdock.metadata.report.Interval.contains">contains</a></code></li>
+<li><code><a title="burdock.metadata.report.Interval.extend" href="#burdock.metadata.report.Interval.extend">extend</a></code></li>
+<li><code><a title="burdock.metadata.report.Interval.inside" href="#burdock.metadata.report.Interval.inside">inside</a></code></li>
+<li><code><a title="burdock.metadata.report.Interval.intersects" href="#burdock.metadata.report.Interval.intersects">intersects</a></code></li>
+<li><code><a title="burdock.metadata.report.Interval.pop" href="#burdock.metadata.report.Interval.pop">pop</a></code></li>
+<li><code><a title="burdock.metadata.report.Interval.remove" href="#burdock.metadata.report.Interval.remove">remove</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.metadata.report.IntervalRange" href="#burdock.metadata.report.IntervalRange">IntervalRange</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.metadata.report.IntervalRange.contains" href="#burdock.metadata.report.IntervalRange.contains">contains</a></code></li>
+<li><code><a title="burdock.metadata.report.IntervalRange.inside" href="#burdock.metadata.report.IntervalRange.inside">inside</a></code></li>
+<li><code><a title="burdock.metadata.report.IntervalRange.intersects" href="#burdock.metadata.report.IntervalRange.intersects">intersects</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.metadata.report.Intervals" href="#burdock.metadata.report.Intervals">Intervals</a></code></h4>
+<ul class="two-column">
+<li><code><a title="burdock.metadata.report.Intervals.accuracy" href="#burdock.metadata.report.Intervals.accuracy">accuracy</a></code></li>
+<li><code><a title="burdock.metadata.report.Intervals.alphas" href="#burdock.metadata.report.Intervals.alphas">alphas</a></code></li>
+<li><code><a title="burdock.metadata.report.Intervals.append" href="#burdock.metadata.report.Intervals.append">append</a></code></li>
+<li><code><a title="burdock.metadata.report.Intervals.clear" href="#burdock.metadata.report.Intervals.clear">clear</a></code></li>
+<li><code><a title="burdock.metadata.report.Intervals.delete_row" href="#burdock.metadata.report.Intervals.delete_row">delete_row</a></code></li>
+<li><code><a title="burdock.metadata.report.Intervals.extend" href="#burdock.metadata.report.Intervals.extend">extend</a></code></li>
+<li><code><a title="burdock.metadata.report.Intervals.interval_widths" href="#burdock.metadata.report.Intervals.interval_widths">interval_widths</a></code></li>
+<li><code><a title="burdock.metadata.report.Intervals.keys" href="#burdock.metadata.report.Intervals.keys">keys</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.metadata.report.Report" href="#burdock.metadata.report.Report">Report</a></code></h4>
+</li>
+<li>
+<h4><code><a title="burdock.metadata.report.Result" href="#burdock.metadata.report.Result">Result</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.metadata.report.Result.accuracy" href="#burdock.metadata.report.Result.accuracy">accuracy</a></code></li>
+<li><code><a title="burdock.metadata.report.Result.alphas" href="#burdock.metadata.report.Result.alphas">alphas</a></code></li>
+<li><code><a title="burdock.metadata.report.Result.interval_widths" href="#burdock.metadata.report.Result.interval_widths">interval_widths</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.5</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>
