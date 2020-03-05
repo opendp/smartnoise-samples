@@ -16,7 +16,7 @@ The tests include -
 
 The scope of stochastic evaluation mentioned in this document is to find violations of privacy, accuracy, utility, bias properties of black-box algorithms that claim to be differentially private (like a fuzzer). 
 
-In Scope: mechanisms, statistics, models, algorithms, parsing layer
+In Scope: mechanisms, statistics, models, algorithms, parsing layer<br/>
 Out of scope: 
 * Formally prove privacy properties
 * Find all possible violations
