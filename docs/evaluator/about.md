@@ -1,6 +1,5 @@
 # About the Stochastic Evaluator
 
-
 ## Scope
 
 The scope of stochastic evaluation is to find violations of privacy, accuracy, utility, bias properties of black-box algorithms that claim to be differentially private (like a fuzzer). 
