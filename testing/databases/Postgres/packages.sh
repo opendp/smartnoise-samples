@@ -1,0 +1,1 @@
+sudo apt-get install --yes ruby postgresql postgresql-client postgresql-client-common libpq-dev odbc-postgresql
