@@ -1,0 +1,598 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.5" />
+<title>burdock.reader.sql.base API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>burdock.reader.sql.base</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from .rowset import TypedRowset
+
+class Reader:
+    def __init__(self):
+        self.serializer = None
+        self.compare = NameCompare()
+
+    def execute(self, query):
+        raise NotImplementedError(&#34;Execute must be implemented on the inherited class&#34;)
+
+    def execute_typed(self, query):
+        if not isinstance(query, str):
+            raise ValueError(&#34;Please pass a string to this function.  You can use execute_ast to execute ASTs&#34;)
+
+        rows = self.execute(query)
+        if len(rows) &lt; 1:
+            return None
+        sens = [None for i in range(len(rows[0]))]
+        types = [&#34;unknown&#34; for i in range(len(rows[0]))]
+        if len(rows) &gt; 1:
+            row = rows[1]
+            for idx in range(len(row)):
+                val = row[idx]
+                if isinstance(val, int):
+                    types[idx] = &#34;int&#34;
+                elif isinstance(val, float):
+                    types[idx] = &#34;float&#34;
+                elif isinstance(val, bool):
+                    types[idx] = &#34;boolean&#34;
+                else:
+                    types[idx] = &#34;string&#34;
+
+        return TypedRowset(rows, types, sens)
+
+    def execute_ast(self, query):
+        if isinstance(query, str):
+            raise ValueError(&#34;Please pass ASTs to execute_ast.  To execute strings, use execute.&#34;)
+        if hasattr(self, &#39;serializer&#39;) and self.serializer is not None:
+            query_string = self.serializer.serialize(query)
+        else:
+            query_string = str(query)
+        return self.execute(query_string)
+
+    def execute_ast_typed(self, query):
+        syms = query.all_symbols()
+        types = [s[1].type() for s in syms]
+        sens = [s[1].sensitivity() for s in syms]
+
+        rows = self.execute_ast(query)
+        return TypedRowset(rows, types, sens)
+
+&#34;&#34;&#34;
+    Implements engine-specific identifier matching rules
+    for escaped identifiers.
+&#34;&#34;&#34;
+class NameCompare:
+    _name_compare_classes = {}
+
+    @classmethod
+    def register_name_compare(cls, engine, class_to_add):
+        cls._name_compare_classes[engine] = class_to_add
+
+    @classmethod
+    def get_name_compare(cls, engine):
+        if engine in cls._name_compare_classes:
+            return cls._name_compare_classes[engine]()
+        else:
+            return NameCompare()
+
+    def __init__(self, search_path=None):
+        self.search_path = search_path if search_path is not None else []
+    &#34;&#34;&#34;
+        True if schema portion of identifier used in query
+        matches schema or metadata object.  Follows search
+        path.  Pass in only the schema part.
+    &#34;&#34;&#34;
+    def reserved(self):
+        return [&#34;select&#34;, &#34;group&#34;, &#34;on&#34;]
+
+    def schema_match(self, query, meta):
+        if query.strip() == &#34;&#34; and meta in self.search_path:
+            return True
+        return self.identifier_match(query, meta)
+    &#34;&#34;&#34;
+        Uses database engine matching rules to report True
+        if identifier used in query matches identifier
+        of metadata object.  Pass in one part at a time.
+    &#34;&#34;&#34;
+    def identifier_match(self, query, meta):
+        return query == meta
+    &#34;&#34;&#34;
+        Removes all escaping characters, keeping identifiers unchanged
+    &#34;&#34;&#34;
+    def strip_escapes(self, value):
+        return value.replace(&#39;&#34;&#39;,&#39;&#39;).replace(&#39;`&#39;,&#39;&#39;).replace(&#39;[&#39;,&#39;&#39;).replace(&#39;]&#39;,&#39;&#39;)
+    &#34;&#34;&#34;
+        True if any part of identifier is escaped
+    &#34;&#34;&#34;
+    def is_escaped(self, identifier):
+        return any([p[0] in [&#39;&#34;&#39;, &#39;[&#39;, &#39;`&#39;] for p in identifier.split(&#39;.&#39;) if p != &#34;&#34;])
+    &#34;&#34;&#34;
+        Converts proprietary escaping to SQL-92.  Supports multi-part identifiers
+    &#34;&#34;&#34;
+    def clean_escape(self, identifier):
+        escaped = []
+        for p in identifier.split(&#39;.&#39;):
+            if self.is_escaped(p):
+                escaped.append(p.replace(&#39;[&#39;, &#39;&#34;&#39;).replace(&#39;]&#39;, &#39;&#34;&#39;).replace(&#39;`&#39;, &#39;&#34;&#39;))
+            else:
+                escaped.append(p.lower())
+        return &#39;.&#39;.join(escaped)
+    &#34;&#34;&#34;
+        Returns true if an identifier should
+        be escaped.  Checks only one part per call.
+    &#34;&#34;&#34;
+    def should_escape(self, identifier):
+        if self.is_escaped(identifier):
+            return False
+        if identifier.lower() in self.reserved():
+            return True
+        if identifier.lower().replace(&#39; &#39;, &#39;&#39;) == identifier.lower():
+            return False
+        else:
+            return True
+        </code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="burdock.reader.sql.base.NameCompare"><code class="flex name class">
+<span>class <span class="ident">NameCompare</span></span>
+<span>(</span><span>search_path=None)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class NameCompare:
+    _name_compare_classes = {}
+
+    @classmethod
+    def register_name_compare(cls, engine, class_to_add):
+        cls._name_compare_classes[engine] = class_to_add
+
+    @classmethod
+    def get_name_compare(cls, engine):
+        if engine in cls._name_compare_classes:
+            return cls._name_compare_classes[engine]()
+        else:
+            return NameCompare()
+
+    def __init__(self, search_path=None):
+        self.search_path = search_path if search_path is not None else []
+    &#34;&#34;&#34;
+        True if schema portion of identifier used in query
+        matches schema or metadata object.  Follows search
+        path.  Pass in only the schema part.
+    &#34;&#34;&#34;
+    def reserved(self):
+        return [&#34;select&#34;, &#34;group&#34;, &#34;on&#34;]
+
+    def schema_match(self, query, meta):
+        if query.strip() == &#34;&#34; and meta in self.search_path:
+            return True
+        return self.identifier_match(query, meta)
+    &#34;&#34;&#34;
+        Uses database engine matching rules to report True
+        if identifier used in query matches identifier
+        of metadata object.  Pass in one part at a time.
+    &#34;&#34;&#34;
+    def identifier_match(self, query, meta):
+        return query == meta
+    &#34;&#34;&#34;
+        Removes all escaping characters, keeping identifiers unchanged
+    &#34;&#34;&#34;
+    def strip_escapes(self, value):
+        return value.replace(&#39;&#34;&#39;,&#39;&#39;).replace(&#39;`&#39;,&#39;&#39;).replace(&#39;[&#39;,&#39;&#39;).replace(&#39;]&#39;,&#39;&#39;)
+    &#34;&#34;&#34;
+        True if any part of identifier is escaped
+    &#34;&#34;&#34;
+    def is_escaped(self, identifier):
+        return any([p[0] in [&#39;&#34;&#39;, &#39;[&#39;, &#39;`&#39;] for p in identifier.split(&#39;.&#39;) if p != &#34;&#34;])
+    &#34;&#34;&#34;
+        Converts proprietary escaping to SQL-92.  Supports multi-part identifiers
+    &#34;&#34;&#34;
+    def clean_escape(self, identifier):
+        escaped = []
+        for p in identifier.split(&#39;.&#39;):
+            if self.is_escaped(p):
+                escaped.append(p.replace(&#39;[&#39;, &#39;&#34;&#39;).replace(&#39;]&#39;, &#39;&#34;&#39;).replace(&#39;`&#39;, &#39;&#34;&#39;))
+            else:
+                escaped.append(p.lower())
+        return &#39;.&#39;.join(escaped)
+    &#34;&#34;&#34;
+        Returns true if an identifier should
+        be escaped.  Checks only one part per call.
+    &#34;&#34;&#34;
+    def should_escape(self, identifier):
+        if self.is_escaped(identifier):
+            return False
+        if identifier.lower() in self.reserved():
+            return True
+        if identifier.lower().replace(&#39; &#39;, &#39;&#39;) == identifier.lower():
+            return False
+        else:
+            return True</code></pre>
+</details>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="burdock.reader.sql.postgres.PostgresNameCompare" href="postgres.html#burdock.reader.sql.postgres.PostgresNameCompare">PostgresNameCompare</a></li>
+<li><a title="burdock.reader.sql.presto.PrestoNameCompare" href="presto.html#burdock.reader.sql.presto.PrestoNameCompare">PrestoNameCompare</a></li>
+<li><a title="burdock.reader.sql.spark.SparkNameCompare" href="spark.html#burdock.reader.sql.spark.SparkNameCompare">SparkNameCompare</a></li>
+<li><a title="burdock.reader.sql.sqlserver.SqlServerNameCompare" href="sqlserver.html#burdock.reader.sql.sqlserver.SqlServerNameCompare">SqlServerNameCompare</a></li>
+</ul>
+<h3>Static methods</h3>
+<dl>
+<dt id="burdock.reader.sql.base.NameCompare.get_name_compare"><code class="name flex">
+<span>def <span class="ident">get_name_compare</span></span>(<span>engine)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def get_name_compare(cls, engine):
+    if engine in cls._name_compare_classes:
+        return cls._name_compare_classes[engine]()
+    else:
+        return NameCompare()</code></pre>
+</details>
+</dd>
+<dt id="burdock.reader.sql.base.NameCompare.register_name_compare"><code class="name flex">
+<span>def <span class="ident">register_name_compare</span></span>(<span>engine, class_to_add)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def register_name_compare(cls, engine, class_to_add):
+    cls._name_compare_classes[engine] = class_to_add</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.reader.sql.base.NameCompare.clean_escape"><code class="name flex">
+<span>def <span class="ident">clean_escape</span></span>(<span>self, identifier)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def clean_escape(self, identifier):
+    escaped = []
+    for p in identifier.split(&#39;.&#39;):
+        if self.is_escaped(p):
+            escaped.append(p.replace(&#39;[&#39;, &#39;&#34;&#39;).replace(&#39;]&#39;, &#39;&#34;&#39;).replace(&#39;`&#39;, &#39;&#34;&#39;))
+        else:
+            escaped.append(p.lower())
+    return &#39;.&#39;.join(escaped)</code></pre>
+</details>
+</dd>
+<dt id="burdock.reader.sql.base.NameCompare.identifier_match"><code class="name flex">
+<span>def <span class="ident">identifier_match</span></span>(<span>self, query, meta)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def identifier_match(self, query, meta):
+    return query == meta</code></pre>
+</details>
+</dd>
+<dt id="burdock.reader.sql.base.NameCompare.is_escaped"><code class="name flex">
+<span>def <span class="ident">is_escaped</span></span>(<span>self, identifier)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def is_escaped(self, identifier):
+    return any([p[0] in [&#39;&#34;&#39;, &#39;[&#39;, &#39;`&#39;] for p in identifier.split(&#39;.&#39;) if p != &#34;&#34;])</code></pre>
+</details>
+</dd>
+<dt id="burdock.reader.sql.base.NameCompare.reserved"><code class="name flex">
+<span>def <span class="ident">reserved</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def reserved(self):
+    return [&#34;select&#34;, &#34;group&#34;, &#34;on&#34;]</code></pre>
+</details>
+</dd>
+<dt id="burdock.reader.sql.base.NameCompare.schema_match"><code class="name flex">
+<span>def <span class="ident">schema_match</span></span>(<span>self, query, meta)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def schema_match(self, query, meta):
+    if query.strip() == &#34;&#34; and meta in self.search_path:
+        return True
+    return self.identifier_match(query, meta)</code></pre>
+</details>
+</dd>
+<dt id="burdock.reader.sql.base.NameCompare.should_escape"><code class="name flex">
+<span>def <span class="ident">should_escape</span></span>(<span>self, identifier)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def should_escape(self, identifier):
+    if self.is_escaped(identifier):
+        return False
+    if identifier.lower() in self.reserved():
+        return True
+    if identifier.lower().replace(&#39; &#39;, &#39;&#39;) == identifier.lower():
+        return False
+    else:
+        return True</code></pre>
+</details>
+</dd>
+<dt id="burdock.reader.sql.base.NameCompare.strip_escapes"><code class="name flex">
+<span>def <span class="ident">strip_escapes</span></span>(<span>self, value)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def strip_escapes(self, value):
+    return value.replace(&#39;&#34;&#39;,&#39;&#39;).replace(&#39;`&#39;,&#39;&#39;).replace(&#39;[&#39;,&#39;&#39;).replace(&#39;]&#39;,&#39;&#39;)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="burdock.reader.sql.base.Reader"><code class="flex name class">
+<span>class <span class="ident">Reader</span></span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Reader:
+    def __init__(self):
+        self.serializer = None
+        self.compare = NameCompare()
+
+    def execute(self, query):
+        raise NotImplementedError(&#34;Execute must be implemented on the inherited class&#34;)
+
+    def execute_typed(self, query):
+        if not isinstance(query, str):
+            raise ValueError(&#34;Please pass a string to this function.  You can use execute_ast to execute ASTs&#34;)
+
+        rows = self.execute(query)
+        if len(rows) &lt; 1:
+            return None
+        sens = [None for i in range(len(rows[0]))]
+        types = [&#34;unknown&#34; for i in range(len(rows[0]))]
+        if len(rows) &gt; 1:
+            row = rows[1]
+            for idx in range(len(row)):
+                val = row[idx]
+                if isinstance(val, int):
+                    types[idx] = &#34;int&#34;
+                elif isinstance(val, float):
+                    types[idx] = &#34;float&#34;
+                elif isinstance(val, bool):
+                    types[idx] = &#34;boolean&#34;
+                else:
+                    types[idx] = &#34;string&#34;
+
+        return TypedRowset(rows, types, sens)
+
+    def execute_ast(self, query):
+        if isinstance(query, str):
+            raise ValueError(&#34;Please pass ASTs to execute_ast.  To execute strings, use execute.&#34;)
+        if hasattr(self, &#39;serializer&#39;) and self.serializer is not None:
+            query_string = self.serializer.serialize(query)
+        else:
+            query_string = str(query)
+        return self.execute(query_string)
+
+    def execute_ast_typed(self, query):
+        syms = query.all_symbols()
+        types = [s[1].type() for s in syms]
+        sens = [s[1].sensitivity() for s in syms]
+
+        rows = self.execute_ast(query)
+        return TypedRowset(rows, types, sens)</code></pre>
+</details>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="burdock.reader.sql.pandas.PandasReader" href="pandas.html#burdock.reader.sql.pandas.PandasReader">PandasReader</a></li>
+<li><a title="burdock.reader.sql.postgres.PostgresReader" href="postgres.html#burdock.reader.sql.postgres.PostgresReader">PostgresReader</a></li>
+<li><a title="burdock.reader.sql.presto.PrestoReader" href="presto.html#burdock.reader.sql.presto.PrestoReader">PrestoReader</a></li>
+<li><a title="burdock.reader.sql.spark.SparkReader" href="spark.html#burdock.reader.sql.spark.SparkReader">SparkReader</a></li>
+<li><a title="burdock.reader.sql.sqlserver.SqlServerReader" href="sqlserver.html#burdock.reader.sql.sqlserver.SqlServerReader">SqlServerReader</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.reader.sql.base.Reader.execute"><code class="name flex">
+<span>def <span class="ident">execute</span></span>(<span>self, query)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def execute(self, query):
+    raise NotImplementedError(&#34;Execute must be implemented on the inherited class&#34;)</code></pre>
+</details>
+</dd>
+<dt id="burdock.reader.sql.base.Reader.execute_ast"><code class="name flex">
+<span>def <span class="ident">execute_ast</span></span>(<span>self, query)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def execute_ast(self, query):
+    if isinstance(query, str):
+        raise ValueError(&#34;Please pass ASTs to execute_ast.  To execute strings, use execute.&#34;)
+    if hasattr(self, &#39;serializer&#39;) and self.serializer is not None:
+        query_string = self.serializer.serialize(query)
+    else:
+        query_string = str(query)
+    return self.execute(query_string)</code></pre>
+</details>
+</dd>
+<dt id="burdock.reader.sql.base.Reader.execute_ast_typed"><code class="name flex">
+<span>def <span class="ident">execute_ast_typed</span></span>(<span>self, query)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def execute_ast_typed(self, query):
+    syms = query.all_symbols()
+    types = [s[1].type() for s in syms]
+    sens = [s[1].sensitivity() for s in syms]
+
+    rows = self.execute_ast(query)
+    return TypedRowset(rows, types, sens)</code></pre>
+</details>
+</dd>
+<dt id="burdock.reader.sql.base.Reader.execute_typed"><code class="name flex">
+<span>def <span class="ident">execute_typed</span></span>(<span>self, query)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def execute_typed(self, query):
+    if not isinstance(query, str):
+        raise ValueError(&#34;Please pass a string to this function.  You can use execute_ast to execute ASTs&#34;)
+
+    rows = self.execute(query)
+    if len(rows) &lt; 1:
+        return None
+    sens = [None for i in range(len(rows[0]))]
+    types = [&#34;unknown&#34; for i in range(len(rows[0]))]
+    if len(rows) &gt; 1:
+        row = rows[1]
+        for idx in range(len(row)):
+            val = row[idx]
+            if isinstance(val, int):
+                types[idx] = &#34;int&#34;
+            elif isinstance(val, float):
+                types[idx] = &#34;float&#34;
+            elif isinstance(val, bool):
+                types[idx] = &#34;boolean&#34;
+            else:
+                types[idx] = &#34;string&#34;
+
+    return TypedRowset(rows, types, sens)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="burdock.reader.sql" href="index.html">burdock.reader.sql</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="burdock.reader.sql.base.NameCompare" href="#burdock.reader.sql.base.NameCompare">NameCompare</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.reader.sql.base.NameCompare.clean_escape" href="#burdock.reader.sql.base.NameCompare.clean_escape">clean_escape</a></code></li>
+<li><code><a title="burdock.reader.sql.base.NameCompare.get_name_compare" href="#burdock.reader.sql.base.NameCompare.get_name_compare">get_name_compare</a></code></li>
+<li><code><a title="burdock.reader.sql.base.NameCompare.identifier_match" href="#burdock.reader.sql.base.NameCompare.identifier_match">identifier_match</a></code></li>
+<li><code><a title="burdock.reader.sql.base.NameCompare.is_escaped" href="#burdock.reader.sql.base.NameCompare.is_escaped">is_escaped</a></code></li>
+<li><code><a title="burdock.reader.sql.base.NameCompare.register_name_compare" href="#burdock.reader.sql.base.NameCompare.register_name_compare">register_name_compare</a></code></li>
+<li><code><a title="burdock.reader.sql.base.NameCompare.reserved" href="#burdock.reader.sql.base.NameCompare.reserved">reserved</a></code></li>
+<li><code><a title="burdock.reader.sql.base.NameCompare.schema_match" href="#burdock.reader.sql.base.NameCompare.schema_match">schema_match</a></code></li>
+<li><code><a title="burdock.reader.sql.base.NameCompare.should_escape" href="#burdock.reader.sql.base.NameCompare.should_escape">should_escape</a></code></li>
+<li><code><a title="burdock.reader.sql.base.NameCompare.strip_escapes" href="#burdock.reader.sql.base.NameCompare.strip_escapes">strip_escapes</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="burdock.reader.sql.base.Reader" href="#burdock.reader.sql.base.Reader">Reader</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.reader.sql.base.Reader.execute" href="#burdock.reader.sql.base.Reader.execute">execute</a></code></li>
+<li><code><a title="burdock.reader.sql.base.Reader.execute_ast" href="#burdock.reader.sql.base.Reader.execute_ast">execute_ast</a></code></li>
+<li><code><a title="burdock.reader.sql.base.Reader.execute_ast_typed" href="#burdock.reader.sql.base.Reader.execute_ast_typed">execute_ast_typed</a></code></li>
+<li><code><a title="burdock.reader.sql.base.Reader.execute_typed" href="#burdock.reader.sql.base.Reader.execute_typed">execute_typed</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.5</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

@@ -1,0 +1,2062 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.5" />
+<title>burdock.sql.parser.SqlSmallVisitor API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>burdock.sql.parser.SqlSmallVisitor</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python"># Generated from SqlSmall.g4 by ANTLR 4.8
+from antlr4 import *
+if __name__ is not None and &#34;.&#34; in __name__:
+    from .SqlSmallParser import SqlSmallParser
+else:
+    from SqlSmallParser import SqlSmallParser
+
+# This class defines a complete generic visitor for a parse tree produced by SqlSmallParser.
+
+class SqlSmallVisitor(ParseTreeVisitor):
+
+    # Visit a parse tree produced by SqlSmallParser#batch.
+    def visitBatch(self, ctx:SqlSmallParser.BatchContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#query.
+    def visitQuery(self, ctx:SqlSmallParser.QueryContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#subquery.
+    def visitSubquery(self, ctx:SqlSmallParser.SubqueryContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#expressionSubquery.
+    def visitExpressionSubquery(self, ctx:SqlSmallParser.ExpressionSubqueryContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#selectClause.
+    def visitSelectClause(self, ctx:SqlSmallParser.SelectClauseContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#fromClause.
+    def visitFromClause(self, ctx:SqlSmallParser.FromClauseContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#whereClause.
+    def visitWhereClause(self, ctx:SqlSmallParser.WhereClauseContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#aggregationClause.
+    def visitAggregationClause(self, ctx:SqlSmallParser.AggregationClauseContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#havingClause.
+    def visitHavingClause(self, ctx:SqlSmallParser.HavingClauseContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#orderClause.
+    def visitOrderClause(self, ctx:SqlSmallParser.OrderClauseContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#limitClause.
+    def visitLimitClause(self, ctx:SqlSmallParser.LimitClauseContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#topClause.
+    def visitTopClause(self, ctx:SqlSmallParser.TopClauseContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#joinRelation.
+    def visitJoinRelation(self, ctx:SqlSmallParser.JoinRelationContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#joinType.
+    def visitJoinType(self, ctx:SqlSmallParser.JoinTypeContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#booleanJoin.
+    def visitBooleanJoin(self, ctx:SqlSmallParser.BooleanJoinContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#usingJoin.
+    def visitUsingJoin(self, ctx:SqlSmallParser.UsingJoinContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#sortItem.
+    def visitSortItem(self, ctx:SqlSmallParser.SortItemContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#setQuantifier.
+    def visitSetQuantifier(self, ctx:SqlSmallParser.SetQuantifierContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#relation.
+    def visitRelation(self, ctx:SqlSmallParser.RelationContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#table.
+    def visitTable(self, ctx:SqlSmallParser.TableContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#aliasedQuery.
+    def visitAliasedQuery(self, ctx:SqlSmallParser.AliasedQueryContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#aliasedRelation.
+    def visitAliasedRelation(self, ctx:SqlSmallParser.AliasedRelationContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#caseExpression.
+    def visitCaseExpression(self, ctx:SqlSmallParser.CaseExpressionContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#namedExpression.
+    def visitNamedExpression(self, ctx:SqlSmallParser.NamedExpressionContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#namedExpressionSeq.
+    def visitNamedExpressionSeq(self, ctx:SqlSmallParser.NamedExpressionSeqContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#whenExpression.
+    def visitWhenExpression(self, ctx:SqlSmallParser.WhenExpressionContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#add.
+    def visitAdd(self, ctx:SqlSmallParser.AddContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#subtract.
+    def visitSubtract(self, ctx:SqlSmallParser.SubtractContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#nestedExpr.
+    def visitNestedExpr(self, ctx:SqlSmallParser.NestedExprContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#subqueryExpr.
+    def visitSubqueryExpr(self, ctx:SqlSmallParser.SubqueryExprContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#allExpr.
+    def visitAllExpr(self, ctx:SqlSmallParser.AllExprContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#functionExpr.
+    def visitFunctionExpr(self, ctx:SqlSmallParser.FunctionExprContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#rankFunction.
+    def visitRankFunction(self, ctx:SqlSmallParser.RankFunctionContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#literalExpr.
+    def visitLiteralExpr(self, ctx:SqlSmallParser.LiteralExprContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#divide.
+    def visitDivide(self, ctx:SqlSmallParser.DivideContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#caseExpr.
+    def visitCaseExpr(self, ctx:SqlSmallParser.CaseExprContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#multiply.
+    def visitMultiply(self, ctx:SqlSmallParser.MultiplyContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#modulo.
+    def visitModulo(self, ctx:SqlSmallParser.ModuloContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#columnName.
+    def visitColumnName(self, ctx:SqlSmallParser.ColumnNameContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#allExpression.
+    def visitAllExpression(self, ctx:SqlSmallParser.AllExpressionContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#stringLiteral.
+    def visitStringLiteral(self, ctx:SqlSmallParser.StringLiteralContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#numberLiteral.
+    def visitNumberLiteral(self, ctx:SqlSmallParser.NumberLiteralContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#trueLiteral.
+    def visitTrueLiteral(self, ctx:SqlSmallParser.TrueLiteralContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#falseLiteral.
+    def visitFalseLiteral(self, ctx:SqlSmallParser.FalseLiteralContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#nullLiteral.
+    def visitNullLiteral(self, ctx:SqlSmallParser.NullLiteralContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#logicalNot.
+    def visitLogicalNot(self, ctx:SqlSmallParser.LogicalNotContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#comparison.
+    def visitComparison(self, ctx:SqlSmallParser.ComparisonContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#predicated.
+    def visitPredicated(self, ctx:SqlSmallParser.PredicatedContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#conjunction.
+    def visitConjunction(self, ctx:SqlSmallParser.ConjunctionContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#disjunction.
+    def visitDisjunction(self, ctx:SqlSmallParser.DisjunctionContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#nestedBoolean.
+    def visitNestedBoolean(self, ctx:SqlSmallParser.NestedBooleanContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#betweenCondition.
+    def visitBetweenCondition(self, ctx:SqlSmallParser.BetweenConditionContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#inCondition.
+    def visitInCondition(self, ctx:SqlSmallParser.InConditionContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#isCondition.
+    def visitIsCondition(self, ctx:SqlSmallParser.IsConditionContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#comparisonOperator.
+    def visitComparisonOperator(self, ctx:SqlSmallParser.ComparisonOperatorContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#booleanValue.
+    def visitBooleanValue(self, ctx:SqlSmallParser.BooleanValueContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#bareFunc.
+    def visitBareFunc(self, ctx:SqlSmallParser.BareFuncContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#roundFunc.
+    def visitRoundFunc(self, ctx:SqlSmallParser.RoundFuncContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#powerFunc.
+    def visitPowerFunc(self, ctx:SqlSmallParser.PowerFuncContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#aggFunc.
+    def visitAggFunc(self, ctx:SqlSmallParser.AggFuncContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#mathFunc.
+    def visitMathFunc(self, ctx:SqlSmallParser.MathFuncContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#iifFunc.
+    def visitIifFunc(self, ctx:SqlSmallParser.IifFuncContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#chooseFunc.
+    def visitChooseFunc(self, ctx:SqlSmallParser.ChooseFuncContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#bareFunction.
+    def visitBareFunction(self, ctx:SqlSmallParser.BareFunctionContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#rankingFunction.
+    def visitRankingFunction(self, ctx:SqlSmallParser.RankingFunctionContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#roundFunction.
+    def visitRoundFunction(self, ctx:SqlSmallParser.RoundFunctionContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#powerFunction.
+    def visitPowerFunction(self, ctx:SqlSmallParser.PowerFunctionContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#rankingFunctionName.
+    def visitRankingFunctionName(self, ctx:SqlSmallParser.RankingFunctionNameContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#aggregateFunctionName.
+    def visitAggregateFunctionName(self, ctx:SqlSmallParser.AggregateFunctionNameContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#mathFunctionName.
+    def visitMathFunctionName(self, ctx:SqlSmallParser.MathFunctionNameContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#bareFunctionName.
+    def visitBareFunctionName(self, ctx:SqlSmallParser.BareFunctionNameContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#overClause.
+    def visitOverClause(self, ctx:SqlSmallParser.OverClauseContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#aliasedSubquery.
+    def visitAliasedSubquery(self, ctx:SqlSmallParser.AliasedSubqueryContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#aliasedTableOrSubquerySeq.
+    def visitAliasedTableOrSubquerySeq(self, ctx:SqlSmallParser.AliasedTableOrSubquerySeqContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#aliasedTableSeq.
+    def visitAliasedTableSeq(self, ctx:SqlSmallParser.AliasedTableSeqContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#aliasedTableName.
+    def visitAliasedTableName(self, ctx:SqlSmallParser.AliasedTableNameContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#qualifiedTableName.
+    def visitQualifiedTableName(self, ctx:SqlSmallParser.QualifiedTableNameContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#qualifiedColumnName.
+    def visitQualifiedColumnName(self, ctx:SqlSmallParser.QualifiedColumnNameContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#identifier.
+    def visitIdentifier(self, ctx:SqlSmallParser.IdentifierContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#decimalLiteral.
+    def visitDecimalLiteral(self, ctx:SqlSmallParser.DecimalLiteralContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#integerLiteral.
+    def visitIntegerLiteral(self, ctx:SqlSmallParser.IntegerLiteralContext):
+        return self.visitChildren(ctx)
+
+
+
+del SqlSmallParser</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor"><code class="flex name class">
+<span>class <span class="ident">SqlSmallVisitor</span></span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class SqlSmallVisitor(ParseTreeVisitor):
+
+    # Visit a parse tree produced by SqlSmallParser#batch.
+    def visitBatch(self, ctx:SqlSmallParser.BatchContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#query.
+    def visitQuery(self, ctx:SqlSmallParser.QueryContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#subquery.
+    def visitSubquery(self, ctx:SqlSmallParser.SubqueryContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#expressionSubquery.
+    def visitExpressionSubquery(self, ctx:SqlSmallParser.ExpressionSubqueryContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#selectClause.
+    def visitSelectClause(self, ctx:SqlSmallParser.SelectClauseContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#fromClause.
+    def visitFromClause(self, ctx:SqlSmallParser.FromClauseContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#whereClause.
+    def visitWhereClause(self, ctx:SqlSmallParser.WhereClauseContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#aggregationClause.
+    def visitAggregationClause(self, ctx:SqlSmallParser.AggregationClauseContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#havingClause.
+    def visitHavingClause(self, ctx:SqlSmallParser.HavingClauseContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#orderClause.
+    def visitOrderClause(self, ctx:SqlSmallParser.OrderClauseContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#limitClause.
+    def visitLimitClause(self, ctx:SqlSmallParser.LimitClauseContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#topClause.
+    def visitTopClause(self, ctx:SqlSmallParser.TopClauseContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#joinRelation.
+    def visitJoinRelation(self, ctx:SqlSmallParser.JoinRelationContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#joinType.
+    def visitJoinType(self, ctx:SqlSmallParser.JoinTypeContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#booleanJoin.
+    def visitBooleanJoin(self, ctx:SqlSmallParser.BooleanJoinContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#usingJoin.
+    def visitUsingJoin(self, ctx:SqlSmallParser.UsingJoinContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#sortItem.
+    def visitSortItem(self, ctx:SqlSmallParser.SortItemContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#setQuantifier.
+    def visitSetQuantifier(self, ctx:SqlSmallParser.SetQuantifierContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#relation.
+    def visitRelation(self, ctx:SqlSmallParser.RelationContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#table.
+    def visitTable(self, ctx:SqlSmallParser.TableContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#aliasedQuery.
+    def visitAliasedQuery(self, ctx:SqlSmallParser.AliasedQueryContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#aliasedRelation.
+    def visitAliasedRelation(self, ctx:SqlSmallParser.AliasedRelationContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#caseExpression.
+    def visitCaseExpression(self, ctx:SqlSmallParser.CaseExpressionContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#namedExpression.
+    def visitNamedExpression(self, ctx:SqlSmallParser.NamedExpressionContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#namedExpressionSeq.
+    def visitNamedExpressionSeq(self, ctx:SqlSmallParser.NamedExpressionSeqContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#whenExpression.
+    def visitWhenExpression(self, ctx:SqlSmallParser.WhenExpressionContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#add.
+    def visitAdd(self, ctx:SqlSmallParser.AddContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#subtract.
+    def visitSubtract(self, ctx:SqlSmallParser.SubtractContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#nestedExpr.
+    def visitNestedExpr(self, ctx:SqlSmallParser.NestedExprContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#subqueryExpr.
+    def visitSubqueryExpr(self, ctx:SqlSmallParser.SubqueryExprContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#allExpr.
+    def visitAllExpr(self, ctx:SqlSmallParser.AllExprContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#functionExpr.
+    def visitFunctionExpr(self, ctx:SqlSmallParser.FunctionExprContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#rankFunction.
+    def visitRankFunction(self, ctx:SqlSmallParser.RankFunctionContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#literalExpr.
+    def visitLiteralExpr(self, ctx:SqlSmallParser.LiteralExprContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#divide.
+    def visitDivide(self, ctx:SqlSmallParser.DivideContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#caseExpr.
+    def visitCaseExpr(self, ctx:SqlSmallParser.CaseExprContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#multiply.
+    def visitMultiply(self, ctx:SqlSmallParser.MultiplyContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#modulo.
+    def visitModulo(self, ctx:SqlSmallParser.ModuloContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#columnName.
+    def visitColumnName(self, ctx:SqlSmallParser.ColumnNameContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#allExpression.
+    def visitAllExpression(self, ctx:SqlSmallParser.AllExpressionContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#stringLiteral.
+    def visitStringLiteral(self, ctx:SqlSmallParser.StringLiteralContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#numberLiteral.
+    def visitNumberLiteral(self, ctx:SqlSmallParser.NumberLiteralContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#trueLiteral.
+    def visitTrueLiteral(self, ctx:SqlSmallParser.TrueLiteralContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#falseLiteral.
+    def visitFalseLiteral(self, ctx:SqlSmallParser.FalseLiteralContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#nullLiteral.
+    def visitNullLiteral(self, ctx:SqlSmallParser.NullLiteralContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#logicalNot.
+    def visitLogicalNot(self, ctx:SqlSmallParser.LogicalNotContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#comparison.
+    def visitComparison(self, ctx:SqlSmallParser.ComparisonContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#predicated.
+    def visitPredicated(self, ctx:SqlSmallParser.PredicatedContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#conjunction.
+    def visitConjunction(self, ctx:SqlSmallParser.ConjunctionContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#disjunction.
+    def visitDisjunction(self, ctx:SqlSmallParser.DisjunctionContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#nestedBoolean.
+    def visitNestedBoolean(self, ctx:SqlSmallParser.NestedBooleanContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#betweenCondition.
+    def visitBetweenCondition(self, ctx:SqlSmallParser.BetweenConditionContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#inCondition.
+    def visitInCondition(self, ctx:SqlSmallParser.InConditionContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#isCondition.
+    def visitIsCondition(self, ctx:SqlSmallParser.IsConditionContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#comparisonOperator.
+    def visitComparisonOperator(self, ctx:SqlSmallParser.ComparisonOperatorContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#booleanValue.
+    def visitBooleanValue(self, ctx:SqlSmallParser.BooleanValueContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#bareFunc.
+    def visitBareFunc(self, ctx:SqlSmallParser.BareFuncContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#roundFunc.
+    def visitRoundFunc(self, ctx:SqlSmallParser.RoundFuncContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#powerFunc.
+    def visitPowerFunc(self, ctx:SqlSmallParser.PowerFuncContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#aggFunc.
+    def visitAggFunc(self, ctx:SqlSmallParser.AggFuncContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#mathFunc.
+    def visitMathFunc(self, ctx:SqlSmallParser.MathFuncContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#iifFunc.
+    def visitIifFunc(self, ctx:SqlSmallParser.IifFuncContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#chooseFunc.
+    def visitChooseFunc(self, ctx:SqlSmallParser.ChooseFuncContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#bareFunction.
+    def visitBareFunction(self, ctx:SqlSmallParser.BareFunctionContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#rankingFunction.
+    def visitRankingFunction(self, ctx:SqlSmallParser.RankingFunctionContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#roundFunction.
+    def visitRoundFunction(self, ctx:SqlSmallParser.RoundFunctionContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#powerFunction.
+    def visitPowerFunction(self, ctx:SqlSmallParser.PowerFunctionContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#rankingFunctionName.
+    def visitRankingFunctionName(self, ctx:SqlSmallParser.RankingFunctionNameContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#aggregateFunctionName.
+    def visitAggregateFunctionName(self, ctx:SqlSmallParser.AggregateFunctionNameContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#mathFunctionName.
+    def visitMathFunctionName(self, ctx:SqlSmallParser.MathFunctionNameContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#bareFunctionName.
+    def visitBareFunctionName(self, ctx:SqlSmallParser.BareFunctionNameContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#overClause.
+    def visitOverClause(self, ctx:SqlSmallParser.OverClauseContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#aliasedSubquery.
+    def visitAliasedSubquery(self, ctx:SqlSmallParser.AliasedSubqueryContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#aliasedTableOrSubquerySeq.
+    def visitAliasedTableOrSubquerySeq(self, ctx:SqlSmallParser.AliasedTableOrSubquerySeqContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#aliasedTableSeq.
+    def visitAliasedTableSeq(self, ctx:SqlSmallParser.AliasedTableSeqContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#aliasedTableName.
+    def visitAliasedTableName(self, ctx:SqlSmallParser.AliasedTableNameContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#qualifiedTableName.
+    def visitQualifiedTableName(self, ctx:SqlSmallParser.QualifiedTableNameContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#qualifiedColumnName.
+    def visitQualifiedColumnName(self, ctx:SqlSmallParser.QualifiedColumnNameContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#identifier.
+    def visitIdentifier(self, ctx:SqlSmallParser.IdentifierContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#decimalLiteral.
+    def visitDecimalLiteral(self, ctx:SqlSmallParser.DecimalLiteralContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SqlSmallParser#integerLiteral.
+    def visitIntegerLiteral(self, ctx:SqlSmallParser.IntegerLiteralContext):
+        return self.visitChildren(ctx)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>antlr4.tree.Tree.ParseTreeVisitor</li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="burdock.sql.parse.AggregateVisitor" href="../parse.html#burdock.sql.parse.AggregateVisitor">AggregateVisitor</a></li>
+<li><a title="burdock.sql.parse.BatchVisitor" href="../parse.html#burdock.sql.parse.BatchVisitor">BatchVisitor</a></li>
+<li><a title="burdock.sql.parse.BooleanExpressionVisitor" href="../parse.html#burdock.sql.parse.BooleanExpressionVisitor">BooleanExpressionVisitor</a></li>
+<li><a title="burdock.sql.parse.CaseExpressionVisitor" href="../parse.html#burdock.sql.parse.CaseExpressionVisitor">CaseExpressionVisitor</a></li>
+<li><a title="burdock.sql.parse.ExpressionVisitor" href="../parse.html#burdock.sql.parse.ExpressionVisitor">ExpressionVisitor</a></li>
+<li><a title="burdock.sql.parse.FromVisitor" href="../parse.html#burdock.sql.parse.FromVisitor">FromVisitor</a></li>
+<li><a title="burdock.sql.parse.HavingVisitor" href="../parse.html#burdock.sql.parse.HavingVisitor">HavingVisitor</a></li>
+<li><a title="burdock.sql.parse.LimitVisitor" href="../parse.html#burdock.sql.parse.LimitVisitor">LimitVisitor</a></li>
+<li><a title="burdock.sql.parse.NamedExpressionVisitor" href="../parse.html#burdock.sql.parse.NamedExpressionVisitor">NamedExpressionVisitor</a></li>
+<li><a title="burdock.sql.parse.OrderVisitor" href="../parse.html#burdock.sql.parse.OrderVisitor">OrderVisitor</a></li>
+<li><a title="burdock.sql.parse.QueryVisitor" href="../parse.html#burdock.sql.parse.QueryVisitor">QueryVisitor</a></li>
+<li><a title="burdock.sql.parse.RelationVisitor" href="../parse.html#burdock.sql.parse.RelationVisitor">RelationVisitor</a></li>
+<li><a title="burdock.sql.parse.SelectVisitor" href="../parse.html#burdock.sql.parse.SelectVisitor">SelectVisitor</a></li>
+<li><a title="burdock.sql.parse.WhereVisitor" href="../parse.html#burdock.sql.parse.WhereVisitor">WhereVisitor</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitAdd"><code class="name flex">
+<span>def <span class="ident">visitAdd</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitAdd(self, ctx:SqlSmallParser.AddContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitAggFunc"><code class="name flex">
+<span>def <span class="ident">visitAggFunc</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitAggFunc(self, ctx:SqlSmallParser.AggFuncContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitAggregateFunctionName"><code class="name flex">
+<span>def <span class="ident">visitAggregateFunctionName</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitAggregateFunctionName(self, ctx:SqlSmallParser.AggregateFunctionNameContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitAggregationClause"><code class="name flex">
+<span>def <span class="ident">visitAggregationClause</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitAggregationClause(self, ctx:SqlSmallParser.AggregationClauseContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitAliasedQuery"><code class="name flex">
+<span>def <span class="ident">visitAliasedQuery</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitAliasedQuery(self, ctx:SqlSmallParser.AliasedQueryContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitAliasedRelation"><code class="name flex">
+<span>def <span class="ident">visitAliasedRelation</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitAliasedRelation(self, ctx:SqlSmallParser.AliasedRelationContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitAliasedSubquery"><code class="name flex">
+<span>def <span class="ident">visitAliasedSubquery</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitAliasedSubquery(self, ctx:SqlSmallParser.AliasedSubqueryContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitAliasedTableName"><code class="name flex">
+<span>def <span class="ident">visitAliasedTableName</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitAliasedTableName(self, ctx:SqlSmallParser.AliasedTableNameContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitAliasedTableOrSubquerySeq"><code class="name flex">
+<span>def <span class="ident">visitAliasedTableOrSubquerySeq</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitAliasedTableOrSubquerySeq(self, ctx:SqlSmallParser.AliasedTableOrSubquerySeqContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitAliasedTableSeq"><code class="name flex">
+<span>def <span class="ident">visitAliasedTableSeq</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitAliasedTableSeq(self, ctx:SqlSmallParser.AliasedTableSeqContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitAllExpr"><code class="name flex">
+<span>def <span class="ident">visitAllExpr</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitAllExpr(self, ctx:SqlSmallParser.AllExprContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitAllExpression"><code class="name flex">
+<span>def <span class="ident">visitAllExpression</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitAllExpression(self, ctx:SqlSmallParser.AllExpressionContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitBareFunc"><code class="name flex">
+<span>def <span class="ident">visitBareFunc</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitBareFunc(self, ctx:SqlSmallParser.BareFuncContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitBareFunction"><code class="name flex">
+<span>def <span class="ident">visitBareFunction</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitBareFunction(self, ctx:SqlSmallParser.BareFunctionContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitBareFunctionName"><code class="name flex">
+<span>def <span class="ident">visitBareFunctionName</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitBareFunctionName(self, ctx:SqlSmallParser.BareFunctionNameContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitBatch"><code class="name flex">
+<span>def <span class="ident">visitBatch</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitBatch(self, ctx:SqlSmallParser.BatchContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitBetweenCondition"><code class="name flex">
+<span>def <span class="ident">visitBetweenCondition</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitBetweenCondition(self, ctx:SqlSmallParser.BetweenConditionContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitBooleanJoin"><code class="name flex">
+<span>def <span class="ident">visitBooleanJoin</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitBooleanJoin(self, ctx:SqlSmallParser.BooleanJoinContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitBooleanValue"><code class="name flex">
+<span>def <span class="ident">visitBooleanValue</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitBooleanValue(self, ctx:SqlSmallParser.BooleanValueContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitCaseExpr"><code class="name flex">
+<span>def <span class="ident">visitCaseExpr</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitCaseExpr(self, ctx:SqlSmallParser.CaseExprContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitCaseExpression"><code class="name flex">
+<span>def <span class="ident">visitCaseExpression</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitCaseExpression(self, ctx:SqlSmallParser.CaseExpressionContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitChooseFunc"><code class="name flex">
+<span>def <span class="ident">visitChooseFunc</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitChooseFunc(self, ctx:SqlSmallParser.ChooseFuncContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitColumnName"><code class="name flex">
+<span>def <span class="ident">visitColumnName</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitColumnName(self, ctx:SqlSmallParser.ColumnNameContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitComparison"><code class="name flex">
+<span>def <span class="ident">visitComparison</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitComparison(self, ctx:SqlSmallParser.ComparisonContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitComparisonOperator"><code class="name flex">
+<span>def <span class="ident">visitComparisonOperator</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitComparisonOperator(self, ctx:SqlSmallParser.ComparisonOperatorContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitConjunction"><code class="name flex">
+<span>def <span class="ident">visitConjunction</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitConjunction(self, ctx:SqlSmallParser.ConjunctionContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitDecimalLiteral"><code class="name flex">
+<span>def <span class="ident">visitDecimalLiteral</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitDecimalLiteral(self, ctx:SqlSmallParser.DecimalLiteralContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitDisjunction"><code class="name flex">
+<span>def <span class="ident">visitDisjunction</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitDisjunction(self, ctx:SqlSmallParser.DisjunctionContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitDivide"><code class="name flex">
+<span>def <span class="ident">visitDivide</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitDivide(self, ctx:SqlSmallParser.DivideContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitExpressionSubquery"><code class="name flex">
+<span>def <span class="ident">visitExpressionSubquery</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitExpressionSubquery(self, ctx:SqlSmallParser.ExpressionSubqueryContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitFalseLiteral"><code class="name flex">
+<span>def <span class="ident">visitFalseLiteral</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitFalseLiteral(self, ctx:SqlSmallParser.FalseLiteralContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitFromClause"><code class="name flex">
+<span>def <span class="ident">visitFromClause</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitFromClause(self, ctx:SqlSmallParser.FromClauseContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitFunctionExpr"><code class="name flex">
+<span>def <span class="ident">visitFunctionExpr</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitFunctionExpr(self, ctx:SqlSmallParser.FunctionExprContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitHavingClause"><code class="name flex">
+<span>def <span class="ident">visitHavingClause</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitHavingClause(self, ctx:SqlSmallParser.HavingClauseContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitIdentifier"><code class="name flex">
+<span>def <span class="ident">visitIdentifier</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitIdentifier(self, ctx:SqlSmallParser.IdentifierContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitIifFunc"><code class="name flex">
+<span>def <span class="ident">visitIifFunc</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitIifFunc(self, ctx:SqlSmallParser.IifFuncContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitInCondition"><code class="name flex">
+<span>def <span class="ident">visitInCondition</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitInCondition(self, ctx:SqlSmallParser.InConditionContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitIntegerLiteral"><code class="name flex">
+<span>def <span class="ident">visitIntegerLiteral</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitIntegerLiteral(self, ctx:SqlSmallParser.IntegerLiteralContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitIsCondition"><code class="name flex">
+<span>def <span class="ident">visitIsCondition</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitIsCondition(self, ctx:SqlSmallParser.IsConditionContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitJoinRelation"><code class="name flex">
+<span>def <span class="ident">visitJoinRelation</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitJoinRelation(self, ctx:SqlSmallParser.JoinRelationContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitJoinType"><code class="name flex">
+<span>def <span class="ident">visitJoinType</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitJoinType(self, ctx:SqlSmallParser.JoinTypeContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitLimitClause"><code class="name flex">
+<span>def <span class="ident">visitLimitClause</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitLimitClause(self, ctx:SqlSmallParser.LimitClauseContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitLiteralExpr"><code class="name flex">
+<span>def <span class="ident">visitLiteralExpr</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitLiteralExpr(self, ctx:SqlSmallParser.LiteralExprContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitLogicalNot"><code class="name flex">
+<span>def <span class="ident">visitLogicalNot</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitLogicalNot(self, ctx:SqlSmallParser.LogicalNotContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitMathFunc"><code class="name flex">
+<span>def <span class="ident">visitMathFunc</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitMathFunc(self, ctx:SqlSmallParser.MathFuncContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitMathFunctionName"><code class="name flex">
+<span>def <span class="ident">visitMathFunctionName</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitMathFunctionName(self, ctx:SqlSmallParser.MathFunctionNameContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitModulo"><code class="name flex">
+<span>def <span class="ident">visitModulo</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitModulo(self, ctx:SqlSmallParser.ModuloContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitMultiply"><code class="name flex">
+<span>def <span class="ident">visitMultiply</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitMultiply(self, ctx:SqlSmallParser.MultiplyContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitNamedExpression"><code class="name flex">
+<span>def <span class="ident">visitNamedExpression</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitNamedExpression(self, ctx:SqlSmallParser.NamedExpressionContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitNamedExpressionSeq"><code class="name flex">
+<span>def <span class="ident">visitNamedExpressionSeq</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitNamedExpressionSeq(self, ctx:SqlSmallParser.NamedExpressionSeqContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitNestedBoolean"><code class="name flex">
+<span>def <span class="ident">visitNestedBoolean</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitNestedBoolean(self, ctx:SqlSmallParser.NestedBooleanContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitNestedExpr"><code class="name flex">
+<span>def <span class="ident">visitNestedExpr</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitNestedExpr(self, ctx:SqlSmallParser.NestedExprContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitNullLiteral"><code class="name flex">
+<span>def <span class="ident">visitNullLiteral</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitNullLiteral(self, ctx:SqlSmallParser.NullLiteralContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitNumberLiteral"><code class="name flex">
+<span>def <span class="ident">visitNumberLiteral</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitNumberLiteral(self, ctx:SqlSmallParser.NumberLiteralContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitOrderClause"><code class="name flex">
+<span>def <span class="ident">visitOrderClause</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitOrderClause(self, ctx:SqlSmallParser.OrderClauseContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitOverClause"><code class="name flex">
+<span>def <span class="ident">visitOverClause</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitOverClause(self, ctx:SqlSmallParser.OverClauseContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitPowerFunc"><code class="name flex">
+<span>def <span class="ident">visitPowerFunc</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitPowerFunc(self, ctx:SqlSmallParser.PowerFuncContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitPowerFunction"><code class="name flex">
+<span>def <span class="ident">visitPowerFunction</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitPowerFunction(self, ctx:SqlSmallParser.PowerFunctionContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitPredicated"><code class="name flex">
+<span>def <span class="ident">visitPredicated</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitPredicated(self, ctx:SqlSmallParser.PredicatedContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitQualifiedColumnName"><code class="name flex">
+<span>def <span class="ident">visitQualifiedColumnName</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitQualifiedColumnName(self, ctx:SqlSmallParser.QualifiedColumnNameContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitQualifiedTableName"><code class="name flex">
+<span>def <span class="ident">visitQualifiedTableName</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitQualifiedTableName(self, ctx:SqlSmallParser.QualifiedTableNameContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitQuery"><code class="name flex">
+<span>def <span class="ident">visitQuery</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitQuery(self, ctx:SqlSmallParser.QueryContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitRankFunction"><code class="name flex">
+<span>def <span class="ident">visitRankFunction</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitRankFunction(self, ctx:SqlSmallParser.RankFunctionContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitRankingFunction"><code class="name flex">
+<span>def <span class="ident">visitRankingFunction</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitRankingFunction(self, ctx:SqlSmallParser.RankingFunctionContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitRankingFunctionName"><code class="name flex">
+<span>def <span class="ident">visitRankingFunctionName</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitRankingFunctionName(self, ctx:SqlSmallParser.RankingFunctionNameContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitRelation"><code class="name flex">
+<span>def <span class="ident">visitRelation</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitRelation(self, ctx:SqlSmallParser.RelationContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitRoundFunc"><code class="name flex">
+<span>def <span class="ident">visitRoundFunc</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitRoundFunc(self, ctx:SqlSmallParser.RoundFuncContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitRoundFunction"><code class="name flex">
+<span>def <span class="ident">visitRoundFunction</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitRoundFunction(self, ctx:SqlSmallParser.RoundFunctionContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitSelectClause"><code class="name flex">
+<span>def <span class="ident">visitSelectClause</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitSelectClause(self, ctx:SqlSmallParser.SelectClauseContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitSetQuantifier"><code class="name flex">
+<span>def <span class="ident">visitSetQuantifier</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitSetQuantifier(self, ctx:SqlSmallParser.SetQuantifierContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitSortItem"><code class="name flex">
+<span>def <span class="ident">visitSortItem</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitSortItem(self, ctx:SqlSmallParser.SortItemContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitStringLiteral"><code class="name flex">
+<span>def <span class="ident">visitStringLiteral</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitStringLiteral(self, ctx:SqlSmallParser.StringLiteralContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitSubquery"><code class="name flex">
+<span>def <span class="ident">visitSubquery</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitSubquery(self, ctx:SqlSmallParser.SubqueryContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitSubqueryExpr"><code class="name flex">
+<span>def <span class="ident">visitSubqueryExpr</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitSubqueryExpr(self, ctx:SqlSmallParser.SubqueryExprContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitSubtract"><code class="name flex">
+<span>def <span class="ident">visitSubtract</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitSubtract(self, ctx:SqlSmallParser.SubtractContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitTable"><code class="name flex">
+<span>def <span class="ident">visitTable</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitTable(self, ctx:SqlSmallParser.TableContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitTopClause"><code class="name flex">
+<span>def <span class="ident">visitTopClause</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitTopClause(self, ctx:SqlSmallParser.TopClauseContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitTrueLiteral"><code class="name flex">
+<span>def <span class="ident">visitTrueLiteral</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitTrueLiteral(self, ctx:SqlSmallParser.TrueLiteralContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitUsingJoin"><code class="name flex">
+<span>def <span class="ident">visitUsingJoin</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitUsingJoin(self, ctx:SqlSmallParser.UsingJoinContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitWhenExpression"><code class="name flex">
+<span>def <span class="ident">visitWhenExpression</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitWhenExpression(self, ctx:SqlSmallParser.WhenExpressionContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+<dt id="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitWhereClause"><code class="name flex">
+<span>def <span class="ident">visitWhereClause</span></span>(<span>self, ctx)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visitWhereClause(self, ctx:SqlSmallParser.WhereClauseContext):
+    return self.visitChildren(ctx)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="burdock.sql.parser" href="index.html">burdock.sql.parser</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor">SqlSmallVisitor</a></code></h4>
+<ul class="">
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitAdd" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitAdd">visitAdd</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitAggFunc" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitAggFunc">visitAggFunc</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitAggregateFunctionName" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitAggregateFunctionName">visitAggregateFunctionName</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitAggregationClause" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitAggregationClause">visitAggregationClause</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitAliasedQuery" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitAliasedQuery">visitAliasedQuery</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitAliasedRelation" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitAliasedRelation">visitAliasedRelation</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitAliasedSubquery" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitAliasedSubquery">visitAliasedSubquery</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitAliasedTableName" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitAliasedTableName">visitAliasedTableName</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitAliasedTableOrSubquerySeq" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitAliasedTableOrSubquerySeq">visitAliasedTableOrSubquerySeq</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitAliasedTableSeq" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitAliasedTableSeq">visitAliasedTableSeq</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitAllExpr" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitAllExpr">visitAllExpr</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitAllExpression" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitAllExpression">visitAllExpression</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitBareFunc" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitBareFunc">visitBareFunc</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitBareFunction" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitBareFunction">visitBareFunction</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitBareFunctionName" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitBareFunctionName">visitBareFunctionName</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitBatch" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitBatch">visitBatch</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitBetweenCondition" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitBetweenCondition">visitBetweenCondition</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitBooleanJoin" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitBooleanJoin">visitBooleanJoin</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitBooleanValue" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitBooleanValue">visitBooleanValue</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitCaseExpr" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitCaseExpr">visitCaseExpr</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitCaseExpression" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitCaseExpression">visitCaseExpression</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitChooseFunc" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitChooseFunc">visitChooseFunc</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitColumnName" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitColumnName">visitColumnName</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitComparison" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitComparison">visitComparison</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitComparisonOperator" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitComparisonOperator">visitComparisonOperator</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitConjunction" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitConjunction">visitConjunction</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitDecimalLiteral" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitDecimalLiteral">visitDecimalLiteral</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitDisjunction" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitDisjunction">visitDisjunction</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitDivide" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitDivide">visitDivide</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitExpressionSubquery" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitExpressionSubquery">visitExpressionSubquery</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitFalseLiteral" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitFalseLiteral">visitFalseLiteral</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitFromClause" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitFromClause">visitFromClause</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitFunctionExpr" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitFunctionExpr">visitFunctionExpr</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitHavingClause" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitHavingClause">visitHavingClause</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitIdentifier" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitIdentifier">visitIdentifier</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitIifFunc" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitIifFunc">visitIifFunc</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitInCondition" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitInCondition">visitInCondition</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitIntegerLiteral" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitIntegerLiteral">visitIntegerLiteral</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitIsCondition" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitIsCondition">visitIsCondition</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitJoinRelation" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitJoinRelation">visitJoinRelation</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitJoinType" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitJoinType">visitJoinType</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitLimitClause" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitLimitClause">visitLimitClause</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitLiteralExpr" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitLiteralExpr">visitLiteralExpr</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitLogicalNot" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitLogicalNot">visitLogicalNot</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitMathFunc" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitMathFunc">visitMathFunc</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitMathFunctionName" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitMathFunctionName">visitMathFunctionName</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitModulo" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitModulo">visitModulo</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitMultiply" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitMultiply">visitMultiply</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitNamedExpression" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitNamedExpression">visitNamedExpression</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitNamedExpressionSeq" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitNamedExpressionSeq">visitNamedExpressionSeq</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitNestedBoolean" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitNestedBoolean">visitNestedBoolean</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitNestedExpr" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitNestedExpr">visitNestedExpr</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitNullLiteral" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitNullLiteral">visitNullLiteral</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitNumberLiteral" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitNumberLiteral">visitNumberLiteral</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitOrderClause" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitOrderClause">visitOrderClause</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitOverClause" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitOverClause">visitOverClause</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitPowerFunc" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitPowerFunc">visitPowerFunc</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitPowerFunction" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitPowerFunction">visitPowerFunction</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitPredicated" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitPredicated">visitPredicated</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitQualifiedColumnName" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitQualifiedColumnName">visitQualifiedColumnName</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitQualifiedTableName" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitQualifiedTableName">visitQualifiedTableName</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitQuery" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitQuery">visitQuery</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitRankFunction" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitRankFunction">visitRankFunction</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitRankingFunction" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitRankingFunction">visitRankingFunction</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitRankingFunctionName" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitRankingFunctionName">visitRankingFunctionName</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitRelation" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitRelation">visitRelation</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitRoundFunc" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitRoundFunc">visitRoundFunc</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitRoundFunction" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitRoundFunction">visitRoundFunction</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitSelectClause" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitSelectClause">visitSelectClause</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitSetQuantifier" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitSetQuantifier">visitSetQuantifier</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitSortItem" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitSortItem">visitSortItem</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitStringLiteral" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitStringLiteral">visitStringLiteral</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitSubquery" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitSubquery">visitSubquery</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitSubqueryExpr" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitSubqueryExpr">visitSubqueryExpr</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitSubtract" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitSubtract">visitSubtract</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitTable" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitTable">visitTable</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitTopClause" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitTopClause">visitTopClause</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitTrueLiteral" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitTrueLiteral">visitTrueLiteral</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitUsingJoin" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitUsingJoin">visitUsingJoin</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitWhenExpression" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitWhenExpression">visitWhenExpression</a></code></li>
+<li><code><a title="burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitWhereClause" href="#burdock.sql.parser.SqlSmallVisitor.SqlSmallVisitor.visitWhereClause">visitWhereClause</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.5</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

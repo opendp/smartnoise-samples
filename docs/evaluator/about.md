@@ -24,3 +24,4 @@ The tests include -
 
 ## References
 [1] Wilson, R. J., Zhang, C. Y., Lam, W., Desfontaines, D., Simmons-Marengo, D., & Gipson, B. (2019). Differentially Private SQL with Bounded User Contribution. arXiv preprint arXiv:1909.01917.
+
