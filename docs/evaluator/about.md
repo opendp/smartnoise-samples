@@ -21,3 +21,6 @@ The tests include -
 * Accuracy Test - given confidence level like 95%, on repeatedly querying the responses fall within the confidence interval 95% of the times
 * Utility Test - ensures that the confidence interval bounds reported are not too wide and (1-confidence level) of the DP responses do fall outside the bounds
 * Bias Test - reports the mean signed deviation of noisy responses as a percentage of actual response on repeated querying
+
+## References
+[1] Wilson, R. J., Zhang, C. Y., Lam, W., Desfontaines, D., Simmons-Marengo, D., & Gipson, B. (2019). Differentially Private SQL with Bounded User Contribution. arXiv preprint arXiv:1909.01917.
