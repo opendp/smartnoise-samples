@@ -12,6 +12,7 @@ lines = sc.textFile('PUMS_california_demographics/data.csv')
 # First we use the metadata to create a CSV reader
 table = meta.tables()[0]
 typenames = [c.typename() for c in table.columns()]
+colnames = [c.name for c in table.columns()]
 
 def convert(val, type):
     if type == 'string' or type == 'unknown':
@@ -25,16 +26,13 @@ def convert(val, type):
     else:
         raise ValueError("Can't convert type " + type)
 
-# The PUMS dataset uses an empty string for the first column name, so we call it PersonID
-header = lines.first()
-header_fixed = 'PersonID' + header.replace('"', '').replace("'", '')
-
 # Convert all of the strings to the appropriate types
+header = lines.first()
 rows = lines.filter(lambda line: line != header)
 rows = rows.map(lambda l: [convert(val, type) for val, type in zip(l.split(','), typenames) ] )
 
 # turn it into a Spark DataFrame
-df = rows.toDF(header_fixed.split(','))
+df = rows.toDF(colnames)
 df.createOrReplaceTempView("PUMS_large")
 
 query = 'SELECT AVG(age) FROM PUMS_large'
