@@ -9,7 +9,7 @@ Database:
       sex:
         type: string
       educ:
-        type: string
+        type: int
       race:
         type: string
       income:
@@ -17,7 +17,7 @@ Database:
         lower: 0
         upper: 500000
       married:
-        type: string
+        type: boolean
       pid:
         type: int
         private_id: True
