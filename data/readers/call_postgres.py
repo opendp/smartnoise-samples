@@ -1,6 +1,6 @@
 import pandas as pd
-from burdock.reader.sql.postgres import PostgresReader
-from burdock.sql import PrivateReader, CollectionMetadata
+from opendp.whitenoise.sql import PostgresReader, PrivateReader
+from opendp.whitenoise.metadata import CollectionMetadata
 
 meta = CollectionMetadata.from_file('PUMS_large.yaml')
 

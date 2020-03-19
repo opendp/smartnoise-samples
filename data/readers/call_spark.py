@@ -1,7 +1,7 @@
 import pyspark
 from pyspark.sql import SparkSession
-from burdock.sql import PrivateReader, CollectionMetadata
-from burdock.reader.sql.spark import SparkReader
+from opendp.whitenoise.metadata import CollectionMetadata
+from opendp.whitenoise.sql import SparkReader, PrivateReader
 
 spark = SparkSession.builder.getOrCreate()
 sc = spark.sparkContext

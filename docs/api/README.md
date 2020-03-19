@@ -1,4 +1,5 @@
-# API Reference Documentation
+# API Documentation
 
+[WhiteNoise Core Library Reference](https://opendifferentialprivacy.github.io/whitenoise-core/)
 
-[Burdock Module Reference](html/burdock/index.html)
+[WhiteNoise System SDK Reference](https://opendifferentialprivacy.github.io/whitenoise-samples/docs/api/system/)
