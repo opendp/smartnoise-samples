@@ -1,4 +1,4 @@
-# Samples and Documentataion
+# Samples and Documentatation
 
 ## Runtime Library and Validator
 
