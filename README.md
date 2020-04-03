@@ -1,5 +1,5 @@
 
-<a href="http://opendp.io"><img src="images/WhiteNoise Logo/SVG/Full_grey.svg" align="left" height="70" vspace="8" hspace="18"></a>
+<a href="http://opendp.io"><img src="images/WhiteNoise Logo/SVG/Full_grey.svg" align="left" height="65" vspace="8" hspace="18"></a>
 
 ## WhiteNoise Samples: Differential Privacy Examples, Notebooks and Documentation
 
