@@ -7,6 +7,7 @@ Differential privacy is the gold standard definition of privacy protection.  The
 * highlight some of the nuances of the WhiteNoise implementation.
 
 ## Runtime Library and Validator
+[Notebooks on Library Usage:](https://github.com/opendifferentialprivacy/whitenoise-samples/tree/master/analysis) A set of notebooks showing how to create differentially private releases using the WhiteNoise library and private analysis validator.  The library and validator are both written in Rust, but the notebooks are Python and demonstrate the use of our Python bindings.
 
 ## SQL Data Access SDK
 
