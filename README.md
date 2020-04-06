@@ -14,6 +14,10 @@ Differential privacy is the gold standard definition of privacy protection.  The
 
 ## SQL Data Access SDK
 
+[Notebooks on SQL Data Access:](https://github.com/opendifferentialprivacy/whitenoise-samples/tree/master/data) A set of notebooks showing how to use SQL to creat differentially private reports.
+
 ## Reference Execution Service
 
 ## Stochastic Evaluator
+
+[Notebooks on Stochastic Evaluation:](https://github.com/opendifferentialprivacy/whitenoise-samples/tree/master/evaluator) Notebooks demonstrating the use of the stochastic evaluator.
