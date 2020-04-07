@@ -12,6 +12,11 @@ Differential privacy is the gold standard definition of privacy protection.  The
 ## Runtime Library and Validator
 [Notebooks on Library Usage:](https://github.com/opendifferentialprivacy/whitenoise-samples/tree/master/analysis) A set of notebooks showing how to create differentially private releases using the WhiteNoise library and private analysis validator.  The library and validator are both written in Rust, but the notebooks are Python and demonstrate the use of our Python bindings.
 
+[<img src="images/figs/plugin_mean_comparison.png" alt="Relative error distributions" height="100">](https://github.com/opendifferentialprivacy/whitenoise-samples/tree/master/analysis)
+[<img src="images/figs/example_size.png" alt="Release box plots" height="100">](https://github.com/opendifferentialprivacy/whitenoise-samples/tree/master/analysis)
+[<img src="images/figs/example_education.png" alt="Histogram releases" height="100">](https://github.com/opendifferentialprivacy/whitenoise-samples/tree/master/analysis)
+[<img src="images/figs/example_utility.png" alt="Utility simulations" height="100">](https://github.com/opendifferentialprivacy/whitenoise-samples/tree/master/analysis)
+
 ## SQL Data Access SDK
 
 [Notebooks on SQL Data Access:](https://github.com/opendifferentialprivacy/whitenoise-samples/tree/master/data) A set of notebooks showing how to use SQL to creat differentially private reports.
