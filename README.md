@@ -20,7 +20,7 @@ Differential privacy is the gold standard definition of privacy protection.  The
 
 ## SQL Data Access SDK
 
-[Notebooks on SQL Data Access:](https://github.com/opendifferentialprivacy/whitenoise-samples/tree/master/data) A set of notebooks showing how to use SQL to creat differentially private reports.
+[Notebooks on SQL Data Access:](https://github.com/opendifferentialprivacy/whitenoise-samples/tree/master/data) A set of notebooks showing how to use SQL to create differentially private reports.
 
 ## Reference Execution Service
 
