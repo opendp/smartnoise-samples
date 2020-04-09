@@ -1,2 +1,8 @@
 .vscode/
 .ipynb_checkpoints
+
+# datasets
+reddit.csv
+reddit.yaml
+askreddit.csv.zip
+clean_askreddit.csv
