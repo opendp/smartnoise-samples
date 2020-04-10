@@ -1,4 +1,4 @@
-<a href="https://www.linkedin.com/pulse/microsoft-harvards-institute-quantitative-social-science-john-kahan/"><img src="images/WhiteNoise Logo/SVG/Full_grey.svg" align="left" height="65" vspace="8" hspace="18"></a>
+<a href="https://www.linkedin.com/pulse/microsoft-harvards-institute-quantitative-social-science-john-kahan/"><img src="images/WhiteNoise Logo/SVG/Full_color.svg" align="left" height="65" vspace="8" hspace="18"></a>
 ## WhiteNoise Samples: Differential Privacy Examples, Notebooks and Documentation
 See also the accompanying [WhiteNoise-System](https://github.com/opendifferentialprivacy/whitenoise-system) and [WhiteNoise-Core](https://github.com/opendifferentialprivacy/whitenoise-core) repositories for this system.
 
@@ -20,7 +20,7 @@ Differential privacy is the gold standard definition of privacy protection.  The
 
 ## SQL Data Access SDK
 
-[Notebooks on SQL Data Access:](https://github.com/opendifferentialprivacy/whitenoise-samples/tree/master/data) A set of notebooks showing how to use SQL to creat differentially private reports.
+[Notebooks on SQL Data Access:](https://github.com/opendifferentialprivacy/whitenoise-samples/tree/master/data) A set of notebooks showing how to use SQL to create differentially private reports.
 
 ## Reference Execution Service
 
