@@ -161,10 +161,10 @@ def create_dicts(data, non_income_data, plausible_variable_combinations):
                                                                     data_n = max(1, count.value)
                                                                     )
         analysis.release()
-        priv_mean_income_dict['__'.join(combination)] = max(0, mean.value)
-        priv_median_income_dict['__'.join(combination)] = max(0, median.value)
-        priv_min_income_dict['__'.join(combination)] = max(0, _min.value)
-        priv_max_income_dict['__'.join(combination)] = max(0, _max.value)
+        priv_mean_income_dict['__'.join(combination)] = min(max(0, mean.value), 100_000)
+        priv_median_income_dict['__'.join(combination)] = min(max(0, median.value), 100_000)
+        priv_min_income_dict['__'.join(combination)] = min(max(0, _min.value), 100_000)
+        priv_max_income_dict['__'.join(combination)] = min(max(0, _max.value), 100_000)
 
     return(count_dict, priv_count_dict, mean_income_dict, priv_mean_income_dict, median_income_dict, priv_median_income_dict, min_income_dict, priv_min_income_dict, max_income_dict, priv_max_income_dict)
 
