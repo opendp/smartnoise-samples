@@ -4,7 +4,7 @@ PrivateReader operates by intercepting SQL requests to a Reader implementation,
 rewriting the SQL where necessary, then post-processing the results to add
 differentially private noise.  It may work automatically with many SQL-92
 sources, but you may want to make custom Reader implementations to handle
-custom connection behavior, or engine-specific semantics
+custom connection behavior, or engine-specific semantics.
 
 ## Creating a DataReader
 
@@ -13,10 +13,10 @@ engine and returns results in the form of a list of tuples.  This is the
 default behavior for ODBC and DBAPI on Python.
 
 ```python
-from burdock.reader.sql.base import Reader, NameCompare
+from opendp.whitenoise.sql.reader.sql_base import SqlReader, NameCompare
 from my.engine import my_api
 
-class MyEngineReader(Reader):
+class MyEngineReader(SqlReader):
     def __init__(self, gateway, catalog, credentials):
         self.gateway = gateway
         self.catalog = catalog
@@ -53,7 +53,8 @@ Your main code goes in the `execute` method.  The execute method takes a query a
 To use the reader you created, plug it in just like any other Reader:
 
 ```python
-from burdock.sql import PrivateReader, CollectionMetadata
+from opendp.whitenoise.sql.private_reader import PrivateReader
+from opendp.whitenoise.metadata import CollectionMetadata
 from my.engine.reader import MyEngineReader
 
 meta = CollectionMetadata.from_file('Sales.yaml')
