@@ -3,13 +3,13 @@
 PrivateReader operates by intercepting SQL requests to a Reader implementation,
 rewriting the SQL where necessary, then post-processing the results to add
 differentially private noise.  It may work automatically with many SQL-92
-sources, but you may want to mke custom Reader implementations to handle
+sources, but you may want to make custom Reader implementations to handle
 custom connection behavior, or engine-specific semantics
 
 ## Creating a DataReader
 
 A data reader is just a pipe that sends SQL to some sort of data processing
-engine and returns results in the form of a list of tuples.  This is the 
+engine and returns results in the form of a list of tuples.  This is the
 default behavior for ODBC and DBAPI on Python.
 
 ```python
