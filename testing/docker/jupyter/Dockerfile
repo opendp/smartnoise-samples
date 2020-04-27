@@ -8,7 +8,11 @@ RUN apt-get update && apt-get install -y \
     git \
     openjdk-11-jdk \
     jupyter \
+    jupyter-core \
+    jupyter-client \
+    libcurl4-openssl-dev \
     libssl-dev \
+    libzmq3-dev \
     make \
     m4 \
     pkg-config \
@@ -18,10 +22,24 @@ RUN apt-get update && apt-get install -y \
     sudo \
     vim
 
-RUN echo "deb https://dl.bintray.com/sbt/debian /" | tee -a /etc/apt/sources.list.d/sbt.list
-RUN curl -sL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2EE0EA64E40A89B84B2DF73499E82A75642AC823" | apt-key add
-RUN apt-get update && apt-get install sbt
+# Install R 3.6
+RUN apt-get update && apt-get -y install --no-install-recommends --no-install-suggests \
+        ca-certificates software-properties-common gnupg2 gnupg1 \
+      && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 \
+      && add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran35/' \
+      && apt-get -y install r-base 
 
+COPY install.R .
+RUN Rscript install.R && rm install.R
+
+# Install SBT
+RUN apt-get update && apt-get -y install --no-install-recommends --no-install-suggests \
+        ca-certificates software-properties-common gnupg2 gnupg1 \
+      && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 2EE0EA64E40A89B84B2DF73499E82A75642AC823 \
+      && add-apt-repository 'deb https://dl.bintray.com/sbt/debian /' \
+      && apt-get -y install sbt 
+
+# Create privacy user and switch user
 RUN useradd --create-home --shell /bin/bash privacy
 RUN echo privacy:pass@word99 | chpasswd
 RUN usermod -aG sudo privacy
@@ -29,38 +47,48 @@ RUN usermod -aG sudo privacy
 USER privacy
 WORKDIR /home/privacy
 
+# Allow local install of R packages
+RUN mkdir .rpackages
+RUN echo "R_LIBS=/home/privacy/.rpackages" > .Renviron
+
+# Install Rust
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 ENV PATH="/home/privacy/.cargo/bin:${PATH}"
-RUN cargo
 
-COPY profile.txt .
-RUN cat profile.txt >> .bashrc && rm profile.txt
+# Install Conda
+RUN curl -O https://repo.anaconda.com/archive/Anaconda3-2020.02-Linux-x86_64.sh
+#COPY Anaconda3-2020.02-Linux-x86_64.sh .
+RUN bash Anaconda3-2020.02-Linux-x86_64.sh -b
+RUN rm Anaconda3-2020.02-Linux-x86_64.sh
 
+ENV PATH="/home/privacy/anaconda3/bin:${PATH}"
+ARG PATH="/home/privacy/anaconda3/bin:${PATH}"
+
+RUN conda init
+RUN conda install -y -c conda sqlite pyspark jupyter
+
+# Jupyter password and port
 COPY jupyter.txt .
 RUN jupyter notebook --generate-config && cat jupyter.txt >> .jupyter/jupyter_notebook_config.py && rm jupyter.txt
 
-RUN pip3 install pyspark
-
-#RUN git clone https://github.com/opendifferentialprivacy/whitenoise-core.git
-RUN git clone https://github.com/opendifferentialprivacy/whitenoise-core-python.git --recurse-submodules
+# Clone the repositories
+RUN git clone https://github.com/opendifferentialprivacy/whitenoise-core.git
 RUN git clone https://github.com/opendifferentialprivacy/whitenoise-system.git
 RUN git clone https://github.com/opendifferentialprivacy/whitenoise-samples.git
 RUN git clone https://github.com/opendifferentialprivacy/dp-test-datasets.git
 
-
-RUN cd whitenoise-core-python && \
-    pip3 install -U setuptools && \
-    pip3 install -e ".[test,plotting]" && \
-    cd ..
+# Install Core, Python Bindings, and System
+#RUN cd whitenoise-core/bindings-python && \
+#    conda run pip install -U setuptools && \
+#    conda run pip install -e ".[test,plotting]" && \
+#    cd ../..
 
 RUN cd whitenoise-system && \
-    pip3 install -r service/requirements.txt && \
-    rm -rf ~/.local && \
-    pip3 install -r tests/requirements.txt && \
-    pip3 install -e sdk/ && \
+    conda run pip install -r service/requirements.txt && \
+    conda run pip install -r tests/requirements.txt && \
+    conda run pip install -e sdk/ && \
     cd ..
 
-RUN sbt exit
-RUN pip3 install pyspark
+ENTRYPOINT ["jupyter", "notebook"]
 
 EXPOSE 8989
