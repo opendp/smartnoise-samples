@@ -4,8 +4,7 @@ import pandas as pd
 import itertools
 import z3
 import math
-import whitenoise
-import whitenoise.components as op
+import opendp.whitenoise_core as wn
 
 ''' 
 load data
@@ -116,37 +115,37 @@ def create_dicts(data, non_income_data, plausible_variable_combinations):
         min_income_dict['__'.join(combination)] = np.min(dt['income'])
         max_income_dict['__'.join(combination)] = np.max(dt['income'])
 
-        with whitenoise.Analysis() as analysis:
+        with wn.Analysis() as analysis:
             # load data
-            priv_data = whitenoise.Dataset(value = list(dt['income']), num_columns = 1)
+            priv_data = wn.Dataset(value = list(dt['income']), num_columns = 1)
 
             # estimate sample size 
-            count = op.dp_count(data = op.cast(priv_data, type = 'FLOAT'),
+            count = wn.dp_count(data = wn.cast(priv_data, type = 'FLOAT'),
                                 privacy_usage={'epsilon': .05},
                                 lower=0,
                                 upper=1000)
         analysis.release()
         priv_count_dict['__'.join(combination)] = max(0, count.value)
 
-        with whitenoise.Analysis() as analysis:
+        with wn.Analysis() as analysis:
             # load data
-            priv_data = whitenoise.Dataset(value = list(dt['income']), num_columns = 1)           
+            priv_data = wn.Dataset(value = list(dt['income']), num_columns = 1)           
             # get mean
-            mean = op.dp_mean(data = op.cast(priv_data, type = 'FLOAT'),
+            mean = wn.dp_mean(data = wn.cast(priv_data, type = 'FLOAT'),
                                                                     privacy_usage = {'epsilon': 0.1},
                                                                     data_lower = 0.,
                                                                     data_upper = 100_000.,
                                                                     data_n = max(1, count.value)
                                                                     )
             # get median
-            median = op.dp_median(data = op.cast(priv_data, type = 'FLOAT'),
+            median = wn.dp_median(data = wn.cast(priv_data, type = 'FLOAT'),
                                                                     privacy_usage = {'epsilon': 0.1},
                                                                     data_lower = 0.,
                                                                     data_upper = 100_000.,
                                                                     data_n = max(1, count.value)
                                                                     )
             # get min
-            _min = op.dp_minimum(data = op.cast(priv_data, type = 'FLOAT'),
+            _min = wn.dp_minimum(data = wn.cast(priv_data, type = 'FLOAT'),
                                                                     privacy_usage = {'epsilon': 0.1},
                                                                     data_lower = 0.,
                                                                     data_upper = 100_000.,
@@ -154,7 +153,7 @@ def create_dicts(data, non_income_data, plausible_variable_combinations):
                                                                     )
 
             # get max
-            _max = op.dp_maximum(data = op.cast(priv_data, type = 'FLOAT'),
+            _max = wn.dp_maximum(data = wn.cast(priv_data, type = 'FLOAT'),
                                                                     privacy_usage = {'epsilon': 0.1},
                                                                     data_lower = 0.,
                                                                     data_upper = 100_000.,
