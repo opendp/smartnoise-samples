@@ -73,15 +73,16 @@ RUN jupyter notebook --generate-config && cat jupyter.txt >> .jupyter/jupyter_no
 
 # Clone the repositories
 RUN git clone https://github.com/opendifferentialprivacy/whitenoise-core.git
+RUN git clone https://github.com/opendifferentialprivacy/whitenoise-core-python.git --recurse-submodules
 RUN git clone https://github.com/opendifferentialprivacy/whitenoise-system.git
 RUN git clone https://github.com/opendifferentialprivacy/whitenoise-samples.git
 RUN git clone https://github.com/opendifferentialprivacy/dp-test-datasets.git
 
 # Install Core, Python Bindings, and System
-#RUN cd whitenoise-core/bindings-python && \
-#    conda run pip install -U setuptools && \
-#    conda run pip install -e ".[test,plotting]" && \
-#    cd ../..
+RUN cd whitenoise-core-python && \
+    conda run pip install -U setuptools && \
+    conda run pip install -e ".[test,plotting]" && \
+    cd ..
 
 RUN cd whitenoise-system && \
     conda run pip install -r service/requirements.txt && \
