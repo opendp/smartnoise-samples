@@ -123,8 +123,8 @@ def create_dicts(data, non_income_data, plausible_variable_combinations):
             # estimate sample size
             count = op.dp_count(data = op.cast(priv_data, type = 'FLOAT'),
                                 privacy_usage={'epsilon': .05},
-                                count_min=0,
-                                count_max=1000)
+                                lower=0,
+                                upper=1000)
         analysis.release()
         priv_count_dict['__'.join(combination)] = max(0, count.value)
 
