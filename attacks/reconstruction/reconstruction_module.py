@@ -1,17 +1,17 @@
-import os 
+import os
 import numpy as np
 import pandas as pd
 import itertools
 import z3
 import math
-import whitenoise
-import whitenoise.components as op
+import opendp.whitenoise.core as wn
+import opendp.whitenoise.core.components as op
 
-''' 
+'''
 load data
 '''
 def load_data():
-    # load data 
+    # load data
     # data = pd.read_csv(os.path.join('data', 'pums_1000.csv')) #TODO: add back after testing
     # data['agebinned'] = pd.cut(data['age'], bins = range(0, 101, 5), right = False) #TODO: add back after testing
     data = pd.read_csv(os.path.join('..', 'data', 'simplified_synthetic_pums_1000.csv')) #TODO: remove after testing
@@ -31,14 +31,14 @@ def load_data():
     orig_data = orig_data.sort_values(by = list(orig_data.columns))
 
     data = pd.get_dummies(data)
-    
+
     data['sex_1'] = data['sex']
     data['sex_0'] = 1 - data['sex_1']
     data = data.drop('sex', axis = 1)
-    
+
     data['married_1'] = data['married']
     data['married_0'] = 1 - data['married_1']
-    data = data.drop('married', axis = 1)    
+    data = data.drop('married', axis = 1)
 
     # change this to regex?
     data.columns = [col.replace(' ', '') for col in data.columns]
@@ -48,7 +48,7 @@ def load_data():
     data.columns = [col.replace(')', '') for col in data.columns]
     return(orig_data, data)
 
-''' 
+'''
 get partial power set (without empty set) -- all combinations up to k
 '''
 def partial_powerset_minus_null(iterable, k):
@@ -71,13 +71,13 @@ def create_dicts(data, non_income_data, plausible_variable_combinations):
 
     mean_income_dict = dict()
     priv_mean_income_dict = dict()
-    
+
     median_income_dict = dict()
     priv_median_income_dict = dict()
 
     min_income_dict = dict()
     priv_min_income_dict = dict()
-    
+
     max_income_dict = dict()
     priv_max_income_dict = dict()
 
@@ -89,25 +89,25 @@ def create_dicts(data, non_income_data, plausible_variable_combinations):
             dt = data[non_income_data[combination[0]] == 1]
 
         elif len(combination) == 2:
-            dt = data[(non_income_data[combination[0]] == 1) & 
+            dt = data[(non_income_data[combination[0]] == 1) &
                       (non_income_data[combination[1]] == 1)]
 
         elif len(combination) == 3:
-            dt = data[(non_income_data[combination[0]] == 1) & 
-                      (non_income_data[combination[1]] == 1) & 
+            dt = data[(non_income_data[combination[0]] == 1) &
+                      (non_income_data[combination[1]] == 1) &
                       (non_income_data[combination[2]] == 1)]
 
         elif len(combination) == 4:
-            dt = data[(non_income_data[combination[0]] == 1) & 
-                      (non_income_data[combination[1]] == 1) & 
-                      (non_income_data[combination[2]] == 1) & 
+            dt = data[(non_income_data[combination[0]] == 1) &
+                      (non_income_data[combination[1]] == 1) &
+                      (non_income_data[combination[2]] == 1) &
                       (non_income_data[combination[3]] == 1)]
 
         elif len(combination) == 5:
-            dt = data[(non_income_data[combination[0]] == 1) & 
-                      (non_income_data[combination[1]] == 1) & 
-                      (non_income_data[combination[2]] == 1) & 
-                      (non_income_data[combination[3]] == 1) & 
+            dt = data[(non_income_data[combination[0]] == 1) &
+                      (non_income_data[combination[1]] == 1) &
+                      (non_income_data[combination[2]] == 1) &
+                      (non_income_data[combination[3]] == 1) &
                       (non_income_data[combination[4]] == 1)]
 
         count_dict['__'.join(combination)] = dt.shape[0]
@@ -116,21 +116,21 @@ def create_dicts(data, non_income_data, plausible_variable_combinations):
         min_income_dict['__'.join(combination)] = np.min(dt['income'])
         max_income_dict['__'.join(combination)] = np.max(dt['income'])
 
-        with whitenoise.Analysis() as analysis:
+        with wn.Analysis() as analysis:
             # load data
-            priv_data = whitenoise.Dataset(value = list(dt['income']), num_columns = 1)
+            priv_data = wn.Dataset(value = list(dt['income']), num_columns = 1)
 
-            # estimate sample size 
+            # estimate sample size
             count = op.dp_count(data = op.cast(priv_data, type = 'FLOAT'),
                                 privacy_usage={'epsilon': .05},
-                                count_min=0,
-                                count_max=1000)
+                                lower=0,
+                                upper=1000)
         analysis.release()
         priv_count_dict['__'.join(combination)] = max(0, count.value)
 
-        with whitenoise.Analysis() as analysis:
+        with wn.Analysis() as analysis:
             # load data
-            priv_data = whitenoise.Dataset(value = list(dt['income']), num_columns = 1)           
+            priv_data = wn.Dataset(value = list(dt['income']), num_columns = 1)
             # get mean
             mean = op.dp_mean(data = op.cast(priv_data, type = 'FLOAT'),
                                                                     privacy_usage = {'epsilon': 0.5},
@@ -172,13 +172,13 @@ def find_correct_5_ways(combination, five_way_interactions):
     five_way_combination_set = []
     for comb in five_way_interactions:
         if len(set(combination).intersection(comb)) == len(combination):
-            five_way_combination_set.append(comb) 
+            five_way_combination_set.append(comb)
     return(five_way_combination_set)
 
 def create_elem_dicts(count_dict, priv_count_dict, five_way_interactions, five_way_interactions_names):
     elem_dict = dict()
     priv_elem_dict = dict()
-    
+
     for five_way, five_way_name in zip(five_way_interactions, five_way_interactions_names):
         if count_dict[five_way_name] > 0:
             elem_dict[five_way] = ['{0}_{1}'.format(five_way_name, i) for i in range(count_dict[five_way_name])]
@@ -188,9 +188,9 @@ def create_elem_dicts(count_dict, priv_count_dict, five_way_interactions, five_w
     return(elem_dict, priv_elem_dict)
 
 def get_applications(five_way_interactions, five_way_interactions_names,
-                    plausible_variable_combinations, plausible_variable_combinations_names, 
-                    count_dict, priv_count_dict, mean_income_dict, priv_mean_income_dict, 
-                    median_income_dict, priv_median_income_dict, min_income_dict, priv_min_income_dict, 
+                    plausible_variable_combinations, plausible_variable_combinations_names,
+                    count_dict, priv_count_dict, mean_income_dict, priv_mean_income_dict,
+                    median_income_dict, priv_median_income_dict, min_income_dict, priv_min_income_dict,
                     max_income_dict, priv_max_income_dict, elem_dict, priv_elem_dict, lowest_allowable_count):
     applications = []
     priv_applications = []
@@ -217,21 +217,21 @@ def get_applications(five_way_interactions, five_way_interactions_names,
 
         if priv_count_dict[combination_name] >= lowest_allowable_count:
             priv_n_comb = priv_count_dict[combination_name]
-            priv_median_index = math.floor(priv_n_comb / 2) 
+            priv_median_index = math.floor(priv_n_comb / 2)
             if priv_n_comb % 2 == 1:
                 priv_applications.append('{0}_{1} == {2}'.format(combination_name, priv_median_index, priv_median_income_dict[combination_name]))
             else:
-                priv_applications.append('{0}_{1}+{0}_{2} == {3}'.format(combination_name, priv_median_index - 1, priv_median_index, 2 * priv_median_income_dict[combination_name]))            
-            
-            priv_applications.append('{0}_0 == {1}'.format(combination_name, priv_min_income_dict[combination_name])) 
-            priv_applications.append('{0}_{1} == {2}'.format(combination_name, priv_count_dict[combination_name]-1, priv_max_income_dict[combination_name])) 
+                priv_applications.append('{0}_{1}+{0}_{2} == {3}'.format(combination_name, priv_median_index - 1, priv_median_index, 2 * priv_median_income_dict[combination_name]))
+
+            priv_applications.append('{0}_0 == {1}'.format(combination_name, priv_min_income_dict[combination_name]))
+            priv_applications.append('{0}_{1} == {2}'.format(combination_name, priv_count_dict[combination_name]-1, priv_max_income_dict[combination_name]))
 
 
     ''' enforce income applications (5-way and more general) '''
     # all incomes >= 0
     flattened_elem_values = []
     priv_flattened_elem_values = []
-    
+
     for elem in elem_dict.values():
         flattened_elem_values.extend(elem)
     for elem in priv_elem_dict.values():
@@ -271,7 +271,7 @@ def get_applications(five_way_interactions, five_way_interactions_names,
             if len(priv_income_applications) > 0:
                 # ensure mean is correct within level
                 priv_applications.append('{0} == {1}'.format('+'.join(priv_income_applications), int(priv_count_dict[combination_name] * priv_mean_income_dict[combination_name])))
-        
+
     return(applications, priv_applications)
 
 def applications_to_solver(applications):
@@ -363,7 +363,7 @@ def compare_data(orig_data, recon_data):
     orig_data = orig_data[recon_data.columns]
 
     # sort data
-    orig_data = orig_data.sort_values(by = list(orig_data.columns)).reset_index().drop('index', axis = 1) 
+    orig_data = orig_data.sort_values(by = list(orig_data.columns)).reset_index().drop('index', axis = 1)
     recon_data = recon_data.sort_values(by = list(recon_data.columns)).reset_index().drop('index', axis = 1)
 
     exact_rows = 0
