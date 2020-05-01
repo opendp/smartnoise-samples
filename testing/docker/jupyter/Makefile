@@ -11,3 +11,5 @@ docker:
 bash:
 	docker exec -it whitenoise-run bash
 
+clean:
+	docker system prune -a

@@ -32,13 +32,6 @@ RUN apt-get update && apt-get -y install --no-install-recommends --no-install-su
 COPY install.R .
 RUN Rscript install.R && rm install.R
 
-# Install SBT
-RUN apt-get update && apt-get -y install --no-install-recommends --no-install-suggests \
-        ca-certificates software-properties-common gnupg2 gnupg1 \
-      && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 2EE0EA64E40A89B84B2DF73499E82A75642AC823 \
-      && add-apt-repository 'deb https://dl.bintray.com/sbt/debian /' \
-      && apt-get -y install sbt 
-
 # Create privacy user and switch user
 RUN useradd --create-home --shell /bin/bash privacy
 RUN echo privacy:pass@word99 | chpasswd
@@ -56,13 +49,11 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 ENV PATH="/home/privacy/.cargo/bin:${PATH}"
 
 # Install Conda
-RUN curl -O https://repo.anaconda.com/archive/Anaconda3-2020.02-Linux-x86_64.sh
-#COPY Anaconda3-2020.02-Linux-x86_64.sh .
-RUN bash Anaconda3-2020.02-Linux-x86_64.sh -b
-RUN rm Anaconda3-2020.02-Linux-x86_64.sh
+RUN curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+RUN bash Miniconda3-latest-Linux-x86_64.sh -b && rm Miniconda3-latest-Linux-x86_64.sh
 
-ENV PATH="/home/privacy/anaconda3/bin:${PATH}"
-ARG PATH="/home/privacy/anaconda3/bin:${PATH}"
+ENV PATH="/home/privacy/miniconda3/bin:${PATH}"
+ARG PATH="/home/privacy/miniconda3/bin:${PATH}"
 
 RUN conda init
 RUN conda install -y -c conda sqlite pyspark jupyter
@@ -72,7 +63,6 @@ COPY jupyter.txt .
 RUN jupyter notebook --generate-config && cat jupyter.txt >> .jupyter/jupyter_notebook_config.py && rm jupyter.txt
 
 # Clone the repositories
-RUN git clone https://github.com/opendifferentialprivacy/whitenoise-core.git
 RUN git clone https://github.com/opendifferentialprivacy/whitenoise-core-python.git --recurse-submodules
 RUN git clone https://github.com/opendifferentialprivacy/whitenoise-system.git
 RUN git clone https://github.com/opendifferentialprivacy/whitenoise-samples.git
