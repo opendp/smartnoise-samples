@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y \
     diffutils \
     gcc \
     git \
-    openjdk-11-jdk \
+    openjdk-8-jdk \
     jupyter \
     jupyter-core \
     jupyter-client \
@@ -31,6 +31,13 @@ RUN apt-get update && apt-get -y install --no-install-recommends --no-install-su
 
 COPY install.R .
 RUN Rscript install.R && rm install.R
+
+# Install SBT
+RUN apt-get update && apt-get -y install --no-install-recommends --no-install-suggests \
+    ca-certificates software-properties-common gnupg2 gnupg1 \
+    && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 2EE0EA64E40A89B84B2DF73499E82A75642AC823 \
+    && add-apt-repository 'deb https://dl.bintray.com/sbt/debian /' \
+    && apt-get -y install sbt 
 
 # Create privacy user and switch user
 RUN useradd --create-home --shell /bin/bash privacy
