@@ -1,12 +1,5 @@
 # Databricks Experimental
 
-Sample of using on Databricks
-```python
-from pyspark.sql import SparkSession
-burdocksc = SparkSession.builder.appName('smoketest').getOrCreate()
-meta_path = "/dbfs/mnt/prod-c1/SmokeTest/PUMS.yaml"
-query_string = "SELECT COUNT(*) AS c, married AS m FROM PUMS.PUMS GROUP BY married ORDER BY c, m DESC"
+You can read the notebook by open html file in browser.
 
-spr = SparkDataFrameReader(burdocksc, meta_path)
-noised_df = spr.execute(query_string)
-display(noised_df)
+If you want to run it, you can import html file into your Databricks folder as notebook - right click in Databricks folder, Select "Import", input URL or your local path.
