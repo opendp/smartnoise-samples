@@ -4,7 +4,7 @@ import pandas as pd
 import itertools
 import z3
 import math
-import opendp.whitenoise_core as wn
+import opendp.whitenoise.core as wn
 
 ''' 
 load data
