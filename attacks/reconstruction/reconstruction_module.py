@@ -14,7 +14,7 @@ def load_data():
     # load data 
     # data = pd.read_csv(os.path.join('data', 'pums_1000.csv')) #TODO: add back after testing
     # data['agebinned'] = pd.cut(data['age'], bins = range(0, 101, 5), right = False) #TODO: add back after testing
-    data = pd.read_csv(os.path.join('..', 'data', 'simplified_synthetic_pums_1000.csv')) #TODO: remove after testing
+    data = pd.read_csv(os.path.join('..', 'data', 'simplified_synthetic_pums_500.csv')) #TODO: remove after testing
     data['agebinned'] = pd.cut(data['age'], bins = range(20, 51, 5), right = False) #TODO: remove after testing
     data['race'] = data['race'].astype('category')
     data['educ'] = data['educ'].astype('category')
@@ -123,8 +123,8 @@ def create_dicts(data, non_income_data, plausible_variable_combinations):
             # estimate sample size 
             count = op.dp_count(data = op.cast(priv_data, type = 'FLOAT'),
                                 privacy_usage={'epsilon': .05},
-                                count_min=0,
-                                count_max=1000)
+                                lower=0,
+                                upper=1000)
         analysis.release()
         priv_count_dict['__'.join(combination)] = max(0, count.value)
 
@@ -191,7 +191,8 @@ def get_applications(five_way_interactions, five_way_interactions_names,
                     plausible_variable_combinations, plausible_variable_combinations_names, 
                     count_dict, priv_count_dict, mean_income_dict, priv_mean_income_dict, 
                     median_income_dict, priv_median_income_dict, min_income_dict, priv_min_income_dict, 
-                    max_income_dict, priv_max_income_dict, elem_dict, priv_elem_dict, lowest_allowable_count):
+                    max_income_dict, priv_max_income_dict, elem_dict, priv_elem_dict, lowest_allowable_count,
+                    use_medians, use_mins, use_maxes):
     applications = []
     priv_applications = []
 
@@ -205,26 +206,40 @@ def get_applications(five_way_interactions, five_way_interactions_names,
 
         # enforce correct min/max/median
         if count_dict[combination_name] >= lowest_allowable_count:
-            n_comb = count_dict[combination_name]
-            median_index = math.floor(n_comb / 2)
-            if n_comb % 2 == 1:
-                applications.append('{0}_{1} == {2}'.format(combination_name, median_index, median_income_dict[combination_name]))
-            else:
-                applications.append('{0}_{1}+{0}_{2} == {3}'.format(combination_name, median_index - 1, median_index, 2 * median_income_dict[combination_name]))
+            # enforce median
+            if use_medians == True:
+                n_comb = count_dict[combination_name]
+                median_index = math.floor(n_comb / 2)
+                if n_comb % 2 == 1:
+                    applications.append('{0}_{1} == {2}'.format(combination_name, median_index, median_income_dict[combination_name]))
+                else:
+                    applications.append('{0}_{1}+{0}_{2} == {3}'.format(combination_name, median_index - 1, median_index, 2 * median_income_dict[combination_name]))
 
-            applications.append('{0}_0 == {1}'.format(combination_name, min_income_dict[combination_name]))
-            applications.append('{0}_{1} == {2}'.format(combination_name, count_dict[combination_name]-1, max_income_dict[combination_name]))
+            # enforce min
+            if use_mins == True:
+                applications.append('{0}_0 == {1}'.format(combination_name, min_income_dict[combination_name]))
+            
+            # enforce max
+            if use_maxes == True:
+                applications.append('{0}_{1} == {2}'.format(combination_name, count_dict[combination_name]-1, max_income_dict[combination_name]))
 
         if priv_count_dict[combination_name] >= lowest_allowable_count:
-            priv_n_comb = priv_count_dict[combination_name]
-            priv_median_index = math.floor(priv_n_comb / 2) 
-            if priv_n_comb % 2 == 1:
-                priv_applications.append('{0}_{1} == {2}'.format(combination_name, priv_median_index, priv_median_income_dict[combination_name]))
-            else:
-                priv_applications.append('{0}_{1}+{0}_{2} == {3}'.format(combination_name, priv_median_index - 1, priv_median_index, 2 * priv_median_income_dict[combination_name]))            
+            # enforce median
+            if use_medians == True:
+                priv_n_comb = priv_count_dict[combination_name]
+                priv_median_index = math.floor(priv_n_comb / 2) 
+                if priv_n_comb % 2 == 1:
+                    priv_applications.append('{0}_{1} == {2}'.format(combination_name, priv_median_index, priv_median_income_dict[combination_name]))
+                else:
+                    priv_applications.append('{0}_{1}+{0}_{2} == {3}'.format(combination_name, priv_median_index - 1, priv_median_index, 2 * priv_median_income_dict[combination_name]))            
             
-            priv_applications.append('{0}_0 == {1}'.format(combination_name, priv_min_income_dict[combination_name])) 
-            priv_applications.append('{0}_{1} == {2}'.format(combination_name, priv_count_dict[combination_name]-1, priv_max_income_dict[combination_name])) 
+            # enforce min
+            if use_mins == True:
+                priv_applications.append('{0}_0 == {1}'.format(combination_name, priv_min_income_dict[combination_name])) 
+
+            # enforce max
+            if use_maxes == True:
+                priv_applications.append('{0}_{1} == {2}'.format(combination_name, priv_count_dict[combination_name]-1, priv_max_income_dict[combination_name])) 
 
 
     ''' enforce income applications (5-way and more general) '''
