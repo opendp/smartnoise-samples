@@ -120,7 +120,7 @@ def create_dicts(data, non_income_data, plausible_variable_combinations):
             priv_data = wn.Dataset(value = list(dt['income']), num_columns = 1)
 
             # estimate sample size 
-            count = wn.dp_count(data = wn.cast(priv_data, type = 'FLOAT'),
+            count = wn.dp_count(data = wn.cast(priv_data, 'FLOAT'),
                                 privacy_usage={'epsilon': .05},
                                 lower=0,
                                 upper=1000)
@@ -131,21 +131,21 @@ def create_dicts(data, non_income_data, plausible_variable_combinations):
             # load data
             priv_data = wn.Dataset(value = list(dt['income']), num_columns = 1)           
             # get mean
-            mean = wn.dp_mean(data = wn.cast(priv_data, type = 'FLOAT'),
+            mean = wn.dp_mean(data = wn.cast(priv_data, 'FLOAT'),
                                                                     privacy_usage = {'epsilon': 0.1},
                                                                     data_lower = 0.,
                                                                     data_upper = 100_000.,
                                                                     data_n = max(1, count.value)
                                                                     )
             # get median
-            median = wn.dp_median(data = wn.cast(priv_data, type = 'FLOAT'),
+            median = wn.dp_median(data = wn.cast(priv_data, 'FLOAT'),
                                                                     privacy_usage = {'epsilon': 0.1},
                                                                     data_lower = 0.,
                                                                     data_upper = 100_000.,
                                                                     data_n = max(1, count.value)
                                                                     )
             # get min
-            _min = wn.dp_minimum(data = wn.cast(priv_data, type = 'FLOAT'),
+            _min = wn.dp_minimum(data = wn.cast(priv_data, 'FLOAT'),
                                                                     privacy_usage = {'epsilon': 0.1},
                                                                     data_lower = 0.,
                                                                     data_upper = 100_000.,
@@ -153,7 +153,7 @@ def create_dicts(data, non_income_data, plausible_variable_combinations):
                                                                     )
 
             # get max
-            _max = wn.dp_maximum(data = wn.cast(priv_data, type = 'FLOAT'),
+            _max = wn.dp_maximum(data = wn.cast(priv_data, 'FLOAT'),
                                                                     privacy_usage = {'epsilon': 0.1},
                                                                     data_lower = 0.,
                                                                     data_upper = 100_000.,
