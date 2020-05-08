@@ -1,6 +1,7 @@
 Database:
   PUMS:
     PUMS:
+      row_privacy: True
       rows: 1000
       age:
         type: int
