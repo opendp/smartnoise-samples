@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y \
     diffutils \
     gcc \
     git \
-    openjdk-11-jdk \
+    openjdk-8-jdk \
     jupyter \
     jupyter-core \
     jupyter-client \
