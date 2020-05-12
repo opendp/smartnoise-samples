@@ -63,7 +63,8 @@ ENV PATH="/home/privacy/miniconda3/bin:${PATH}"
 ARG PATH="/home/privacy/miniconda3/bin:${PATH}"
 
 RUN conda init
-RUN conda install -y -c conda sqlite pyspark jupyter z3-solver seaborn
+RUN conda install -y -c conda sqlite pyspark jupyter
+RUN conda run pip install z3-solver seaborn
 
 # Jupyter password and port
 COPY jupyter.txt .
