@@ -121,7 +121,7 @@ def create_dicts(data, non_income_data, plausible_variable_combinations):
             priv_data = wn.Dataset(value = list(dt['income']), num_columns = 1)
 
             # estimate sample size
-            count = op.dp_count(data = op.cast(priv_data, type = 'FLOAT'),
+            count = op.dp_count(data = op.cast(priv_data, 'FLOAT'),
                                 privacy_usage={'epsilon': .05},
                                 lower=0,
                                 upper=1000)
@@ -132,34 +132,34 @@ def create_dicts(data, non_income_data, plausible_variable_combinations):
             # load data
             priv_data = wn.Dataset(value = list(dt['income']), num_columns = 1)
             # get mean
-            mean = op.dp_mean(data = op.cast(priv_data, type = 'FLOAT'),
-                                                                    privacy_usage = {'epsilon': 0.5},
-                                                                    data_lower = 0.,
-                                                                    data_upper = 100_000.,
-                                                                    data_n = max(1, count.value)
-                                                                    )
+            mean = op.dp_mean(data = op.cast(priv_data, 'FLOAT'),
+                              privacy_usage = {'epsilon': 0.5},
+                              data_lower = 0.,
+                              data_upper = 100_000.,
+                              data_n = max(1, count.value)
+                              )
             # get median
-            median = op.dp_median(data = op.cast(priv_data, type = 'FLOAT'),
-                                                                    privacy_usage = {'epsilon': 0.5},
-                                                                    data_lower = 0.,
-                                                                    data_upper = 100_000.,
-                                                                    data_n = max(1, count.value)
-                                                                    )
+            median = op.dp_median(data = op.cast(priv_data, 'FLOAT'),
+                                  privacy_usage = {'epsilon': 0.5},
+                                  data_lower = 0.,
+                                  data_upper = 100_000.,
+                                  data_n = max(1, count.value)
+                                  )
             # get min
-            _min = op.dp_minimum(data = op.cast(priv_data, type = 'FLOAT'),
-                                                                    privacy_usage = {'epsilon': 0.5},
-                                                                    data_lower = 0.,
-                                                                    data_upper = 100_000.,
-                                                                    data_n = max(1, count.value)
-                                                                    )
+            _min = op.dp_minimum(data = op.cast(priv_data, 'FLOAT'),
+                                 privacy_usage = {'epsilon': 0.5},
+                                 data_lower = 0.,
+                                 data_upper = 100_000.,
+                                 data_n = max(1, count.value)
+                                 )
 
             # get max
-            _max = op.dp_maximum(data = op.cast(priv_data, type = 'FLOAT'),
-                                                                    privacy_usage = {'epsilon': 0.5},
-                                                                    data_lower = 0.,
-                                                                    data_upper = 100_000.,
-                                                                    data_n = max(1, count.value)
-                                                                    )
+            _max = op.dp_maximum(data = op.cast(priv_data, 'FLOAT'),
+                                 privacy_usage = {'epsilon': 0.5},
+                                 data_lower = 0.,
+                                 data_upper = 100_000.,
+                                 data_n = max(1, count.value)
+                                 )
         analysis.release()
         priv_mean_income_dict['__'.join(combination)] = max(0, mean.value)
         priv_median_income_dict['__'.join(combination)] = max(0, median.value)
