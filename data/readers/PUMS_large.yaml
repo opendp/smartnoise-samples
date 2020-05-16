@@ -1,6 +1,7 @@
 Collection:
   PUMS:
     PUMS_large:
+      row_privacy: True
       PersonID:
         type: int
         private_id: true
