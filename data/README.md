@@ -114,11 +114,33 @@ SELECT last_name, COUNT(*) FROM Sales GROUP BY last_name
 
 In the above query, if someone with a distinctive last name is included in the database, that person's record might accidentally be revealed, even if the noisy count returns 0 or negative.  To prevent this from happening, the system will automatically censor dimensions which would violate differential privacy.
 
-## Joins
+## Private Synopsis
 
-Future updates will improve support for joins and subqueries.  Joins and subqueries may work under some conditions, but additional work is needed to ensure differential privacy.
+A private synopsis is a pre-computed set of differentially private aggregates that can be filtered and aggregated in various ways to produce new reports.  Because the private synopsis is differentially private, reports generated from the synopsis do not need to have additional privacy applied, and the synopsis can be distributed without risk of additional privacy loss.  Reports over the synopsis can be generated with non-private SQL, within an Excel Pivot Table, or through other common reporting tools.
 
-## Synopsis
+You can see a sample [notebook for creating private synopsis](Synopsis.ipynb) suitable for consumption in Excel or SQL.
+
+## Limitations
+
+You can think of the data access layer as simple middleware that allows composition of analysis graphs using the SQL language.  The SQL language provides a limited subset of what can be expressed through the full analysis graph.  For example, the SQL language does not provide a way to set per-field privacy budget.
+
+Because we delegate the computation of exact aggregates to the underlying database engines, execution through the SQL layer can be considerably faster, particularly with database engines optimized for precomputed aggregates.  However, this design choice means that analysis graphs composed with SQL language do not access data in the engine on a per-row basis.  Therefore, SQL queries do not currently support algorithms that require per-row access, such as algorithms based on the geometric mechanism.  This is a limitation that future releases will relax for database engines that support row-based access, such as Spark.
+
+The SQL processing layer has limited support for bounding contributions when individuals can appear more than once in the data.  This includes ability to perform reservoir sampling to bound contributions of an individual, and to scale the sensitivity parameter.  These parameters are important when querying reporting tables that might be produced from subqueries and joins, but require caution to use safely.
+
+For this release, we recommend using the SQL functionality while bounding user contribution to 1 row.  The platform defaults to this option by setting `max_contrib` to 1, and should only be overridden if you know what you are doing.  Future releases will focus on making these options easier for non-experts to use safely.
+
 
 ## Installing Sample Databases
 
+If you would like to test against Postgres or SQL Server instances running in a Docker container with PUMS data imported,  you can build the containers from [source here](https://github.com/opendifferentialprivacy/whitenoise-samples/tree/master/testing/databases)
+
+## Architecture
+
+The SQL processing layer intercepts SQL queries destined for any SQL-92 backend, and operates as middleware between the engine and the analysis graph.  The interface is designed to be a drop-in replacement for existing DB-API or ODBC workflows; for example, legacy analytics and reporting applications.  The main stages of processing are:
+
+1. **Parser.** The parser converts the query to an AST, using a subset of the SQL-92 grammar.  The parser also takes metadata about the database tables, such as column sensitivity, to augment the AST.
+2. **Validator.**  The validator checks the query to make sure it meets requirements for differential privacy, such as computing the types of aggregates that it knows how to protect.
+3. **Rewriter.** The rewriter modifies the query to enforce sensitivity bounds, perform reservoir sampling, and convert simple expressions to a pre-processing and post-processing step (for example, applying scalar operations after adding noise).
+4. **Database Execution.** The rewritten query is executed by the target database engine. This is just a pass-through call.  The database engine returns the set of exact aggregates, as would be returned in the absence of differential privacy, and with the application of sensitivity clamping and reservoir sampling.
+5. **Postprocessing.**  The exact aggregates are fed to the differential privacy algorithms to create differentially private results.
