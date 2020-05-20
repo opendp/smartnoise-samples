@@ -1,4 +1,0 @@
-c.NotebookApp.password = u'sha1:e46470d8dbc4:3992c08c21ef5b3575cce117b5d559510775f138'
-c.NotebookApp.ip = '*'
-c.NotebookApp.open_browser = False
-c.NotebookApp.port = 8989
