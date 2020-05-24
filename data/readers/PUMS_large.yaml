@@ -4,7 +4,6 @@ Collection:
       row_privacy: True
       PersonID:
         type: int
-        private_id: true
       state:
         type: int
       puma:
