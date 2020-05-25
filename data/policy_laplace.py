@@ -5,16 +5,20 @@ import numpy as np
 import itertools
 
 class PolicyLaplace:
-    def __init__(self, epsilon, delta, alpha, tokens_per_user, budget_per_user=None):
+    def __init__(self, epsilon, delta, alpha, tokens_per_user, prune_tail_below=None, budget_per_user=None):
         Delta_0 = tokens_per_user
+        self.Delta_0 = Delta_0 # tokens_per_user
         self.Delta = budget_per_user if budget_per_user else 1  # budget per user
+        self.K = prune_tail_below
 
         l_param = 1 / epsilon
         F_l_rho = lambda t: 1 / t + (1 / epsilon) * np.log(1 / (2 * (1 - (1 - delta) ** (1 / t))))
         l_rho = np.max([F_l_rho(t) for t in range(1, Delta_0 + 1)])
+        if self.K is not None:
+            l_rho = self.K + (1/epsilon) * np.log(1 / (2 * (1 - (1 - delta) ** (1 / Delta_0))))
+
         Gamma=l_rho + alpha*l_param
         self.Gamma = Gamma
-        self.Delta_0 = Delta_0 # tokens_per_user
         self.l_param = l_param
         self.l_rho = l_rho
 
@@ -27,6 +31,23 @@ class PolicyLaplace:
             return True
         else:
             return False
+
+    def prune_tail(self, user_tokens_rdd):
+        """Prunes the (user, tokens) RDD to eliminate all words that appear
+            fewer than prune_tail_below supplied at instantiation time.
+        """
+        if self.K is None:
+            return user_tokens_rdd
+        tu = user_tokens_rdd.flatMap(lambda row: [(token, row[0]) for token in row[1]])
+        tu = tu.keyBy(lambda row: row[0])
+
+        ut = user_tokens_rdd.flatMap(lambda row: [(token, 1) for token in row[1]])
+        wc = ut.reduceByKey(operator.add)
+        wc = wc.filter(lambda row: (row[1] >= self.K))
+
+        filtered = wc.keyBy(lambda row: row[0]).join(tu).map(lambda row: row[1][1])
+        return filtered.map(lambda row: (row[1], row[0])).groupByKey()
+
 
     def reservoir_sample(self, user_tokens_rdd, distinct=True):
         """Takes an RDD with (user, tokens) and combines all tokens from all users,
@@ -50,8 +71,6 @@ class PolicyLaplace:
             return (user, selected)
 
         return user_tokens_rdd.groupByKey().map(selected_grams)
-
-
 
     def process_rows(self, rows):
         ngram_hist = defaultdict(float)
