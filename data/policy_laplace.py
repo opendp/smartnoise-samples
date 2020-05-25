@@ -3,6 +3,7 @@ import operator
 import copy
 import numpy as np
 import itertools
+from pyspark.rdd import portable_hash
 
 class PolicyLaplace:
     def __init__(self, epsilon, delta, alpha, tokens_per_user, prune_tail_below=None, num_partitions=1):
@@ -71,15 +72,16 @@ class PolicyLaplace:
                 selected = np.random.choice(all_grams, size=tokens_per_user, replace=False).tolist()
             else:
                 selected = all_grams
-            return (user, selected)
+            return [(user, token) for token in selected]
 
-        return user_tokens_rdd.groupByKey().map(selected_grams)
+        return user_tokens_rdd.groupByKey().flatMap(selected_grams)
 
     def process_partitions(self, user_tokens_rdd):
         """Repartitions into the desired number of partitions and
             runs the DPSU algorithm in parallel."""
         process_rows = self.process_rows
-        res = user_tokens_rdd.repartition(self.num_partitions).mapPartitions(process_rows)
+        parts = user_tokens_rdd.groupByKey().repartition(self.num_partitions)
+        res = parts.mapPartitions(process_rows)
         return res.reduceByKey(operator.add)
 
     def process_rows(self, rows):
