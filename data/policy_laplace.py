@@ -2,6 +2,7 @@ from collections import defaultdict
 import operator
 import copy
 import numpy as np
+import itertools
 
 class PolicyLaplace:
     def __init__(self, epsilon, delta, alpha, tokens_per_user, budget_per_user=None):
@@ -26,6 +27,31 @@ class PolicyLaplace:
             return True
         else:
             return False
+
+    def reservoir_sample(self, user_tokens_rdd, distinct=True):
+        """Takes an RDD with (user, tokens) and combines all tokens from all users,
+            then samples uniformly to get at most tokens_per_user tokens.  User is not
+            assumed to be grouped or sorted on input stream, and users may appear more
+            than once, with different lists of tokens.
+        """
+        tokens_per_user = self.Delta_0
+        if tokens_per_user == 1:
+            return user_tokens_rdd
+
+        def selected_grams(row):
+            user, tokens = row
+            all_grams = list(itertools.chain.from_iterable(tokens))
+            if distinct:
+                all_grams = list(set(all_grams))
+            if tokens_per_user > 1 and len(all_grams) > tokens_per_user:
+                selected = np.random.choice(all_grams, size=tokens_per_user, replace=False).tolist()
+            else:
+                selected = all_grams
+            return (user, selected)
+
+        return user_tokens_rdd.groupByKey().map(selected_grams)
+
+
 
     def process_rows(self, rows):
         ngram_hist = defaultdict(float)
