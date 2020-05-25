@@ -5,11 +5,14 @@ import numpy as np
 import itertools
 
 class PolicyLaplace:
-    def __init__(self, epsilon, delta, alpha, tokens_per_user, prune_tail_below=None, budget_per_user=None):
+    def __init__(self, epsilon, delta, alpha, tokens_per_user, prune_tail_below=None, num_partitions=1):
         Delta_0 = tokens_per_user
         self.Delta_0 = Delta_0 # tokens_per_user
-        self.Delta = budget_per_user if budget_per_user else 1  # budget per user
         self.K = prune_tail_below
+        self.num_partitions = num_partitions if num_partitions is not None else 1
+        self.Delta = 1 / self.num_partitions  # budget per user
+        #if self.K == 1:
+        #    self.K = None
 
         l_param = 1 / epsilon
         F_l_rho = lambda t: 1 / t + (1 / epsilon) * np.log(1 / (2 * (1 - (1 - delta) ** (1 / t))))
@@ -72,6 +75,13 @@ class PolicyLaplace:
 
         return user_tokens_rdd.groupByKey().map(selected_grams)
 
+    def process_partitions(self, user_tokens_rdd):
+        """Repartitions into the desired number of partitions and
+            runs the DPSU algorithm in parallel."""
+        process_rows = self.process_rows
+        res = user_tokens_rdd.repartition(self.num_partitions).mapPartitions(process_rows)
+        return res.reduceByKey(operator.add)
+
     def process_rows(self, rows):
         ngram_hist = defaultdict(float)
         rowsl = list(rows)
@@ -107,4 +117,6 @@ class PolicyLaplace:
                         add_gram = sorted_gap_keys[j]
                         ngram_hist[add_gram] += budget/(total_tokens-i)
                     break
-        yield ngram_hist
+        print ("Single partition histogram had {0} items".format(len(ngram_hist.items())))
+        for k, v in ngram_hist.items():
+            yield (k, v)
