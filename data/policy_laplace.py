@@ -64,6 +64,7 @@ class PolicyLaplace:
             return user_tokens_rdd
 
         def selected_grams(row):
+            np.random.seed()
             user, tokens = row
             all_grams = list(itertools.chain.from_iterable(tokens))
             if distinct:
@@ -80,45 +81,72 @@ class PolicyLaplace:
         """Repartitions into the desired number of partitions and
             runs the DPSU algorithm in parallel."""
         process_rows = self.process_rows
-        parts = user_tokens_rdd.groupByKey().repartition(self.num_partitions)
+
+        parts = user_tokens_rdd.keyBy(lambda row: (row[0], row[1]))
+        n = self.num_partitions
+
+        def partition_func(key):
+            return portable_hash(key[1])
+
+        def key_func(entry):
+            return (entry[0], entry[1])
+
+        parts = parts.repartitionAndSortWithinPartitions(numPartitions=n, partitionFunc=partition_func, keyfunc=key_func)
+        parts = parts.map(lambda row: row[1])
+        #parts = user_tokens_rdd.groupByKey().repartition(self.num_partitions)
         res = parts.mapPartitions(process_rows)
         return res.reduceByKey(operator.add)
+        #return parts
+
+    def count_word(self, rows):
+        words = [word for user, word in list(rows)]
+        yield len(list(set(words)))
 
     def process_rows(self, rows):
         ngram_hist = defaultdict(float)
-        rowsl = list(rows)
-        for row in rowsl:
-            user, selected_ngrams = row
-            gap_dict = {}
+        prev_user = None
+        token_buffer = []
+        for row in rows:
+            user, token = row
+            if user is None:
+                prev_user = user
+            if user == prev_user:
+                token_buffer.append(token)
+            else:
+                new_token_buffer = []
+                selected_ngrams = token_buffer
+                token_buffer = new_token_buffer
+                prev_user = user
+                gap_dict = {}
 
-            ngl = list(selected_ngrams)
-            for w in ngl:
-                if ngram_hist[w] < self.Gamma:
-                    gap_dict[w] = self.Gamma - ngram_hist[w]
-            # sort rho dict
-            sorted_gap_dict = sorted(gap_dict.items(), key=operator.itemgetter(1))
+                ngl = list(selected_ngrams)
+                for w in ngl:
+                    if ngram_hist[w] < self.Gamma:
+                        gap_dict[w] = self.Gamma - ngram_hist[w]
+                # sort rho dict
+                sorted_gap_dict = sorted(gap_dict.items(), key=operator.itemgetter(1))
 
-            sorted_gap_keys = [k for k, v in sorted_gap_dict]
+                sorted_gap_keys = [k for k, v in sorted_gap_dict]
 
-            budget = copy.copy(self.Delta)
-            total_tokens = len(sorted_gap_keys)
+                budget = copy.copy(self.Delta)
+                total_tokens = len(sorted_gap_keys)
 
-            for i, w in enumerate(sorted_gap_keys):
-                cost = gap_dict[w]*(total_tokens-i)
-                if cost < budget:
-                    for j in range(i, total_tokens):
-                        add_gram = sorted_gap_keys[j]
-                        ngram_hist[add_gram] += gap_dict[w]
-                    # update remaining budget
-                    budget -= cost
-                    # update dictionary of values containing difference from gap
-                    for key in gap_dict: 
-                        gap_dict[key] -= gap_dict[w] 
-                else:
-                    for j in range(i, total_tokens):
-                        add_gram = sorted_gap_keys[j]
-                        ngram_hist[add_gram] += budget/(total_tokens-i)
-                    break
+                for i, w in enumerate(sorted_gap_keys):
+                    cost = gap_dict[w]*(total_tokens-i)
+                    if cost < budget:
+                        for j in range(i, total_tokens):
+                            add_gram = sorted_gap_keys[j]
+                            ngram_hist[add_gram] += gap_dict[w]
+                        # update remaining budget
+                        budget -= cost
+                        # update dictionary of values containing difference from gap
+                        for key in gap_dict: 
+                            gap_dict[key] -= gap_dict[w] 
+                    else:
+                        for j in range(i, total_tokens):
+                            add_gram = sorted_gap_keys[j]
+                            ngram_hist[add_gram] += budget/(total_tokens-i)
+                        break
         print ("Single partition histogram had {0} items".format(len(ngram_hist.items())))
         for k, v in ngram_hist.items():
             yield (k, v)
