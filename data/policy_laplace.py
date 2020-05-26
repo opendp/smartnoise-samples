@@ -105,14 +105,22 @@ class PolicyLaplace:
     def process_rows(self, rows):
         ngram_hist = defaultdict(float)
         prev_user = None
+        user = None
         token_buffer = []
-        for row in rows:
-            user, token = row
-            if user is None:
-                prev_user = user
-            if user == prev_user:
+        while True:
+            try:
+                line = next(rows)
+            except StopIteration:
+                line = None
+            if line is not None:
+                user, token = line
+                if prev_user is None:
+                    prev_user = user
+            if line is not None and user == prev_user:
                 token_buffer.append(token)
-            else:
+            else:  # user or stream is finished
+                if line is None:
+                    print("Final budget distribute with {0} left in buffer".format(len(token_buffer)))
                 new_token_buffer = []
                 selected_ngrams = token_buffer
                 token_buffer = new_token_buffer
@@ -147,6 +155,8 @@ class PolicyLaplace:
                             add_gram = sorted_gap_keys[j]
                             ngram_hist[add_gram] += budget/(total_tokens-i)
                         break
+            if line is None:
+                break
         print ("Single partition histogram had {0} items".format(len(ngram_hist.items())))
         for k, v in ngram_hist.items():
             yield (k, v)
