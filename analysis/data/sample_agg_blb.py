@@ -21,6 +21,7 @@ class SampleAggregate:
     def __init__(self, df, n_parts=None):
         self.pkn = "partkey_0x011"
         self.df = df
+        self.B = 50  # number of bootstraps within each partition
         self.n_parts = n_parts
         self.rows = df.rdd.countApprox(2000, 1.0)
         if n_parts is None:
@@ -57,7 +58,7 @@ class SampleAggregate:
                 match the order of the list supplied in param keys,
                 e.g. [(True, 12), (False, 13), (True, 7)]
             :returns:
-                Returns an iterator with an RDD pair, where the first 
+                Returns an iterator with an RDD pair, where the first
                 element of the RDD is a tuple representing the grouping
                 key values for this group, and the second is a list of
                 tuples representing the rows of the partition that match
@@ -69,11 +70,12 @@ class SampleAggregate:
                 Note that the returned list of tuples need not include columns for
                 the grouping keys.
         """
+        n_bootstraps = self.B
         n_rows = self.rows
         def load_part(splitIndex, partition, cols=cols, keys=keys, groups=groups):
             groups = groups if groups is not None else [None]
             plist = list(partition)
-            weights = np.random.multinomial(n_rows, [1/len(plist)]*len(plist))
+            weights = np.array(list(zip(*(np.random.multinomial(n_rows, [1 / len(plist)] * len(plist), n_bootstraps)))))
 
             def filter_group(group, plist=plist, weights=weights):
                 group_match = []
@@ -85,7 +87,7 @@ class SampleAggregate:
                 for row, weight in zip(plist, weights):
                     row_vals = row.asDict()
                     if all([(row_vals[k] == v) for k, v in group_match]):
-                        vals.append(tuple(row_vals[col] for col in cols) + tuple([weight]))
+                        vals.append([tuple(row_vals[col] for col in cols), tuple(weight)])
                 return (group, vals)
             return [gv for gv in map(filter_group, groups) if gv[1]]
         self.aggregated = self.sampled.rdd.mapPartitionsWithIndex(load_part).persist()
