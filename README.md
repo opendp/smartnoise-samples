@@ -1,3 +1,5 @@
+[**Please note that we are renaming the toolkit and will be introducing the new name in the coming weeks.**](https://projects.iq.harvard.edu/opendp/blog/building-inclusive-community)
+
 <a href="https://www.linkedin.com/pulse/microsoft-harvards-institute-quantitative-social-science-john-kahan/"><img src="images/WhiteNoise Logo/SVG/LogoMark_color.svg" align="left" height="65" vspace="8" hspace="18"></a>
 ## Samples: Differential Privacy Examples, Notebooks and Documentation
 See also the accompanying [System repository](https://github.com/opendifferentialprivacy/whitenoise-system) and [Core repository](https://github.com/opendifferentialprivacy/whitenoise-core) for this system.
