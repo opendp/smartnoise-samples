@@ -26,10 +26,6 @@ Differential privacy is the gold standard definition of privacy protection.  Thi
 
 ## Reference Execution Service
 
-## Stochastic Evaluator
-
-[Notebooks on Stochastic Evaluation:](https://github.com/opendifferentialprivacy/whitenoise-samples/tree/master/evaluator) Notebooks demonstrating the use of the stochastic evaluator.
-
 ## API Reference Documentation
 
 [Core Library Reference:](https://opendifferentialprivacy.github.io/whitenoise-core/) The Core Library implments the runtime validator and execution engine.
