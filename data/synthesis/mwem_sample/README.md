@@ -8,7 +8,7 @@ Note distinction between this implementation and the one released in the paper: 
 ### 1. Visualizing MWEM
     Brief: Gives a sense of the underlying functionality of MWEM via visualizations of private vs. synthetic histograms.
 
-### 2. Nursery Dataset MWEM (Multiclass)
+### 2. Car Dataset MWEM (Multiclass)
     Brief: This is an ideal dataset for MWEM: purely categorical. MWEM is able to draw from a distribution across all the data and produce differentially private synthetic data that performs comparably to the original data on the multiclass task in a matter of seconds.
     
 ### 3. Adult Dataset Classification (Binary)
