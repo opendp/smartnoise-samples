@@ -1,11 +1,12 @@
-def preprocess_encode(file):
+def preprocess_encode(file, index=True):
     from sklearn.preprocessing import LabelEncoder
     import pandas as pd
     import numpy as np
-    dataset = pd.read_csv(file)
+    dataset = pd.read_csv(file, index_col=index)
 
     encoders = {}
     for column in dataset.columns:
+        print(dataset.dtypes[column])
         if dataset.dtypes[column] == np.object:
             encoders[column] = LabelEncoder()
             dataset[column] = encoders[column].fit_transform(dataset[column])
