@@ -2,7 +2,7 @@
 
 <a href="https://www.linkedin.com/pulse/microsoft-harvards-institute-quantitative-social-science-john-kahan/"><img src="images/SmartNoise_Logos/SVG/LogoMark_color.svg" align="left" height="65" vspace="8" hspace="18"></a>
 ## SmartNoise Samples: Differential Privacy Examples, Notebooks and Documentation
-See also the accompanying [SmartNoise System repository](https://github.com/opendifferentialprivacy/smartnoise-system) and [SmartNoise Core repository](https://github.com/opendifferentialprivacy/smartnoise-core) for this system.
+See also the accompanying [SmartNoise SDK repository](https://github.com/opendifferentialprivacy/smartnoise-sdk) and [SmartNoise Core repository](https://github.com/opendifferentialprivacy/smartnoise-core) for this system.
 
 ##
 
