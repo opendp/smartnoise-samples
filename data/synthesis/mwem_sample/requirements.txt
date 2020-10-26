@@ -3,4 +3,4 @@ numpy
 matplotlib
 scikit-learn
 skimage
-opendp-whitenoise
+opendp-smartnoise

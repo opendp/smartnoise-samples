@@ -1,6 +1,6 @@
 import pandas as pd
-from opendp.whitenoise.sql import PostgresReader, PrivateReader
-from opendp.whitenoise.metadata import CollectionMetadata
+from opendp.smartnoise.sql import PostgresReader, PrivateReader
+from opendp.smartnoise.metadata import CollectionMetadata
 
 meta = CollectionMetadata.from_file('PUMS_large.yaml')
 

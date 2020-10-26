@@ -8,8 +8,8 @@ In this sample, we read from the sample PUMS dataset to calculate average income
 
 ```python
 import pandas as pd
-from opendp.whitenoise.sql import PandasReader, PrivateReader
-from opendp.whitenoise.metadata import CollectionMetadata
+from opendp.smartnoise.sql import PandasReader, PrivateReader
+from opendp.smartnoise.metadata import CollectionMetadata
 
 pums = pd.read_csv('PUMS.csv')
 meta = CollectionMetadata.from_file('PUMS.yaml')
@@ -28,7 +28,7 @@ There are two important concepts to highlight here.  First, we need to instantia
 ```python
 # example of calling a reader for exact query results
 # no differential privacy code is used
-from opendp.whitenoise.sql import SqlServerReader
+from opendp.smartnoise.sql import SqlServerReader
 
 query = 'SELECT married, AVG(income) AS income, COUNT(*) AS n FROM PUMS.PUMS_large GROUP BY married'
 
@@ -36,7 +36,7 @@ reader = SqlServerReader('127.0.0.1', 'PUMS', 'sa')
 
 exact = reader.execute_typed(query)
 print(exact)
-``` 
+```
 
 Next, we need to instantiate a `PrivateReader` that wraps the database adapter we created.  The `PrivateReader` will perform preprocessing and postprocessing to ensure differential privacy.
 
@@ -47,14 +47,14 @@ noisy = private_reader.execute_typed(query)
 print(noisy)
 ```
 
-The `PrivateReader` has the same calling interface as any other `Reader`, but results will be differentially private.  
+The `PrivateReader` has the same calling interface as any other `Reader`, but results will be differentially private.
 
 ## Metadata
 
 In order to ensure differential privacy, the `PrivateReader` needs some metadata that describes the data source.  The metadata describes things like data types and ranges of values, and must not be data-dependent.  It is typically provided by the data curator, and can be loaded from a YAML file.
 
 ```python
-from opendp.whitenoise.metadata import CollectionMetadata
+from opendp.smartnoise.metadata import CollectionMetadata
 
 meta = CollectionMetadata.from_file('PUMS.yaml')
 print(meta)
@@ -65,7 +65,7 @@ The metadata specifies which columns can be used in aggregate functions, which c
 Although YAML is preferred, you can also construct the metadata directly in code:
 
 ```python
-from opendp.whitenoise.metadata.collection import *
+from opendp.smartnoise.metadata.collection import *
 
 table1 = Table("dbo", "devices", 5000, \
     [\
@@ -76,7 +76,7 @@ table1 = Table("dbo", "devices", 5000, \
 
 meta = CollectionMetadata([table1],"csv")
 ```
-Object documentation for the literal syntax is [here](https://opendifferentialprivacy.github.io/whitenoise-samples/docs/api/system/metadata/collection.html)
+Object documentation for the literal syntax is [here](https://opendifferentialprivacy.github.io/smartnoise-samples/docs/api/system/metadata/collection.html)
 
 ## Privacy Parameters
 
@@ -133,7 +133,7 @@ For this release, we recommend using the SQL functionality while bounding user c
 
 ## Installing Sample Databases
 
-If you would like to test against Postgres or SQL Server instances running in a Docker container with PUMS data imported,  you can build the containers from [source here](https://github.com/opendifferentialprivacy/whitenoise-samples/tree/master/testing/databases)
+If you would like to test against Postgres or SQL Server instances running in a Docker container with PUMS data imported,  you can build the containers from [source here](https://github.com/opendifferentialprivacy/smartnoise-samples/tree/master/testing/databases)
 
 ## Architecture
 
