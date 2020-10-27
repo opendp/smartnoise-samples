@@ -13,7 +13,7 @@ engine and returns results in the form of a list of tuples.  This is the
 default behavior for ODBC and DBAPI on Python.
 
 ```python
-from opendp.whitenoise.sql.reader.sql_base import SqlReader, NameCompare
+from opendp.smartnoise.sql.reader.sql_base import SqlReader, NameCompare
 from my.engine import my_api
 
 class MyEngineReader(SqlReader):
@@ -53,8 +53,8 @@ Your main code goes in the `execute` method.  The execute method takes a query a
 To use the reader you created, plug it in just like any other Reader:
 
 ```python
-from opendp.whitenoise.sql.private_reader import PrivateReader
-from opendp.whitenoise.metadata import CollectionMetadata
+from opendp.smartnoise.sql.private_reader import PrivateReader
+from opendp.smartnoise.metadata import CollectionMetadata
 from my.engine.reader import MyEngineReader
 
 meta = CollectionMetadata.from_file('Sales.yaml')

@@ -1,7 +1,7 @@
 import pyspark
 from pyspark.sql import SparkSession
-from opendp.whitenoise.metadata import CollectionMetadata
-from opendp.whitenoise.sql import SparkReader, PrivateReader
+from opendp.smartnoise.metadata import CollectionMetadata
+from opendp.smartnoise.sql import SparkReader, PrivateReader
 
 spark = SparkSession.builder.getOrCreate()
 sc = spark.sparkContext
@@ -49,4 +49,3 @@ private = PrivateReader(reader, meta, 1.0)
 priv = private.execute_typed(query)
 
 print(priv)
-
