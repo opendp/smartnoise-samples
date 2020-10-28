@@ -1,19 +1,19 @@
-# WhiteNoise Documentation
+# SmartNoise Documentation
 
 ## Getting Started
 
 Install the core runtime and system SDK:
 
 ```bash
-pip install opendp-whitenoise
+pip install opendp-smartnoise
 ```
 
 To run these samples, clone this repository and the sample datasets repository:
 
 ```bash
-git clone https://github.com/opendifferentialprivacy/whitenoise-samples.git
+git clone https://github.com/opendifferentialprivacy/smartnoise-samples.git
 git clone https://github.com/opendifferentialprivacy/dp-test-datasets.git
-cd whitenoise-samples/data/readers
+cd smartnoise-samples/data/readers
 python call_pandas.py
 ```
 
