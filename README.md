@@ -47,3 +47,16 @@ We appreciate all contributions. We welcome pull requests with bug-fixes without
 
 If you plan to contribute new features, utility functions or extensions to the samples repository, please first open an issue and discuss the feature with us.
   - Sending a PR without discussion might end up resulting in a rejected PR, because we may be taking the examples in a different direction than you might be aware of.
+
+## Installation
+* After cloning the repository and setting up virtual environment, install requirements.
+```bash
+git clone https://github.com/opendifferentialprivacy/smartnoise-samples.git && cd smartnoise-samples
+python3 -m venv venv
+. venv/bin/activate
+pip install -r requirements.txt
+# if running locally
+pip install jupyterlab
+# launch locally
+jupyter-lab
+```
