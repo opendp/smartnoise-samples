@@ -1,5 +1,5 @@
 # API Documentation
 
-[WhiteNoise Core Library Reference](https://opendifferentialprivacy.github.io/whitenoise-core/)
+[SmartNoise Core Library Reference](https://opendifferentialprivacy.github.io/smartnoise-core/)
 
-[WhiteNoise System SDK Reference](https://opendifferentialprivacy.github.io/whitenoise-samples/docs/api/system/)
+[SmartNoise System SDK Reference](https://opendifferentialprivacy.github.io/smartnoise-samples/docs/api/system/)

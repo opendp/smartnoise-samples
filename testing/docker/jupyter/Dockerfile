@@ -1,3 +1,5 @@
+# Last tested May 12, 2020 -- May not be up to date
+#
 FROM ubuntu:18.04
 
 ARG DEBIAN_FRONTEND=noninteractive
@@ -27,7 +29,7 @@ RUN apt-get update && apt-get -y install --no-install-recommends --no-install-su
         ca-certificates software-properties-common gnupg2 gnupg1 \
       && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 \
       && add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran35/' \
-      && apt-get -y install r-base 
+      && apt-get -y install r-base
 
 COPY install.R .
 RUN Rscript install.R && rm install.R
@@ -37,7 +39,7 @@ RUN apt-get update && apt-get -y install --no-install-recommends --no-install-su
     ca-certificates software-properties-common gnupg2 gnupg1 \
     && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 2EE0EA64E40A89B84B2DF73499E82A75642AC823 \
     && add-apt-repository 'deb https://dl.bintray.com/sbt/debian /' \
-    && apt-get -y install sbt 
+    && apt-get -y install sbt
 
 # Create privacy user and switch user
 RUN useradd --create-home --shell /bin/bash privacy
@@ -71,18 +73,18 @@ COPY jupyter.txt .
 RUN jupyter notebook --generate-config && cat jupyter.txt >> .jupyter/jupyter_notebook_config.py && rm jupyter.txt
 
 # Clone the repositories
-RUN git clone https://github.com/opendifferentialprivacy/whitenoise-core-python.git --recurse-submodules
-RUN git clone https://github.com/opendifferentialprivacy/whitenoise-system.git
-RUN git clone https://github.com/opendifferentialprivacy/whitenoise-samples.git
+RUN git clone https://github.com/opendifferentialprivacy/smartnoise-core-python.git --recurse-submodules
+RUN git clone https://github.com/opendifferentialprivacy/smartnoise-sdk.git
+RUN git clone https://github.com/opendifferentialprivacy/smartnoise-samples.git
 RUN git clone https://github.com/opendifferentialprivacy/dp-test-datasets.git
 
 # Install Core, Python Bindings, and System
-RUN cd whitenoise-core-python && \
+RUN cd smartnoise-core-python && \
     conda run pip install -U setuptools && \
     conda run pip install -e ".[test,plotting]" && \
     cd ..
 
-RUN cd whitenoise-system && \
+RUN cd smartnoise-sdk && \
     conda run pip install -r service/requirements.txt && \
     conda run pip install -r tests/requirements.txt && \
     conda run pip install -e sdk/ && \
