@@ -131,13 +131,14 @@ def create_dicts(data, non_income_data, plausible_variable_combinations):
             _min = sn.dp_minimum(priv_data, privacy_usage={'epsilon': 0.1})
             # get max
             _max = sn.dp_maximum(priv_data, privacy_usage={'epsilon': 0.1})
+            analysis.release()
+
             priv_count_dict['__'.join(combination)] = max(0, count.value)
             priv_mean_income_dict['__'.join(combination)] = min(max(0, mean.value), 100_000)
             priv_median_income_dict['__'.join(combination)] = min(max(0, median.value), 100_000)
             priv_min_income_dict['__'.join(combination)] = min(max(0, _min.value), 100_000)
             priv_max_income_dict['__'.join(combination)] = min(max(0, _max.value), 100_000)
 
-            analysis.release()
 
     return(count_dict, priv_count_dict, mean_income_dict, priv_mean_income_dict, median_income_dict, priv_median_income_dict, min_income_dict, priv_min_income_dict, max_income_dict, priv_max_income_dict)
 
