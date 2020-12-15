@@ -214,7 +214,7 @@ def dptrain(model, optimizer, loss_fn, train_dl, val_dl, epochs=20, device='cuda
         validation accuracy.
     '''
 
-    print('train() called: model=%s, opt=%s(lr=%f), epochs=%d, device=%s\n' % \
+    print('dptrain() called: model=%s, opt=%s(lr=%f), epochs=%d, device=%s\n' % \
           (type(model).__name__, type(optimizer).__name__,
            optimizer.param_groups[0]['lr'], epochs, device))
 
