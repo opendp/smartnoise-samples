@@ -115,7 +115,7 @@ def create_dicts(data, non_income_data, plausible_variable_combinations):
         min_income_dict['__'.join(combination)] = np.min(dt['income'])
         max_income_dict['__'.join(combination)] = np.max(dt['income'])
 
-        with sn.Analysis() as analysis:
+        with sn.Analysis(protect_floating_point=False) as analysis:
             # load data
             priv_data = sn.Dataset(value=dt['income'])
             # estimate sample size
@@ -124,7 +124,7 @@ def create_dicts(data, non_income_data, plausible_variable_combinations):
             priv_data = sn.resize(sn.to_float(priv_data),number_columns=1,number_rows=sn.row_max(1, count),lower=0., upper=100_000.)
             priv_data = sn.impute(sn.clamp(priv_data, lower=0., upper=100_000.))
             # get mean
-            mean = sn.dp_mean(priv_data, privacy_usage={'epsilon': 0.1})
+            mean = sn.dp_mean(priv_data, mechanism='snapping', privacy_usage={'epsilon': 0.1})
             # get median
             median = sn.dp_median(priv_data, privacy_usage={'epsilon': 0.1})
             # get min
