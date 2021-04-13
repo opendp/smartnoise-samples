@@ -19,7 +19,7 @@ query = 'SELECT married, AVG(income) AS income, COUNT(*) AS n FROM PUMS.PUMS GRO
 reader = PandasReader(pums, meta)
 private_reader = PrivateReader(reader, meta)
 
-result = private_reader.execute_typed(query)
+result = private_reader.execute(query)
 print(result)
 ```
 
@@ -43,7 +43,7 @@ Next, we need to instantiate a `PrivateReader` that wraps the database adapter w
 ```python
 private_reader = PrivateReader(reader, meta)
 
-noisy = private_reader.execute_typed(query)
+noisy = private_reader.execute(query)
 print(noisy)
 ```
 
