@@ -17,6 +17,7 @@ meta = CollectionMetadata.from_file('PUMS.yaml')
 query = 'SELECT married, AVG(income) AS income, COUNT(*) AS n FROM PUMS.PUMS GROUP BY married'
 
 reader = PandasReader(pums, meta)
+private_reader = PrivateReader(reader, meta)
 
 result = private_reader.execute_typed(query)
 print(result)
@@ -40,7 +41,7 @@ print(exact)
 Next, we need to instantiate a `PrivateReader` that wraps the database adapter we created.  The `PrivateReader` will perform preprocessing and postprocessing to ensure differential privacy.
 
 ```python
-private_reader = PrivateReader(meta, reader)
+private_reader = PrivateReader(reader, meta)
 
 noisy = private_reader.execute_typed(query)
 print(noisy)
@@ -84,7 +85,7 @@ The `PrivateReader` accepts `epsilon` and `delta` privacy parameters which contr
 ```python
 # epsilon is 0.1, delta is 10E-16
 
-private_reader = PrivateReader(meta, reader, 0.1, 10E-16)
+private_reader = PrivateReader(reader, meta, 0.1, 10E-16)
 ```
 
 The epsilon parameter applies to each column in the result. It is not distributed across columns.  Some computations, such as `AVG`, will perform two noisy computations and will incur double epsilon cost.
