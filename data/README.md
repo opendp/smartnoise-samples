@@ -16,8 +16,7 @@ meta = CollectionMetadata.from_file('PUMS.yaml')
 
 query = 'SELECT married, AVG(income) AS income, COUNT(*) AS n FROM PUMS.PUMS GROUP BY married'
 
-reader = PandasReader(meta, pums)
-private_reader = PrivateReader(meta, reader)
+reader = PandasReader(pums, meta)
 
 result = private_reader.execute_typed(query)
 print(result)
