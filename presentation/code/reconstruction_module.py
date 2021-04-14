@@ -26,7 +26,7 @@ def load_data():
     orig_data['agebinned'] = [elem.replace('(', '') for elem in orig_data['agebinned']]
     orig_data['agebinned'] = [elem.replace(']', '') for elem in orig_data['agebinned']]
     orig_data['agebinned'] = [elem.replace(')', '') for elem in orig_data['agebinned']]
-    orig_data['income'] = orig_data['income'].astype(float)
+    #orig_data['income'] = orig_data['income'].astype(float)
     orig_data = orig_data.sort_values(by = list(orig_data.columns))
 
     data = pd.get_dummies(data)
@@ -323,7 +323,7 @@ def reconstruct_data(model, elem_dict):
         df['race'] = df['race'].astype('int').astype('category')
         df['sex'] = df['sex'].astype(int)
         df['married'] = df['married'].astype(int)
-        df['income'] = df['income'].astype(float)
+        #df['income'] = df['income'].astype(float)
     return(df)
 
 def get_models(F, M):
