@@ -7,8 +7,11 @@ jupyterlab-pygments==0.1.2
 jupyterlab-server==1.2.0
 matplotlib==3.3.1
 numpy==1.19.1
-opendp-smartnoise==0.1.0.4
+opendp-smartnoise==0.1.3.1
 pandas==1.1.0
 scipy==1.5.2
 seaborn==0.11.0
 z3-solver==4.8.9.0
+
+# for notebook testing
+#nbclient==0.5.3
