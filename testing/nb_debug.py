@@ -1,3 +1,6 @@
+"""
+Precursor to CI: Quick notebook run and eye-balling the HTML output
+"""
 import nbformat
 from nbconvert import HTMLExporter
 
@@ -69,6 +72,9 @@ def run_nb_test(nb_filename, output_fname):
 
     client.execute()
 
+    if not os.path.isdir('test_output'):
+        os.makedirs('test_output')
+
     output_file = f'test_output/{output_fname}'
     nbformat.write(ye_notebook, output_file)
     print(f'(2) file written: {output_file}')
@@ -89,6 +95,7 @@ def run_nb_test(nb_filename, output_fname):
 
 
 def run_analysis_notebooks():
+    os.chdir('../analysis')
 
     inputs = [
               #('accuracy_pitfalls.ipynb', 'out_accuracy_pitfalls.ipynb'),
@@ -97,13 +104,36 @@ def run_analysis_notebooks():
               #('histograms.ipynb', 'out_histograms.ipynb'),
               #('unknown_dataset_size.ipynb', 'out_unknown_dataset_size.ipynb'),
               #('utility_laplace_mean.ipynb', 'out_utility_laplace_mean.ipynb'),
-              ]
+              #('tutorial_mental_health_in_tech_survey.ipynb', 'out_tutorial_mental_health_in_tech_survey.ipynb'),
+              ('../attacks/simple_attack.ipynb', 'out_simple_attack.ipynb'),
+            ]
 
     for input_nb, output_nb in inputs:
         run_nb_test(input_nb, output_nb)
 
 
+def run_attack_notebooks():
+    os.chdir('../attacks')
+
+    inputs = [
+              ('simple_attack.ipynb', 'out_simple_attack.ipynb'),
+            ]
+
+    for input_nb, output_nb in inputs:
+        run_nb_test(input_nb, output_nb)
+
+def run_reconstruction_notebooks():
+    os.chdir('../attacks/reconstruction')
+
+    inputs = [
+              ('reconstruction.ipynb', 'out_reconstruction.ipynb'),
+            ]
+
+    for input_nb, output_nb in inputs:
+        run_nb_test(input_nb, output_nb)
+
 if __name__ == '__main__':
     #try_sn()
-    os.chdir('../analysis')
     run_analysis_notebooks()
+    # run_attack_notebooks()
+    # run_reconstruction_notebooks()
