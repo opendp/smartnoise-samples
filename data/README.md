@@ -5,6 +5,7 @@ You can issue SQL queries against CSV files, database engines, and Spark cluster
 ## Simple Example
 
 In this sample, we read from the sample PUMS dataset to calculate average income grouped by marital status.
+(Note: The test files for this example may be found in the [/data/readers](/data/readers) directory)
 
 ```python
 import pandas as pd
@@ -12,6 +13,9 @@ from opendp.smartnoise.sql import PandasReader, PrivateReader
 from opendp.smartnoise.metadata import CollectionMetadata
 
 pums = pd.read_csv('PUMS.csv')
+
+# Note: The "PUMS_row.yaml" metadata file explicitly sets the optional `row_privacy` field to `True`.
+#
 meta = CollectionMetadata.from_file('PUMS_row.yaml')
 
 query = 'SELECT married, AVG(income) AS income, COUNT(*) AS n FROM PUMS.PUMS GROUP BY married'
@@ -132,7 +136,7 @@ For this release, we recommend using the SQL functionality while bounding user c
 
 ## Note on SQLite Version
 
-The PandasReader used SQLite under the covers, whereas the other readers use the respective database engines.  The SQLite version that comes with many Python distributions is quite old, and does not support `SELECT DISTINCT`, which is required to limit the number of rows per user.  If you are using conda, you can ensure that you are using the latest SQLite by typing `conda install --yes -c anaconda sqlite`.  If you know that your data has only one row per uses, you can specify `row_privacy` in the metadata, as in the sample above, and the functionality will work with older SQLite versions. 
+The PandasReader used SQLite under the covers, whereas the other readers use the respective database engines.  The SQLite version that comes with many Python distributions is quite old, and does not support `SELECT DISTINCT`, which is required to limit the number of rows per user.  If you are using conda, you can ensure that you are using the latest SQLite by typing `conda install --yes -c anaconda sqlite`.  If you know that your data has only one row per user, you can specify `row_privacy` in the [metadata](/data/reader/PUMS_row.yaml), as in the sample above, and the functionality will work with older SQLite versions. 
 
 ## Installing Sample Databases
 
