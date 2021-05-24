@@ -12,7 +12,10 @@ Differential privacy is the gold standard definition of privacy protection.  The
 * highlight some of the nuances of the system implementation.
 
 ## Runtime Library and Validator
-[Notebooks on SmartNoise Library Usage:](https://github.com/opendifferentialprivacy/smartnoise-samples/tree/master/analysis) A set of notebooks showing how to create differentially private releases using the SmartNoise Core library and private analysis validator.  The library and validator are both written in Rust, but the notebooks are Python and demonstrate the use of our Python bindings.
+[Notebooks on SmartNoise Library Usage:](https://github.com/opendifferentialprivacy/smartnoise-samples/tree/master/analysis) A set of notebooks showing how to create differentially private releases using the SmartNoise Core library and private analysis validator.  The library and validator are both written in Rust, but the notebooks are Python and demonstrate the use of our Python bindings. 
+
+Additional notebooks in this repository demonstrate how [SmartNoise mitigages attacks](/attacks) 
+as well as examples from the whitepaper titled [Microsoft SmartNoise Differential Privacy Machine Learning Case Studies](/whitepaper-demos) which includes generation of a [synthetic dataset](/whitepaper-demos/5-ml-synthetic-data.ipynb).
 
 [<img src="images/figs/plugin_mean_comparison.png" alt="Relative error distributions" height="100">](https://github.com/opendifferentialprivacy/smartnoise-samples/tree/master/analysis)
 [<img src="images/figs/example_size.png" alt="Release box plots" height="100">](https://github.com/opendifferentialprivacy/smartnoise-samples/tree/master/analysis)
