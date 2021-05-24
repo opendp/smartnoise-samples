@@ -1,7 +1,7 @@
 # Whitepaper Demo Notebooks
 
 [<img src="/whitepaper-demos/images/income-distribution.png" alt="histogram of income distribution" height="100">](/whitepaper-demos/3-histogram-sample.ipynb)
-[<img src="/whitepaper-demos/images/QUAIL.png" alt="quail" height="100">](/whitepaper-demos/5-ml-synthetic-data.ipynb)
+[<img src="/whitepaper-demos/images/auc-score-dp-naive-bayes.png" alt="quail" height="100">](/whitepaper-demos/4-ml-dp-classifier.ipynb)
 [<img src="/whitepaper-demos/images/synthetic.jpg" alt="synthetic dataset" height="100">](/whitepaper-demos/5-ml-synthetic-data.ipynb)
 
 The following notebooks are based on the whitepaper titled [Microsoft SmartNoise Differential Privacy Machine Learning Case Studies](https://azure.microsoft.com/en-us/resources/microsoft-smartnoisedifferential-privacy-machine-learning-case-studies/).
