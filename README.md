@@ -11,11 +11,15 @@ Differential privacy is the gold standard definition of privacy protection.  The
 * teach the properties of differential privacy,
 * highlight some of the nuances of the system implementation.
 
-## Runtime Library and Validator
-[Notebooks on SmartNoise Library Usage:](https://github.com/opendifferentialprivacy/smartnoise-samples/tree/master/analysis) A set of notebooks showing how to create differentially private releases using the SmartNoise Core library and private analysis validator.  The library and validator are both written in Rust, but the notebooks are Python and demonstrate the use of our Python bindings. 
+## Sample Notebooks
 
-Additional notebooks in this repository demonstrate how [SmartNoise mitigates attacks](/attacks) 
-as well as examples from the whitepaper titled [Microsoft SmartNoise Differential Privacy Machine Learning Case Studies](/whitepaper-demos) which includes generation of a [synthetic dataset](/whitepaper-demos/5-ml-synthetic-data.ipynb).
+This repository includes several sets of sample Python notebooks which include:
+
+- [Sample Analysis Notebooks](/analysis) include a brief data analysis tutorial as well as SmartNoise examples of histograms, differentially private covariance, how dataset size and privacy-loss parameter selection impact utility, and working with unknown dataset sizes.
+- [Attack Notebooks](/attacks) demonstrate how SmartNoise can mitigate a basic attack and as well as a database reconstruction attack.
+- [SQL Data Access Examples](/data) show how to issue SQL queries against CSV files, database engines, and Spark clusters.
+- [SmartNoise Whitepaper Demo Notebooks](/whitepaper-demos) Based on the whitepaper titled [Microsoft SmartNoise Differential Privacy Machine Learning Case Studies](https://azure.microsoft.com/en-us/resources/microsoft-smartnoisedifferential-privacy-machine-learning-case-studies/) these notebooks include a demonstration of how to perform supervised machine with differential privacy and an example of creating a synthetic dataset with high utility for machine learning as well as examples of creating DP releases with histograms and protecting against a reidentification attack.
+
 
 [<img src="images/figs/plugin_mean_comparison.png" alt="Relative error distributions" height="100">](https://github.com/opendifferentialprivacy/smartnoise-samples/tree/master/analysis)
 [<img src="images/figs/example_size.png" alt="Release box plots" height="100">](https://github.com/opendifferentialprivacy/smartnoise-samples/tree/master/analysis)
