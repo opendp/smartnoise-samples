@@ -1,6 +1,6 @@
 # Setup Scripts for Testing
 
-- Very manual process...
+- Internal notes, e.g. very manual process to add to the CI.
 
 # Steps to Test (very manual process)
 
