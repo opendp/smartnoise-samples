@@ -98,14 +98,13 @@ def run_analysis_notebooks():
     os.chdir('../analysis')
 
     inputs = [
-              #('accuracy_pitfalls.ipynb', 'out_accuracy_pitfalls.ipynb'),
-              #('basic_data_analysis.ipynb', 'out_basic_data_analysis.ipynb'),
-              #('covariance.ipynb', 'out_covariance.ipynb'),
-              #('histograms.ipynb', 'out_histograms.ipynb'),
-              #('unknown_dataset_size.ipynb', 'out_unknown_dataset_size.ipynb'),
-              #('utility_laplace_mean.ipynb', 'out_utility_laplace_mean.ipynb'),
-              #('tutorial_mental_health_in_tech_survey.ipynb', 'out_tutorial_mental_health_in_tech_survey.ipynb'),
-              ('../attacks/simple_attack.ipynb', 'out_simple_attack.ipynb'),
+              ('accuracy_pitfalls.ipynb', 'out_accuracy_pitfalls.ipynb'),
+              ('basic_data_analysis.ipynb', 'out_basic_data_analysis.ipynb'),
+              ('covariance.ipynb', 'out_covariance.ipynb'),
+              ('histograms.ipynb', 'out_histograms.ipynb'),
+              ('unknown_dataset_size.ipynb', 'out_unknown_dataset_size.ipynb'),
+              ('utility_laplace_mean.ipynb', 'out_utility_laplace_mean.ipynb'),
+              ('tutorial_mental_health_in_tech_survey.ipynb', 'out_tutorial_mental_health_in_tech_survey.ipynb'),
             ]
 
     for input_nb, output_nb in inputs:
@@ -135,5 +134,5 @@ def run_reconstruction_notebooks():
 if __name__ == '__main__':
     #try_sn()
     run_analysis_notebooks()
-    # run_attack_notebooks()
-    # run_reconstruction_notebooks()
+    #run_attack_notebooks()
+    #run_reconstruction_notebooks()

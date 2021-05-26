@@ -2,7 +2,8 @@
 
 <a href="https://www.linkedin.com/pulse/microsoft-harvards-institute-quantitative-social-science-john-kahan/"><img src="images/SmartNoise_Logos/SVG/LogoMark_color.svg" align="left" height="65" vspace="8" hspace="18"></a>
 ## SmartNoise Samples: Differential Privacy Examples, Notebooks and Documentation
-See also the accompanying [SmartNoise SDK repository](https://github.com/opendifferentialprivacy/smartnoise-sdk) and [SmartNoise Core repository](https://github.com/opendifferentialprivacy/smartnoise-core) for this system.
+Please see the accompanying [SmartNoise Documentation](https://docs.opendp.org/en/latest/smartnoise/), [SmartNoise SDK repository](https://github.com/opendifferentialprivacy/smartnoise-sdk) and [SmartNoise Core repository](https://github.com/opendifferentialprivacy/smartnoise-core) for this system.
+
 
 ##
 
@@ -11,11 +12,7 @@ Differential privacy is the gold standard definition of privacy protection.  The
 * teach the properties of differential privacy,
 * highlight some of the nuances of the system implementation.
 
-## Runtime Library and Validator
-[Notebooks on SmartNoise Library Usage:](https://github.com/opendifferentialprivacy/smartnoise-samples/tree/master/analysis) A set of notebooks showing how to create differentially private releases using the SmartNoise Core library and private analysis validator.  The library and validator are both written in Rust, but the notebooks are Python and demonstrate the use of our Python bindings. 
-
-Additional notebooks in this repository demonstrate how [SmartNoise mitigates attacks](/attacks) 
-as well as examples from the whitepaper titled [Microsoft SmartNoise Differential Privacy Machine Learning Case Studies](/whitepaper-demos) which includes generation of a [synthetic dataset](/whitepaper-demos/5-ml-synthetic-data.ipynb).
+## Sample Notebooks
 
 [<img src="images/figs/plugin_mean_comparison.png" alt="Relative error distributions" height="100">](https://github.com/opendifferentialprivacy/smartnoise-samples/tree/master/analysis)
 [<img src="images/figs/example_size.png" alt="Release box plots" height="100">](https://github.com/opendifferentialprivacy/smartnoise-samples/tree/master/analysis)
@@ -23,24 +20,26 @@ as well as examples from the whitepaper titled [Microsoft SmartNoise Differentia
 [<img src="images/figs/example_utility.png" alt="Utility simulations" height="100">](https://github.com/opendifferentialprivacy/smartnoise-samples/tree/master/analysis)
 [<img src="images/figs/example_simulations.png" alt="Bias simulations" height="100">](https://github.com/opendifferentialprivacy/smartnoise-samples/tree/master/analysis)
 
-## SQL Data Access SDK
+This repository includes several sets of sample Python notebooks that demonstrate SmartNoise functionality:
 
-[Notebooks on SQL Data Access:](https://github.com/opendifferentialprivacy/smartnoise-samples/tree/master/data) A set of notebooks showing how to use SQL to create differentially private reports.
 
-## Reference Execution Service
+- [Sample Analysis Notebooks](/analysis) - In addition to a brief tutorial, there are examples of histograms, differentially private covariance, how dataset size and privacy-loss parameter selection impact utility, and working with unknown dataset sizes.
+- [Attack Notebooks](/attacks) - Walk-throughs of how SmartNoise mitigates basic attacks as well as a database reconstruction attack.
+- [SQL Data Access](/data) - Code examples and notebooks show how to issue SQL queries against CSV files, database engines, and Spark clusters.
+- [SmartNoise Whitepaper Demo Notebooks](/whitepaper-demos) - Based on the whitepaper titled [Microsoft SmartNoise Differential Privacy Machine Learning Case Studies](https://azure.microsoft.com/en-us/resources/microsoft-smartnoisedifferential-privacy-machine-learning-case-studies/) these notebooks include a demonstration of how to perform supervised machine learning with differential privacy and an example of creating a synthetic dataset with high utility for machine learning as well as examples of creating DP releases with histograms and protecting against a reidentification attack.
 
 ## API Reference Documentation
 
-[Core Library Reference:](https://opendifferentialprivacy.github.io/smartnoise-core/) The Core Library implments the runtime validator and execution engine.
-
-[System SDK Reference:](https://opendifferentialprivacy.github.io/smartnoise-samples/docs/api/system/). The System SDK implements the SQL Data Access, Execution Service, and Stochastic Evaluator.
+[Core Library Reference](https://opendp.github.io/smartnoise-core-python/): The Core Library implements the runtime validator and execution engine.  Documentation is available for:
+   - [Python](https://opendp.github.io/smartnoise-core-python/) - https://opendp.github.io/smartnoise-core-python/) 
+   - [Rust](https://opendp.github.io/smartnoise-core/doc/smartnoise_validator/docs/components/index.html) - https://opendp.github.io/smartnoise-core/doc/smartnoise_validator/docs/components/
 
 ## Communication
 
-- Please use [GitHub issues](https://github.com/opendifferentialprivacy/smartnoise-samples/issues) for bug reports, feature requests, install issues, and notebook ideas.
+- Please use [GitHub issues](https://github.com/opendp/smartnoise-samples/issues) for bug reports, feature requests, install issues, and notebook ideas.
 - [Gitter](https://gitter.im/opendifferentialprivacy/SmartNoise) is available for general chat and online discussions.
 - For other requests, please contact us at [smartnoise@opendp.org](mailto:smartnoise@opendp.org).
-  - _Note: We encourage you to use [GitHub issues](https://github.com/opendifferentialprivacy/smartnoise-samples/issues), especially for bugs._
+  - _Note: We encourage you to use [GitHub issues](https://github.com/opendp/smartnoise-samples/issues), especially for bugs._
 
 ## Releases and Contributing
 
