@@ -29,9 +29,9 @@ This repository includes several sets of sample Python notebooks that demonstrat
 
 ## API Reference Documentation
 
-[Core Library Reference](https://opendp.github.io/smartnoise-core-python/): The Core Library implements the runtime validator and execution engine.  Documentation is available for both:
-   - [Python](https://opendp.github.io/smartnoise-core-python/) and 
-   - [Rust](https://opendp.github.io/smartnoise-core/doc/smartnoise_validator/docs/components/index.html)
+[Core Library Reference](https://opendp.github.io/smartnoise-core-python/): The Core Library implements the runtime validator and execution engine.  Documentation is available for:
+   - [Python](https://opendp.github.io/smartnoise-core-python/) - (https://opendp.github.io/smartnoise-core-python/) 
+   - [Rust](https://opendp.github.io/smartnoise-core/doc/smartnoise_validator/docs/components/index.html) - https://opendp.github.io/smartnoise-core/doc/smartnoise_validator/docs/components/
 
 ## Communication
 
