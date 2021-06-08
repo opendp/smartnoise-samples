@@ -2,6 +2,8 @@ Collection:
   PUMS:
     PUMS_large:
       row_privacy: True
+      clamp_counts: False
+      censor_dims: False
       PersonID:
         type: int
       state:
