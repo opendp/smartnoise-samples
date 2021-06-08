@@ -4,7 +4,7 @@ import pandas as pd
 import itertools
 import z3
 import math
-import opendp.whitenoise.core as wn
+import opendp.smartnoise.core as sn
 
 ''' 
 load data
@@ -115,55 +115,30 @@ def create_dicts(data, non_income_data, plausible_variable_combinations):
         min_income_dict['__'.join(combination)] = np.min(dt['income'])
         max_income_dict['__'.join(combination)] = np.max(dt['income'])
 
-        with wn.Analysis() as analysis:
+        with sn.Analysis(protect_floating_point=False) as analysis:
             # load data
-            priv_data = wn.Dataset(value = list(dt['income']), num_columns = 1)
-
-            # estimate sample size 
-            count = wn.dp_count(data = wn.cast(priv_data, 'FLOAT'),
-                                privacy_usage={'epsilon': .05},
-                                lower=0,
-                                upper=1000)
-        analysis.release()
-        priv_count_dict['__'.join(combination)] = max(0, count.value)
-
-        with wn.Analysis() as analysis:
-            # load data
-            priv_data = wn.Dataset(value = list(dt['income']), num_columns = 1)           
+            priv_data = sn.Dataset(value=dt['income'])
+            # estimate sample size
+            count = sn.dp_count(priv_data, privacy_usage={'epsilon': .05})
+            # preprocess data
+            priv_data = sn.resize(sn.to_float(priv_data),number_columns=1,number_rows=sn.row_max(1, count),lower=0., upper=100_000.)
+            priv_data = sn.impute(sn.clamp(priv_data, lower=0., upper=100_000.))
             # get mean
-            mean = wn.dp_mean(data = wn.cast(priv_data, 'FLOAT'),
-                                                                    privacy_usage = {'epsilon': 0.1},
-                                                                    data_lower = 0.,
-                                                                    data_upper = 100_000.,
-                                                                    data_n = max(1, count.value)
-                                                                    )
+            mean = sn.dp_mean(priv_data, mechanism='snapping', privacy_usage={'epsilon': 0.1})
             # get median
-            median = wn.dp_median(data = wn.cast(priv_data, 'FLOAT'),
-                                                                    privacy_usage = {'epsilon': 0.1},
-                                                                    data_lower = 0.,
-                                                                    data_upper = 100_000.,
-                                                                    data_n = max(1, count.value)
-                                                                    )
+            median = sn.dp_median(priv_data, privacy_usage={'epsilon': 0.1})
             # get min
-            _min = wn.dp_minimum(data = wn.cast(priv_data, 'FLOAT'),
-                                                                    privacy_usage = {'epsilon': 0.1},
-                                                                    data_lower = 0.,
-                                                                    data_upper = 100_000.,
-                                                                    data_n = max(1, count.value)
-                                                                    )
-
+            _min = sn.dp_minimum(priv_data, privacy_usage={'epsilon': 0.1})
             # get max
-            _max = wn.dp_maximum(data = wn.cast(priv_data, 'FLOAT'),
-                                                                    privacy_usage = {'epsilon': 0.1},
-                                                                    data_lower = 0.,
-                                                                    data_upper = 100_000.,
-                                                                    data_n = max(1, count.value)
-                                                                    )
-        analysis.release()
-        priv_mean_income_dict['__'.join(combination)] = min(max(0, mean.value), 100_000)
-        priv_median_income_dict['__'.join(combination)] = min(max(0, median.value), 100_000)
-        priv_min_income_dict['__'.join(combination)] = min(max(0, _min.value), 100_000)
-        priv_max_income_dict['__'.join(combination)] = min(max(0, _max.value), 100_000)
+            _max = sn.dp_maximum(priv_data, privacy_usage={'epsilon': 0.1})
+            analysis.release()
+
+            priv_count_dict['__'.join(combination)] = max(0, count.value)
+            priv_mean_income_dict['__'.join(combination)] = min(max(0, mean.value), 100_000)
+            priv_median_income_dict['__'.join(combination)] = min(max(0, median.value), 100_000)
+            priv_min_income_dict['__'.join(combination)] = min(max(0, _min.value), 100_000)
+            priv_max_income_dict['__'.join(combination)] = min(max(0, _max.value), 100_000)
+
 
     return(count_dict, priv_count_dict, mean_income_dict, priv_mean_income_dict, median_income_dict, priv_median_income_dict, min_income_dict, priv_min_income_dict, max_income_dict, priv_max_income_dict)
 

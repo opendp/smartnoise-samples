@@ -5,21 +5,25 @@ You can issue SQL queries against CSV files, database engines, and Spark cluster
 ## Simple Example
 
 In this sample, we read from the sample PUMS dataset to calculate average income grouped by marital status.
+(Note: The test files for this example may be found in the [/data/readers](/data/readers) directory)
 
 ```python
 import pandas as pd
-from opendp.whitenoise.sql import PandasReader, PrivateReader
-from opendp.whitenoise.metadata import CollectionMetadata
+from opendp.smartnoise.sql import PandasReader, PrivateReader
+from opendp.smartnoise.metadata import CollectionMetadata
 
 pums = pd.read_csv('PUMS.csv')
-meta = CollectionMetadata.from_file('PUMS.yaml')
+
+# Note: The "PUMS_row.yaml" metadata file explicitly sets the optional `row_privacy` field to `True`.
+#
+meta = CollectionMetadata.from_file('PUMS_row.yaml')
 
 query = 'SELECT married, AVG(income) AS income, COUNT(*) AS n FROM PUMS.PUMS GROUP BY married'
 
-reader = PandasReader(meta, pums)
-private_reader = PrivateReader(meta, reader)
+reader = PandasReader(pums, meta)
+private_reader = PrivateReader(reader, meta, 1.0)
 
-result = private_reader.execute_typed(query)
+result = private_reader.execute(query)
 print(result)
 ```
 
@@ -28,7 +32,7 @@ There are two important concepts to highlight here.  First, we need to instantia
 ```python
 # example of calling a reader for exact query results
 # no differential privacy code is used
-from opendp.whitenoise.sql import SqlServerReader
+from opendp.smartnoise.sql import SqlServerReader
 
 query = 'SELECT married, AVG(income) AS income, COUNT(*) AS n FROM PUMS.PUMS_large GROUP BY married'
 
@@ -36,25 +40,25 @@ reader = SqlServerReader('127.0.0.1', 'PUMS', 'sa')
 
 exact = reader.execute_typed(query)
 print(exact)
-``` 
+```
 
 Next, we need to instantiate a `PrivateReader` that wraps the database adapter we created.  The `PrivateReader` will perform preprocessing and postprocessing to ensure differential privacy.
 
 ```python
-private_reader = PrivateReader(meta, reader)
+private_reader = PrivateReader(reader, meta, 1.0)
 
-noisy = private_reader.execute_typed(query)
+noisy = private_reader.execute(query)
 print(noisy)
 ```
 
-The `PrivateReader` has the same calling interface as any other `Reader`, but results will be differentially private.  
+The `PrivateReader` has the same calling interface as any other `Reader`, but results will be differentially private.
 
 ## Metadata
 
 In order to ensure differential privacy, the `PrivateReader` needs some metadata that describes the data source.  The metadata describes things like data types and ranges of values, and must not be data-dependent.  It is typically provided by the data curator, and can be loaded from a YAML file.
 
 ```python
-from opendp.whitenoise.metadata import CollectionMetadata
+from opendp.smartnoise.metadata import CollectionMetadata
 
 meta = CollectionMetadata.from_file('PUMS.yaml')
 print(meta)
@@ -65,7 +69,7 @@ The metadata specifies which columns can be used in aggregate functions, which c
 Although YAML is preferred, you can also construct the metadata directly in code:
 
 ```python
-from opendp.whitenoise.metadata.collection import *
+from opendp.smartnoise.metadata.collection import *
 
 table1 = Table("dbo", "devices", 5000, \
     [\
@@ -76,7 +80,7 @@ table1 = Table("dbo", "devices", 5000, \
 
 meta = CollectionMetadata([table1],"csv")
 ```
-Object documentation for the literal syntax is [here](https://opendifferentialprivacy.github.io/whitenoise-samples/docs/api/system/metadata/collection.html)
+Object documentation for the literal syntax is [here](https://opendifferentialprivacy.github.io/smartnoise-samples/docs/api/system/metadata/collection.html)
 
 ## Privacy Parameters
 
@@ -85,7 +89,7 @@ The `PrivateReader` accepts `epsilon` and `delta` privacy parameters which contr
 ```python
 # epsilon is 0.1, delta is 10E-16
 
-private_reader = PrivateReader(meta, reader, 0.1, 10E-16)
+private_reader = PrivateReader(reader, meta, 0.1, 10E-16)
 ```
 
 The epsilon parameter applies to each column in the result. It is not distributed across columns.  Some computations, such as `AVG`, will perform two noisy computations and will incur double epsilon cost.
@@ -130,10 +134,13 @@ The SQL processing layer has limited support for bounding contributions when ind
 
 For this release, we recommend using the SQL functionality while bounding user contribution to 1 row.  The platform defaults to this option by setting `max_contrib` to 1, and should only be overridden if you know what you are doing.  Future releases will focus on making these options easier for non-experts to use safely.
 
+## Note on SQLite Version
+
+The PandasReader used SQLite under the covers, whereas the other readers use the respective database engines.  The SQLite version that comes with many Python distributions is quite old, and does not support `SELECT DISTINCT`, which is required to limit the number of rows per user.  If you are using conda, you can ensure that you are using the latest SQLite by typing `conda install --yes -c anaconda sqlite`.  If you know that your data has only one row per user, you can specify `row_privacy` in the [metadata](/data/reader/PUMS_row.yaml), as in the sample above, and the functionality will work with older SQLite versions. 
 
 ## Installing Sample Databases
 
-If you would like to test against Postgres or SQL Server instances running in a Docker container with PUMS data imported,  you can build the containers from [source here](https://github.com/opendifferentialprivacy/whitenoise-samples/tree/master/testing/databases)
+If you would like to test against Postgres or SQL Server instances running in a Docker container with PUMS data imported,  you can build the containers from [source here](https://github.com/opendifferentialprivacy/smartnoise-samples/tree/master/testing/databases)
 
 ## Architecture
 

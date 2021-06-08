@@ -1,5 +1,5 @@
-from opendp.whitenoise.sql import SqlServerReader, PrivateReader
-from opendp.whitenoise.metadata import CollectionMetadata
+from opendp.smartnoise.sql import SqlServerReader, PrivateReader
+from opendp.smartnoise.metadata import CollectionMetadata
 
 meta = CollectionMetadata.from_file('PUMS_large.yaml')
 
