@@ -13,3 +13,8 @@ bash:
 
 clean:
 	docker system prune -a
+
+publish:
+	docker tag privacy:smartnoise opendp/smartnoise:privacy
+	docker login
+	docker push opendp/smartnoise:privacy

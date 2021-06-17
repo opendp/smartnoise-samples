@@ -73,22 +73,11 @@ COPY jupyter.txt .
 RUN jupyter notebook --generate-config && cat jupyter.txt >> .jupyter/jupyter_notebook_config.py && rm jupyter.txt
 
 # Clone the repositories
-RUN git clone https://github.com/opendifferentialprivacy/smartnoise-core-python.git --recurse-submodules
-RUN git clone https://github.com/opendifferentialprivacy/smartnoise-sdk.git
 RUN git clone https://github.com/opendifferentialprivacy/smartnoise-samples.git
 RUN git clone https://github.com/opendifferentialprivacy/dp-test-datasets.git
 
 # Install Core, Python Bindings, and System
-RUN cd smartnoise-core-python && \
-    conda run pip install -U setuptools && \
-    conda run pip install -e ".[test,plotting]" && \
-    cd ..
-
-RUN cd smartnoise-sdk && \
-    conda run pip install -r service/requirements.txt && \
-    conda run pip install -r tests/requirements.txt && \
-    conda run pip install -e sdk/ && \
-    cd ..
+RUN conda run pip install opendp-smartnoise-core opendp-smartnoise
 
 ENTRYPOINT ["jupyter", "notebook"]
 
