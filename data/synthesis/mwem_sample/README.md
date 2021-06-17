@@ -3,6 +3,9 @@ HARDT, M., LIGETT, K., AND MCSHERRY, F. 2012. A simple and practical algorithm f
 
 Note distinction between this implementation and the one released in the paper: in order to scale MWEMSynthesizer, we provide the ability to divide a database into "splits" and run the algorithm on these split databases with a suitably divided budget. We sample from the split databases without merging the "factored" distributions (as is described in the paper), and combine the samples to produce a full sample from the original database. This offers significant performance benefits for local experiments.
 
+View the source for MWEM here:
+https://github.com/opendifferentialprivacy/whitenoise-system/blob/master/sdk/opendp/whitenoise/synthesizers/mwem.py
+
 ## Recommended order for navigating MWEM samples, from view first to view last:
 
 ### 1. Visualizing MWEM
