@@ -1,4 +1,6 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python](https://img.shields.io/badge/python-3.7%20%7C%203.8-blue)](https://www.python.org/)
+
 
 <a href="https://www.linkedin.com/pulse/microsoft-harvards-institute-quantitative-social-science-john-kahan/"><img src="images/SmartNoise_Logos/SVG/LogoMark_color.svg" align="left" height="65" vspace="8" hspace="18"></a>
 ## SmartNoise Samples: Differential Privacy Examples, Notebooks and Documentation
