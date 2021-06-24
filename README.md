@@ -36,10 +36,9 @@ This repository includes several sets of sample Python notebooks that demonstrat
 
 ## Communication
 
-- Please use [GitHub issues](https://github.com/opendp/smartnoise-samples/issues) for bug reports, feature requests, install issues, and notebook ideas.
-- [Gitter](https://gitter.im/opendifferentialprivacy/SmartNoise) is available for general chat and online discussions.
-- For other requests, please contact us at [smartnoise@opendp.org](mailto:smartnoise@opendp.org).
-  - _Note: We encourage you to use [GitHub issues](https://github.com/opendp/smartnoise-samples/issues), especially for bugs._
+- You are very welcome to join us on [GitHub Discussions](https://github.com/opendp/opendp/discussions/categories/smartnoise)!
+- Please use [GitHub Issues](https://github.com/opendp/smartnoise-samples/issues) for bug reports and feature requests.
+- For other requests, including security issues, please contact us at [smartnoise@opendp.org](mailto:smartnoise@opendp.org).
 
 ## Releases and Contributing
 
