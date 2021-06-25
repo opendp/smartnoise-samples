@@ -13,6 +13,8 @@ pandas==1.1.0
 scipy==1.5.2
 seaborn==0.11.0
 z3-solver==4.8.9.0
-
+nltk
+scikit-learn
+scikit-image
 # for notebook testing
 #nbclient==0.5.3
