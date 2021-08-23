@@ -2,7 +2,7 @@ jupyter==1.0.0
 jupyter-client==6.1.7
 jupyter-console==6.2.0
 jupyter-core==4.6.3
-jupyterlab==2.2.9
+jupyterlab==2.2.10
 jupyterlab-pygments==0.1.2
 jupyterlab-server==1.2.0
 matplotlib==3.3.1
