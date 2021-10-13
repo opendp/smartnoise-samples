@@ -9,6 +9,8 @@
 ## Python Notebooks 
 The following notebooks use the SmartNoise Core Rust library and validator through Python bindings.
 
+Please note: SmartNoise Core is being rewritten to build on top of OpenDP. For this reason, you should focus especially on notebooks that already make use of the OpenDP library. The "Basic PUMS Analysis with SmartNoise" notebook below has been updated to be "Basic PUMS Analysis with OpenDP" and other notebooks will follow. The new OpenDP-based notebooks can be found at https://docs.opendp.org/en/stable/examples.html
+
 #### Library Use Overviews
 * [Basic PUMS Analysis with SmartNoise](https://github.com/opendifferentialprivacy/smartnoise-samples/blob/master/analysis/basic_data_analysis.ipynb):  Brief tutorial on doing data analysis within the SmartNoise system, with particular examples on how to understand returns from the analysis validator. 
   - Notebook: [`basic_data_analysis.ipynb`](https://github.com/opendifferentialprivacy/smartnoise-samples/blob/master/analysis/basic_data_analysis.ipynb)
